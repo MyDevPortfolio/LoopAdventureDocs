@@ -1,0 +1,245 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inventory System — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link active">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Manual</div>
+    <h1>Inventory System</h1>
+    <p class="page-desc">Read and modify the player's item inventory, equipment, and carry state from custom instructions and interactable objects.</p>
+  </div>
+
+  <h2>Overview</h2>
+  <p>The inventory system has two distinct layers that work together during a level run.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Layer</th><th>Class</th><th>Lifetime</th><th>When to use</th></tr></thead>
+      <tbody>
+        <tr><td>Persistent</td><td><code>PlayerInventory.current</code></td><td>Entire game session</td><td>Reading stats, checking equipped gear, after level completion</td></tr>
+        <tr><td>Execution</td><td><code>context.inventory</code></td><td>One level run</td><td>Consuming items, adding pickups, checking inventory inside <code>Tick()</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Always use <code>context.inventory</code> inside a <code>Tick()</code> override. The execution inventory is a deep copy of <code>PlayerInventory.current</code> that gets committed back only when the level is completed successfully — so failed runs do not consume items permanently.</p>
+
+  <hr>
+
+  <h2>1 — Reading Inventory in an Instruction</h2>
+  <p>Access the execution inventory through the <code>ExecutionContext</code> passed to <code>Tick()</code>. The most common operations are checking whether an item is present and consuming it.</p>
+
+<pre><span class="kw">public override</span> <span class="type">IEnumerator</span> <span class="fn">Tick</span>(<span class="type">ExecutionContext</span> context)
+{
+    <span class="cmt">// Check before consuming — give feedback if the item is missing</span>
+    <span class="kw">if</span> (!context.inventory.<span class="fn">ContainsItem</span>(requiredItem))
+    {
+        <span class="type">NotificationCenter</span>.<span class="fn">Notify</span>(<span class="type">NotificationCenter</span>.MessageType.Warning, <span class="str">"No item available"</span>);
+        <span class="kw">yield break</span>;
+    }
+
+    <span class="cmt">// Consume one unit; TryUseItem returns false if the item is not present</span>
+    <span class="kw">if</span> (context.inventory.<span class="fn">TryUseItem</span>(requiredItem))
+    {
+        <span class="cmt">// Apply the item's effects, play animation, etc.</span>
+        context.player.<span class="fn">UseItem</span>(requiredItem);
+    }
+
+    <span class="kw">yield return null</span>;
+}</pre>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Use TryUseItem, not TryRemoveItem</strong>
+      <code>TryUseItem</code> decrements the stack count and removes the slot only when it reaches zero. <code>TryRemoveItem</code> removes the entire slot regardless of stack size. For consumables, always use <code>TryUseItem</code>.
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>2 — Adding Items from an Interactable</h2>
+  <p>When a player collects a pickup or opens a chest, call <code>TryAddItem</code> on the execution inventory inside the <code>Interact()</code> method. The <code>context</code> property is available on any class that extends <code>ExecutionContextElement</code>.</p>
+
+<pre><span class="kw">public class</span> <span class="type">InteractableObject_Sign</span> : <span class="type">ExecutionContextElement</span>, <span class="type">IInteractable</span>
+{
+    [<span class="type">SerializeField</span>] <span class="type">Item</span> item;
+    [<span class="type">SerializeField</span>] <span class="kw">int</span> amount = <span class="num">1</span>;
+    [field: <span class="type">SerializeField</span>] <span class="kw">public</span> <span class="type">UnityEvent</span> OnInteract { <span class="kw">get</span>; <span class="kw">set</span>; }
+
+    <span class="kw">public bool</span> automatic => <span class="kw">false</span>;
+    <span class="kw">public bool</span> <span class="fn">Validate</span>() => item != <span class="kw">null</span>;
+
+    <span class="kw">public void</span> <span class="fn">Interact</span>()
+    {
+        <span class="kw">if</span> (context.inventory.<span class="fn">TryAddItem</span>(item, amount))
+        {
+            OnInteract?.<span class="fn">Invoke</span>();
+            <span class="fn">Destroy</span>(gameObject);
+        }
+        <span class="kw">else</span>
+        {
+            <span class="type">NotificationCenter</span>.<span class="fn">Notify</span>(<span class="type">NotificationCenter</span>.MessageType.Warning, <span class="str">"Inventory full"</span>);
+        }
+    }
+}</pre>
+
+  <hr>
+
+  <h2>3 — Checking Carry State</h2>
+  <p>The <code>carryTarget</code> and <code>carryingObject</code> members of <code>ExecutionContext</code> track what the player is currently holding. Check <code>carryingObject</code> before actions that require the player's hands to be free.</p>
+
+<pre><span class="kw">public override</span> <span class="type">IEnumerator</span> <span class="fn">Tick</span>(<span class="type">ExecutionContext</span> context)
+{
+    <span class="kw">if</span> (context.carryingObject)
+    {
+        <span class="type">NotificationCenter</span>.<span class="fn">Notify</span>(<span class="type">NotificationCenter</span>.MessageType.Warning,
+            <span class="str">"Can't do this while carrying something"</span>);
+        <span class="kw">yield break</span>;
+    }
+
+    <span class="cmt">// ... rest of instruction logic</span>
+    <span class="kw">yield return null</span>;
+}</pre>
+
+  <hr>
+
+  <h2>4 — Creating Item Assets</h2>
+  <p>Items are <code>ScriptableObject</code> assets. Create them from the Unity menu and assign them to interactable prefabs or instructions.</p>
+
+  <ol class="steps">
+    <li>Right-click in the Project window → <strong>Create → Loop Adventure → Inventory → Item</strong>.</li>
+    <li>Set <strong>Display Name</strong> and <strong>Description</strong> — these appear in the inventory UI.</li>
+    <li>Assign a <strong>Sprite</strong> for the item icon.</li>
+    <li>Enable <strong>Stackable</strong> if multiple copies should share one inventory slot.</li>
+    <li>Add <strong>Effects</strong> if using the item should modify stats. Each effect targets a <code>Stat</code> asset with a numeric value and an optional duration in turns.</li>
+    <li>Save the asset under <code>Assets/Scriptable Objects/Items/</code>.</li>
+  </ol>
+
+  <hr>
+
+  <h2>5 — Creating Equipment Assets</h2>
+  <p><code>Equipment</code> extends <code>Item</code> with a slot type and stat bonuses. Equipped gear provides passive stat bonuses without being consumed.</p>
+
+  <ol class="steps">
+    <li>Right-click in the Project window → <strong>Create → Loop Adventure → Inventory → Equipment</strong>.</li>
+    <li>Fill in all Item fields (Display Name, Sprite, etc.).</li>
+    <li>Set <strong>Type</strong> — this determines which equipment slot it occupies (<code>Weapon</code>, <code>Shield</code>, <code>Helmet</code>, <code>Armor</code>, or <code>Boots</code>).</li>
+    <li>Enable <strong>Two Handed</strong> if the weapon should also occupy the Shield slot.</li>
+    <li>Add <strong>Stats</strong> entries — pair a <code>Stat</code> asset with a bonus value. Positive values increase the stat, negative values reduce it.</li>
+    <li>Save the asset under <code>Assets/Scriptable Objects/Equipment/</code>.</li>
+  </ol>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Stat values at runtime</strong>
+      Equipped stats are summed across all slots by <code>PlayerInventory.current.GetStatValue(stat)</code>. The built-in player controller calls this for <code>damage</code> and <code>defense</code> automatically. Add your own <code>Stat</code> assets to extend the system.
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>6 — Creating Stat and Effect Assets</h2>
+
+  <h3>Stat</h3>
+  <p>A <code>Stat</code> is a named data key — it does not store a value itself. Stats link equipment bonuses, item effects, and character receivers together.</p>
+
+  <ol class="steps">
+    <li>Right-click → <strong>Create → Loop Adventure → Inventory → Stat</strong>.</li>
+    <li>Set <strong>Display Name</strong> and an <strong>Icon</strong> — shown in the UI when this stat is affected.</li>
+    <li>Save under <code>Assets/Scriptable Objects/Stats/</code> and reference it in <code>Equipment.Stats</code> or <code>Effect.Target Stat</code>.</li>
+  </ol>
+
+  <h3>Effect</h3>
+  <p>Effects are embedded in <code>Item</code> assets (not separate assets). Add them in the Item inspector under the <strong>Effects</strong> list.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Target Stat</strong></td><td>The <code>Stat</code> asset this effect modifies.</td></tr>
+        <tr><td><strong>Value</strong></td><td>Amount added to the stat. Negative values reduce it.</td></tr>
+        <tr><td><strong>Duration</strong></td><td>Turns the effect lasts. <code>0</code> means instant and permanent (for this run).</td></tr>
+        <tr><td><strong>Apply Per Turn</strong></td><td>If enabled, applies the value once per turn instead of once upfront — use for regeneration or damage-over-time. Ignored when Duration is 0.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

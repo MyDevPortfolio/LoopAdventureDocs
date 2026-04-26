@@ -1,0 +1,264 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create a Level — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link active">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Manual</div>
+    <h1>Create a Level</h1>
+    <p class="page-desc">A level is made up of three parts: a <code>LevelInfo</code> ScriptableObject that describes it, a Unity scene that contains the tile grid and all actors, and a Build Settings entry so the scene can be loaded at runtime.</p>
+  </div>
+
+  <!-- ── Overview ── -->
+  <h2>Overview</h2>
+  <p>The three pieces must exist before a level can be played. Create them in this order:</p>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:28%"><col style="width:72%"></colgroup>
+      <thead><tr><th>Component</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>LevelInfo</code> (ScriptableObject)</td><td>Holds the level's display name, a reference to its scene, and the array of goal conditions that determine victory.</td></tr>
+        <tr><td>Level Scene (Unity scene)</td><td>Contains the tile grid, the player, all enemies and interactables, plus the manager GameObjects that drive execution.</td></tr>
+        <tr><td>Build Settings entry</td><td>The scene must be registered in <em>File → Build Settings</em> so it can be loaded at runtime by the scene reference stored in <code>LevelInfo</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── Step 1 ── -->
+  <h2>Step 1 — Create the LevelInfo asset</h2>
+
+  <ol>
+    <li>In the Project window navigate to <strong>Assets / Scriptable Objects / Levels</strong>.</li>
+    <li>Right-click → <strong>Create → Loop Adventure → Level Info</strong>.</li>
+    <li>Name the asset (e.g. <code>Level_06</code>).</li>
+    <li>Fill in the fields described below, then link it to the scene you will create in Step 2.</li>
+  </ol>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:22%"><col style="width:18%"><col style="width:60%"></colgroup>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>displayName</code></td><td><code>string</code></td><td>Name shown in the level-select UI.</td></tr>
+        <tr><td><code>scene</code></td><td><code>SceneReference</code></td><td>Drag the level's <code>.unity</code> scene file here.</td></tr>
+        <tr><td><code>goals</code></td><td><code>Goal[]</code></td><td>Array of victory conditions. Configured in <a href="#step-6-define-goals">Step 6</a>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <strong>Do not edit the <code>id</code> field.</strong> It is auto-generated from the asset's GUID and is used to match save data to the correct level. Changing it will break existing save files.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ── Step 2 ── -->
+  <h2>Step 2 — Set up the scene</h2>
+
+  <p>The fastest way to start is to duplicate an existing level scene from <strong>Assets / Scenes / Levels /</strong> — all manager GameObjects and UI will already be wired. Clear the old tile grid and enemies, then design the new layout.</p>
+  <p>To start from an empty scene instead, drag the <strong>Game Manager</strong> prefab into the Hierarchy. It bundles LevelManager, InstructionSheet, SoundManager and MusicManager with all Inspector fields pre-configured.</p>
+
+  <ol>
+    <li>Name the scene using the convention <code>Level_XX_(description).unity</code> and save it to <strong>Assets / Scenes / Levels /</strong>.</li>
+    <li>Open <strong>File → Build Settings</strong>, click <strong>Add Open Scenes</strong>.</li>
+    <li>Drag the new scene asset into the <code>scene</code> field of the LevelInfo asset from Step 1.</li>
+  </ol>
+
+  <hr>
+
+  <!-- ── Step 3 ── -->
+  <h2>Step 3 — Build the tile grid</h2>
+
+  <p><code>MapManager</code> discovers all <code>PathTile</code> components in the scene automatically at startup — no manual wiring is needed. Place tiles as regular GameObjects and assign the correct <code>TileType</code> in the Inspector.</p>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:18%"><col style="width:24%"><col style="width:58%"></colgroup>
+      <thead><tr><th>TileType</th><th>Required count</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Start</code></td><td>Exactly 1</td><td>The player's starting position. The player is placed here when execution begins.</td></tr>
+        <tr><td><code>Path</code></td><td>1 or more</td><td>Walkable tiles the player can move through.</td></tr>
+        <tr><td><code>End</code></td><td>Exactly 1</td><td>The level objective. Reaching this tile triggers the win check.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warning">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>All tiles must share the same sprite and scale.</strong> <code>MapManager</code> calculates <code>cellSize</code> from the <code>SpriteRenderer</code> of the first tile it finds. If tiles have different sizes the grid will be misaligned and movement offsets will be wrong.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ── Step 4 ── -->
+  <h2>Step 4 — Place the player</h2>
+
+  <ol>
+    <li>Drag the <strong>Player_InGame</strong> prefab (in <strong>Assets / !!_Prefabs / Player /</strong>) into the Hierarchy.</li>
+    <li>Position it on top of the <code>Start</code> tile.</li>
+    <li>Assign the required Inspector fields listed below.</li>
+  </ol>
+
+  <p>The player is discovered automatically via <code>FindFirstObjectByType&lt;PlayerController&gt;()</code> — you do not need to assign it to any manager.</p>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:26%"><col style="width:22%"><col style="width:52%"></colgroup>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>damageStat</code></td><td><code>Stat</code> (SO)</td><td>ScriptableObject that defines the player's base damage value.</td></tr>
+        <tr><td><code>defenseStat</code></td><td><code>Stat</code> (SO)</td><td>ScriptableObject that defines the player's base defense value.</td></tr>
+        <tr><td><code>useItemFX</code></td><td>Prefab</td><td>Visual effect spawned when the player uses an item.</td></tr>
+        <tr><td><code>useItemParticles</code></td><td><code>ParticleSystem</code></td><td>Particle effect played alongside <code>useItemFX</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── Step 5 ── -->
+  <h2>Step 5 — Wire the LevelManager</h2>
+
+  <p>If you started from a duplicate scene or the Game Manager prefab these fields are already set. Otherwise, assign them on the <strong>LevelManager</strong> component in the Inspector.</p>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:30%"><col style="width:18%"><col style="width:52%"></colgroup>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>turnInterval</code></td><td><code>float</code></td><td>Duration of each execution turn in seconds.</td></tr>
+        <tr><td><code>turnWait</code></td><td><code>float</code></td><td>Pause between the end of one turn and the start of the next (default: 1).</td></tr>
+        <tr><td><code>instructionsContainer</code></td><td><code>GameObject</code></td><td>Root UI panel that contains the instruction sheet. Toggled visible during gameplay.</td></tr>
+        <tr><td><code>audioSource</code></td><td><code>AudioSource</code></td><td>Audio source used to play turn and action-change sounds.</td></tr>
+        <tr><td><code>turnChangeAudio</code></td><td><code>AudioClip</code></td><td>Sound played at the start of each execution turn.</td></tr>
+        <tr><td><code>actionChangeAudio</code></td><td><code>AudioClip</code></td><td>Sound played when the active instruction step changes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── Step 6 ── -->
+  <h2>Step 6 — Define goals</h2>
+
+  <p>Goals are configured in the <code>LevelInfo</code> asset's <code>goals</code> array. Each entry pairs a goal class with a threshold value. All goals in the array must be satisfied simultaneously for the level to be marked complete.</p>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:40%"><col style="width:34%"><col style="width:26%"></colgroup>
+      <thead><tr><th>Class</th><th>Win condition</th><th><code>amountRequired</code></th></tr></thead>
+      <tbody>
+        <tr><td><code>LevelGoal_InstructionCount</code></td><td>Total instructions placed ≤ N</td><td>Maximum instruction count</td></tr>
+        <tr><td><code>LevelGoal_LoopCount</code></td><td>Total loop iterations across all sequences ≤ N</td><td>Maximum loop count</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Empty goals array.</strong> If <code>goals</code> is empty the level completes as soon as the player reaches the End tile with no additional constraints — useful for tutorial levels that just teach movement.
+    </div>
+  </div>
+
+  <p>To define a custom goal that evaluates any statistic from the completed run, see <a href="sc-level-goals.html">LevelGoal</a> in the scripting reference.</p>
+
+  <hr>
+
+  <!-- ── Step 7 ── -->
+  <h2>Step 7 — Add enemies and interactables</h2>
+
+  <p>Enemies, traps, and interactable objects are all <code>ExecutionContextElement</code> subclasses. Place their prefabs anywhere in the scene Hierarchy — they are discovered and cloned automatically when execution starts. No extra wiring to any manager is required.</p>
+
+  <p>See the related guides for how to configure each type:</p>
+  <ul>
+    <li><a href="manual-enemy.html">Create an Enemy Instruction</a> — add AI behaviour that runs each turn alongside the player.</li>
+    <li><a href="manual-interactable.html">Create an Interactable</a> — doors, crates, levers and other world objects.</li>
+    <li><a href="manual-traps.html">Tile Traps</a> — pressure plates and appearing spikes that activate automatically.</li>
+  </ul>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,191 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>UI Setup — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link active">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+  <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+  <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Manual</div>
+    <h1>UI Setup</h1>
+    <p class="page-desc">Overview of every UI component in a level scene — player and enemy HUD bars, inventory window, notifications, and win/options screens — with step-by-step Inspector configuration for each.</p>
+  </div>
+
+  <h2>UI Components at a Glance</h2>
+  <p>The level UI is split into three layers: HUD overlays that track live stats, modal windows opened on demand, and notification toasts triggered from code.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Layer</th><th>Component</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td>HUD</td><td><code>PlayerHealthBar</code></td><td>Row of heart toggles that mirrors the player's current HP.</td></tr>
+        <tr><td>HUD</td><td><code>PlayerStaminaBar</code></td><td>Row of pip toggles that mirrors the player's current stamina.</td></tr>
+        <tr><td>HUD</td><td><code>HUD_ShowStatEffectNumber</code></td><td>Floating numbers that pop above a character whenever damage, healing, or a block occurs.</td></tr>
+        <tr><td>Enemy HUD</td><td><code>EnemyHealthBar</code></td><td>Numeric HP label on each enemy, updated on every hit.</td></tr>
+        <tr><td>Enemy HUD</td><td><code>EnemyActionSequencePanel</code></td><td>Grid of action icons showing the full enemy sequence on hover.</td></tr>
+        <tr><td>Enemy HUD</td><td><code>EnemyInstructionIndicator</code></td><td>Animated icon that transitions to match the enemy's active action.</td></tr>
+        <tr><td>Windows</td><td><code>InventoryWindow</code></td><td>Full-screen inventory displaying equipment slots, item slots, and stat totals.</td></tr>
+        <tr><td>Windows</td><td><code>WinScreenController</code></td><td>Modal overlay shown automatically when the level is completed.</td></tr>
+        <tr><td>Windows</td><td><code>GameOptionsMenu</code></td><td>In-game options panel with volume controls and map return.</td></tr>
+        <tr><td>Notifications</td><td><code>NotificationLayout</code></td><td>Toast pop-up with icon and message that auto-dismisses after 7 seconds.</td></tr>
+        <tr><td>Notifications</td><td><code>EquipmentNotification</code></td><td>Queued pop-up that announces newly received equipment items.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Step 1 — Player HUD Bars</h2>
+  <p><code>PlayerHealthBar</code> and <code>PlayerStaminaBar</code> subscribe to LevelManager events automatically at startup (<code>[DefaultExecutionOrder(10)]</code>). No manual wiring to <code>LevelManager</code> is needed — place either component anywhere in the Canvas and assign its two Inspector fields.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Component</th><th>Field</th><th>Type</th><th>What to assign</th></tr></thead>
+      <tbody>
+        <tr><td rowspan="2"><code>PlayerHealthBar</code></td><td><code>heartPrefab</code></td><td><code>Toggle</code></td><td>Toggle prefab spawned once per maximum HP point.</td></tr>
+        <tr><td><code>healthContainer</code></td><td><code>Transform</code></td><td>Parent transform that receives the spawned heart toggles.</td></tr>
+        <tr><td rowspan="2"><code>PlayerStaminaBar</code></td><td><code>pointPrefab</code></td><td><code>Toggle</code></td><td>Toggle prefab spawned once per maximum stamina point.</td></tr>
+        <tr><td><code>container</code></td><td><code>Transform</code></td><td>Parent transform that receives the spawned stamina pip toggles.</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p>Both bars destroy and re-spawn their toggles on each <code>LevelManager.OnInitialize</code> event, so the counts always match the LevelInfo values at the start of a run.</p>
+
+  <h2>Step 2 — Floating Stat Numbers</h2>
+  <p>Add <code>HUD_ShowStatEffectNumber</code> as a child of any GameObject that owns a <code>Health</code> or <code>PlayerStamina</code> component. The script finds those components via <code>GetComponentInParent</code> in <code>Start()</code> and subscribes automatically — no Inspector wiring is required.</p>
+  <p>Customise the three color fields in the Inspector to control how each event type is displayed:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Default</th><th>When applied</th></tr></thead>
+      <tbody>
+        <tr><td><code>negativeColor</code></td><td>Red</td><td>Damage received (<code>Health.OnDamageApplied</code>).</td></tr>
+        <tr><td><code>positiveColor</code></td><td>Blue</td><td>Healing or stamina gain (<code>PlayerStamina.OnValueChanged</code> with a positive delta).</td></tr>
+        <tr><td><code>blockedColor</code></td><td>Green</td><td>Blocked attack (<code>Health.OnDamageBlocked</code>). Displays a "Blocked" label instead of a number.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Step 3 — Enemy HUD</h2>
+  <p>Enemy HUD components are typically placed on a Canvas that is a child of the enemy prefab. Each component wires itself to its sibling <code>EnemyController</code> or <code>Health</code> in <code>Start()</code> — there is no extra setup in the Inspector beyond ensuring they share the same parent hierarchy.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Component</th><th>What it shows</th><th>Trigger</th></tr></thead>
+      <tbody>
+        <tr><td><code>EnemyHealthBar</code></td><td>Current HP as a text label.</td><td><code>Health.OnHealthUpdated</code></td></tr>
+        <tr><td><code>EnemyActionSequencePanel</code></td><td>Grid of all action icons and loop counts. Visible only on mouse hover.</td><td>Populated on initialization.</td></tr>
+        <tr><td><code>EnemyInstructionIndicator</code></td><td>Animated icon that switches between actions as the enemy executes.</td><td><code>EnemyController.OnStart / OnActionChange / OnEnd</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Step 4 — Inventory Window</h2>
+  <p><code>InventoryWindow</code> is a singleton accessed at runtime via <code>InventoryWindow.current</code>. Open and close it from any script:</p>
+  <pre><code>InventoryWindow.current.Open();
+InventoryWindow.current.Close();</code></pre>
+  <p>The window manages three categories of child widgets. Wire them up in the Inspector before entering Play Mode:</p>
+  <ol>
+    <li><strong>Stats array</strong> — Add one <code>StatSlot</code> entry per stat you want visible. Each entry pairs a <a href="sc-stat.html">Stat</a> asset with a <code>TMP_Text</code> label; the window writes the current total to that label on <code>Refresh()</code>.</li>
+    <li><strong>Equipment slots</strong> — Place one <code>EquipmentSlotLayout</code> per slot type (<code>Weapon</code>, <code>Shield</code>, <code>Helmet</code>, <code>Armor</code>, <code>Boots</code>) and set the matching <code>Equipment.Type</code> on each in the Inspector. Hovering an occupied slot shows a floating tooltip with stats and effects.</li>
+    <li><strong>Item slots</strong> — A pool of <code>ItemSlotLayout</code> widgets. The window fills them automatically from the inventory on <code>Open()</code> and <code>Refresh()</code>.</li>
+  </ol>
+  <p>Call <code>Refresh()</code> manually if the inventory changes while the window is already visible.</p>
+
+  <h2>Step 5 — Win Screen &amp; Options Menu</h2>
+  <p><code>WinScreenController</code> subscribes to <code>LevelManager.OnLevelCompleted</code> and opens itself — no manual trigger is needed. <code>GameOptionsMenu</code> must be opened from a button using a standard UnityEvent or from code:</p>
+  <pre><code>GetComponent&lt;GameOptionsMenu&gt;().Open();
+GetComponent&lt;GameOptionsMenu&gt;().Close();</code></pre>
+  <p>Both extend <a href="sc-window.html">Window</a>, so they play the <code>openSound</code> / <code>closeSound</code> clips assigned in the Inspector automatically.</p>
+
+  <h2>Step 6 — Notifications</h2>
+  <p>Show a generic toast from any MonoBehaviour:</p>
+  <pre><code>NotificationLayout notificationPrefab; // assign in Inspector
+notificationPrefab.CreateInstance(icon, "Your message here", transform);</code></pre>
+  <p>The notification slides in, holds for 7 seconds, then dismisses itself. The <code>parent</code> argument controls where it is placed in the Canvas hierarchy; pass <code>null</code> to use the prefab's default parent.</p>
+  <p>Queue an equipment announcement from anywhere — including across scene loads:</p>
+  <pre><code>EquipmentNotification.AddEquipment(equipment);</code></pre>
+  <p>If a notification is already on screen, the new one enters the queue and appears automatically once the current one is dismissed.</p>
+
+  <h2>Step 7 — Custom Windows</h2>
+  <p>Subclass <a href="sc-window.html">Window</a> to add any new modal panel to your scene:</p>
+  <pre><code>public class MyPanel : Window
+{
+    public override void Open()
+    {
+        // run custom logic before the panel appears
+        base.Open();
+    }
+
+    public override void Close()
+    {
+        base.Close();
+        // run custom logic after the panel hides
+    }
+}</code></pre>
+  <p>Assign <code>openSound</code> and <code>closeSound</code> clips in the Inspector for automatic SFX. If no <code>AudioSource</code> is assigned the window opens and closes silently.</p>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

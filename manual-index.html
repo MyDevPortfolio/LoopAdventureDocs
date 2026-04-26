@@ -1,0 +1,165 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="no-sidebar">
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Manual</div>
+    <h1>Workflows &amp; Guides</h1>
+    <p class="page-desc">Step-by-step walkthroughs for the most common tasks. Start with the Overview if this is your first time, then follow the how-to guides to extend the game with your own content.</p>
+  </div>
+
+  <div class="index-grid">
+
+    <a href="manual-overview.html" class="index-card">
+      <div class="ic-icon">🗺️</div>
+      <div class="ic-body">
+        <div class="ic-title">Overview</div>
+        <div class="ic-desc">Quick start, requirements, project structure, singleton persistence chain, and execution flow. The right place to begin.</div>
+        <div class="ic-topics">
+          <span>Quick Start</span>
+          <span>Project Structure</span>
+          <span>Execution Flow</span>
+          <span>Extension Points</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-levels.html" class="index-card">
+      <div class="ic-icon">🏗️</div>
+      <div class="ic-body">
+        <div class="ic-title">Create a Level</div>
+        <div class="ic-desc">Build a new level from scratch — LevelInfo asset, scene setup, tile grid, player placement, manager wiring, and goal configuration.</div>
+        <div class="ic-topics">
+          <span>LevelInfo</span>
+          <span>PathTile grid</span>
+          <span>LevelManager</span>
+          <span>Goals</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-instruction.html" class="index-card">
+      <div class="ic-icon">⚔️</div>
+      <div class="ic-body">
+        <div class="ic-title">Create an Instruction</div>
+        <div class="ic-desc">Add a new player action to the instruction sheet. Covers the full workflow from writing the C# class to wiring the prefab and palette.</div>
+        <div class="ic-topics">
+          <span>PlayerInstruction</span>
+          <span>Tick() override</span>
+          <span>Prefab setup</span>
+          <span>Palette wiring</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-instruction-layout.html" class="index-card">
+      <div class="ic-icon">🧩</div>
+      <div class="ic-body">
+        <div class="ic-title">Create an Instruction Layout</div>
+        <div class="ic-desc">Build the prefab widget that represents an instruction on the sheet — duplicate, pick the right layout type, configure fields, wire the Action component, and place it in the palette.</div>
+        <div class="ic-topics">
+          <span>InstructionLayout</span>
+          <span>Action component</span>
+          <span>Palette setup</span>
+          <span>Modifier &amp; Sequence</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-enemy.html" class="index-card">
+      <div class="ic-icon">👹</div>
+      <div class="ic-body">
+        <div class="ic-title">Create an Enemy Instruction</div>
+        <div class="ic-desc">Add a new AI behaviour that runs alongside the player's turn. Follows the same pattern as player instructions with enemy-specific context.</div>
+        <div class="ic-topics">
+          <span>EnemyInstruction</span>
+          <span>EnemyAction</span>
+          <span>Parallel execution</span>
+          <span>Prefab setup</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-interactable.html" class="index-card">
+      <div class="ic-icon">📦</div>
+      <div class="ic-body">
+        <div class="ic-title">Create an Interactable</div>
+        <div class="ic-desc">Add a new world object the player can interact with, carry, or push — by implementing one or more of the interactable interfaces.</div>
+        <div class="ic-topics">
+          <span>IInteractable</span>
+          <span>ICarryObject</span>
+          <span>IPushable</span>
+          <span>Prefab setup</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-traps.html" class="index-card">
+      <div class="ic-icon">⚡</div>
+      <div class="ic-body">
+        <div class="ic-title">Tile Traps</div>
+        <div class="ic-desc">Place and configure pressure plates and appearing spikes. Both traps are self-scheduling and run every turn automatically without any extra wiring.</div>
+        <div class="ic-topics">
+          <span>PressurePlate</span>
+          <span>AppearingSpikes</span>
+          <span>Stages pattern</span>
+          <span>Damage timing</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-inventory.html" class="index-card">
+      <div class="ic-icon">🎒</div>
+      <div class="ic-body">
+        <div class="ic-title">Inventory System</div>
+        <div class="ic-desc">Read and modify items, equipment, and carry state from custom instructions and interactables. Covers both the execution copy and the persistent inventory.</div>
+        <div class="ic-topics">
+          <span>context.inventory</span>
+          <span>TryAddItem / TryUseItem</span>
+          <span>Item &amp; Equipment assets</span>
+          <span>Stats &amp; Effects</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-audio.html" class="index-card">
+      <div class="ic-icon">🔊</div>
+      <div class="ic-body">
+        <div class="ic-title">Audio Setup</div>
+        <div class="ic-desc">Configure persistent volume sliders and per-scene background music. Settings survive game restarts without any extra code.</div>
+        <div class="ic-topics">
+          <span>SoundManager</span>
+          <span>MusicManager</span>
+          <span>Volume sliders</span>
+          <span>Save / restore</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-ui.html" class="index-card">
+      <div class="ic-icon">🖥️</div>
+      <div class="ic-body">
+        <div class="ic-title">UI Setup</div>
+        <div class="ic-desc">Configure the player and enemy HUD bars, inventory window, notification toasts, and win/options screens. Includes a guide to subclassing Window for custom panels.</div>
+        <div class="ic-topics">
+          <span>PlayerHealthBar</span>
+          <span>InventoryWindow</span>
+          <span>NotificationLayout</span>
+          <span>Window</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

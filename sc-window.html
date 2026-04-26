@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Window — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+  <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+  <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub active">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / UI</div>
+    <h1>Window</h1>
+    <p class="page-desc">Abstract base class for all modal UI panels. Handles show/hide by toggling the GameObject and plays optional open/close sound effects. Subclass it to create any new panel in the scene.</p>
+  </div>
+
+  <h2>Inspector Fields</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>audioSource</code></td><td><code>AudioSource</code></td><td>AudioSource used to play the open and close sound clips. If left empty the window opens and closes silently.</td></tr>
+        <tr><td><code>openSound</code></td><td><code>AudioClip</code></td><td>Clip played when <code>Open()</code> is called.</td></tr>
+        <tr><td><code>closeSound</code></td><td><code>AudioClip</code></td><td>Clip played when <code>Close()</code> is called.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Methods</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Open()</code></td><td>Sets the GameObject active and plays <code>openSound</code>. Virtual — override to run custom logic before or after showing.</td></tr>
+        <tr><td><code>Close()</code></td><td>Sets the GameObject inactive and plays <code>closeSound</code>. Virtual — override to run custom logic before or after hiding.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Subclassing Window</h2>
+  <p>Inherit from <code>Window</code> and override the virtual methods to add behaviour. Always call <code>base.Open()</code> or <code>base.Close()</code> to keep the GameObject toggle and audio working.</p>
+  <pre><code>public class MyPanel : Window
+{
+    public override void Open()
+    {
+        // populate the panel before it appears
+        Refresh();
+        base.Open();
+    }
+
+    public override void Close()
+    {
+        base.Close();
+        // clean up after the panel hides
+        OnClosed?.Invoke();
+    }
+}</code></pre>
+  <p>Built-in subclasses in the project: <code>InventoryWindow</code>, <code>WinScreenController</code>, <code>GameOptionsMenu</code>, <code>ItemsListWindow</code>. See <a href="manual-ui.html">UI Setup</a> for placement and Inspector configuration guidance.</p>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

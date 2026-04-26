@@ -1,0 +1,141 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ExecutionContext — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub active">ExecutionContext</a>
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level & Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / Instructions</div>
+    <h1>ExecutionContext</h1>
+    <p class="page-desc">Passed as <code>ctx</code> to every <code>Tick()</code> call. Provides read access to all live scene state for the current run — player, inventory, turn settings, and events.</p>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <strong>Read only at call time</strong>
+      Do not store <code>ctx</code> across frames or between instructions. It is valid only during the coroutine it was passed to.
+    </div>
+  </div>
+
+  <h2>Player</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>ctx.player</code></td><td><code>PlayerController</code></td><td>The player character instance for this run.</td></tr>
+      <tr><td><code>ctx.player.position</code></td><td><code>Vector2</code></td><td>Current world position. Assign directly to move the player instantly (no animation).</td></tr>
+      <tr><td><code>ctx.player.SetDirection(Direction)</code></td><td><code>void</code></td><td>Flips the player sprite to face a direction.</td></tr>
+      <tr><td><code>ctx.player.PlayAnimation(string)</code></td><td><code>void</code></td><td>Plays a named Animator state on the player.</td></tr>
+      <tr><td><code>ctx.player.ValidatePosition(Vector3)</code></td><td><code>bool</code></td><td>Returns true if the position is on a valid <code>PathTile</code> with no obstacle. Always check before moving.</td></tr>
+      <tr><td><code>ctx.player.PlaySound(AudioResource)</code></td><td><code>void</code></td><td>Plays a sound through the player's AudioSource. Stops any currently playing clip first.</td></tr>
+      <tr><td><code>ctx.player.UseItem(Item)</code></td><td><code>void</code></td><td>Consumes an item, applies its effects, and shows the use VFX.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Player Stats</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>ctx.player.stamina</code></td><td><code>PlayerStamina</code></td><td>Access <code>.currentValue</code> to check available stamina. Call <code>.Substract(n)</code> to spend it.</td></tr>
+      <tr><td><code>ctx.player.health</code></td><td><code>Health</code></td><td>Check <code>.isDead</code>. Call <code>.ApplyDamage(n)</code> to deal damage.</td></tr>
+      <tr><td><code>ctx.player.damage</code></td><td><code>int</code></td><td>Player's current damage value (derived from equipped weapon stat).</td></tr>
+      <tr><td><code>ctx.player.defense</code></td><td><code>int</code></td><td>Player's current defense value (derived from equipped armor stat).</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>State</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>ctx.carryingObject</code></td><td><code>bool</code></td><td>True if the player is currently carrying an <code>ICarryObject</code>. Many instructions are blocked while carrying.</td></tr>
+      <tr><td><code>ctx.inventory</code></td><td><code>PlayerInventory</code></td><td>The inventory snapshot for this run. Read items and equipment slots.</td></tr>
+      <tr><td><code>ctx.currentPlayerInstruction</code></td><td><code>PlayerInstruction</code></td><td>The instruction currently executing (set to <code>this</code> by the runner).</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Events</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>ctx.OnTurnStart</code></td><td><code>Action</code></td><td>Fired at the beginning of each turn within this run.</td></tr>
+      <tr><td><code>ctx.OnTurnEnd</code></td><td><code>Action</code></td><td>Fired at the end of each turn. Subscribe here to collect items or tick effects.</td></tr>
+    </tbody>
+  </table></div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      Need to react to each instruction step from an enemy or interactable? See <a href="sc-execution-subscriber.html">IExecutionSuscriber</a> — a lightweight notification interface that is auto-registered from the enemy's hierarchy.
+    </div>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

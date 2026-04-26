@@ -1,0 +1,306 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Built-in Interactables — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub active">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting</div>
+    <h1>Built-in Interactables</h1>
+    <p class="page-desc">Ready-made interactable classes you can drop onto a prefab or use as starting points for your own objects. Each class extends <code>ExecutionContextElement</code> and implements one or more interactable interfaces.</p>
+  </div>
+
+  <!-- ── Overview table ── -->
+  <div class="table-wrap">
+    <table>
+      <colgroup>
+        <col style="width:38%">
+        <col style="width:32%">
+        <col style="width:30%">
+      </colgroup>
+      <thead><tr><th>Class</th><th>Interfaces</th><th>Interaction</th></tr></thead>
+      <tbody>
+        <tr><td><code>InteractableObject_Pickup</code></td><td><code>IInteractable</code></td><td>Automatic — collected when the player steps on the tile.</td></tr>
+        <tr><td><code>InteractableObject_Chest</code></td><td><code>IInteractable</code></td><td>Manual — requires an explicit Interact instruction.</td></tr>
+        <tr><td><code>InteractableObject_Carry</code></td><td><code>ICarryObject</code> · <code>IPushable</code> · <code>IObstacle</code></td><td>Can be carried, pushed, and blocks movement.</td></tr>
+        <tr><td><code>InteractableObject_PushableObject</code></td><td><code>IPushable</code> · <code>IObstacle</code></td><td>Can be pushed but not carried. Always blocks movement.</td></tr>
+        <tr><td><code>InteractableObject_Door</code></td><td><code>IObstacle</code></td><td>Togglable blocker — can require a key item to open.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── InteractableObject_Pickup ── -->
+  <h2>InteractableObject_Pickup</h2>
+  <p>Implements <code>IInteractable</code> with <code>automatic = true</code>. At the end of any turn the player occupies its tile, the item is added to <code>context.inventory</code>, a collect animation plays, and the GameObject is destroyed. No explicit Interact instruction is needed.</p>
+
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>item</code></td><td><code>Item</code></td><td>The item added to the player's inventory when collected.</td></tr>
+        <tr><td><code>audioSource</code></td><td><code>AudioSource</code></td><td>AudioSource used for collect and drop sounds.</td></tr>
+        <tr><td><code>collectSound</code></td><td><code>AudioClip</code></td><td>Played when the player picks up this object.</td></tr>
+        <tr><td><code>dropSound</code></td><td><code>AudioClip</code></td><td>Played when the object is placed in the world.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>IInteractable Members</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Member</th><th>Value / Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td><code>automatic</code></td><td><code>true</code> — collected at turn end without any instruction.</td></tr>
+        <tr><td><code>OnInteract</code></td><td><code>UnityEvent</code> — fired when the item is successfully collected.</td></tr>
+        <tr><td><code>Validate()</code></td><td>Always returns <code>true</code>.</td></tr>
+        <tr><td><code>Interact()</code></td><td>Calls <code>context.inventory.TryAddItem(item)</code>, plays the collect animation, destroys the GameObject.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Additional Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Drop()</code></td><td>Plays <code>dropSound</code>. Called when the object is placed (or reset) into the world.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── InteractableObject_Chest ── -->
+  <h2>InteractableObject_Chest</h2>
+  <p>Implements <code>IInteractable</code> with <code>automatic = false</code>. The player must use an Interact instruction while on the chest's tile. On success the item is added to inventory, an open animation plays, and the item icon floats above the chest.</p>
+
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>item</code></td><td><code>Item</code></td><td>Item type stored in the chest.</td></tr>
+        <tr><td><code>amount</code></td><td><code>int</code></td><td>Number of units given to the player. Default: <code>1</code>.</td></tr>
+        <tr><td><code>itemIcon</code></td><td><code>SpriteRenderer</code></td><td>Displays the item's sprite above the chest after opening.</td></tr>
+        <tr><td><code>amountText</code></td><td><code>TMP_Text</code></td><td>Shows the quantity string (e.g. <code>×5</code>) when more than one item is given.</td></tr>
+        <tr><td><code>audioSource</code></td><td><code>AudioSource</code></td><td>AudioSource for the open sound.</td></tr>
+        <tr><td><code>openSound</code></td><td><code>AudioClip</code></td><td>Played when the chest opens.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>IInteractable Members</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Member</th><th>Value / Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td><code>automatic</code></td><td><code>false</code> — requires an explicit Interact instruction.</td></tr>
+        <tr><td><code>OnInteract</code></td><td><code>UnityEvent</code> — fired when the chest is successfully opened.</td></tr>
+        <tr><td><code>Validate()</code></td><td>Returns <code>true</code> if <code>item</code> is assigned.</td></tr>
+        <tr><td><code>Interact()</code></td><td>Calls <code>context.inventory.TryAddItem(item, amount)</code>, triggers the open animation, and updates the item icon display.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── InteractableObject_Carry ── -->
+  <h2>InteractableObject_Carry</h2>
+  <p>Implements <code>ICarryObject</code>, <code>IPushable</code>, and <code>IObstacle</code>. The player can pick it up with Carry, put it down with Drop, or slide it one tile with Push. Its collider is disabled while carried so it does not interfere with movement.</p>
+
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>audioSource</code></td><td><code>AudioSource</code></td><td>AudioSource for all carry / push sounds.</td></tr>
+        <tr><td><code>pickupSound</code></td><td><code>AudioClip</code></td><td>Played when the player picks up the object.</td></tr>
+        <tr><td><code>dropSound</code></td><td><code>AudioClip</code></td><td>Played when the player drops the object.</td></tr>
+        <tr><td><code>pushSound</code></td><td><code>AudioClip</code></td><td>Played when the object is pushed.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Interface Members</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method / Property</th><th>Interface</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td><code>Take()</code></td><td><code>ICarryObject</code></td><td>Disables the <code>BoxCollider2D</code> and plays <code>pickupSound</code>.</td></tr>
+        <tr><td><code>Drop()</code></td><td><code>ICarryObject</code></td><td>Re-enables the collider and plays <code>dropSound</code>.</td></tr>
+        <tr><td><code>Push(context, direction)</code></td><td><code>IPushable</code></td><td>Moves the object one cell in <code>direction</code> using <code>MapManager.cellSize</code> and plays <code>pushSound</code>.</td></tr>
+        <tr><td><code>Stop()</code></td><td><code>IPushable</code></td><td>Stops the push sound if it is still playing.</td></tr>
+        <tr><td><code>Validate()</code></td><td><code>IObstacle</code></td><td>Always returns <code>false</code> — the object acts as a solid obstacle. Push validation is handled by the default <code>IPushable.Validate()</code> implementation.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>IObstacle.Validate() vs IPushable.Validate()</strong>
+      <code>IObstacle.Validate()</code> returns <code>true</code> when the object should block movement (always, for a solid crate). <code>IPushable.Validate(direction)</code> is the separate check that determines whether a push is <em>legal</em> — it uses <code>Physics2D.OverlapBoxAll</code> to detect <code>IObstacle</code> objects in the target cell.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ── InteractableObject_PushableObject ── -->
+  <h2>InteractableObject_PushableObject</h2>
+  <p>Implements <code>IPushable</code> and <code>IObstacle</code>. A static object (stone block, boulder) that can be pushed one tile per instruction but cannot be carried. Always blocks movement.</p>
+
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>audioSource</code></td><td><code>AudioSource</code></td><td>AudioSource for the push sound.</td></tr>
+        <tr><td><code>pushSound</code></td><td><code>AudioClip</code></td><td>Played when the object is pushed.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Interface Members</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Interface</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td><code>Push(context, direction)</code></td><td><code>IPushable</code></td><td>Moves the object one cell in <code>direction</code> and plays <code>pushSound</code>.</td></tr>
+        <tr><td><code>Stop()</code></td><td><code>IPushable</code></td><td>Stops the push sound if it is still playing.</td></tr>
+        <tr><td><code>Validate()</code></td><td><code>IObstacle</code></td><td>Always returns <code>false</code> — the object is always a solid obstacle.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── InteractableObject_Door ── -->
+  <h2>InteractableObject_Door</h2>
+  <p>Implements <code>IObstacle</code>. Blocks passage while closed; passage is allowed once open. Can optionally require the player to carry a specific key item before the door will open. Controls an Animator and disables its <code>Collider2D</code> while open.</p>
+
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>requireKey</code></td><td><code>bool</code></td><td>When <code>true</code>, the player must be carrying the <code>key</code> item to open the door.</td></tr>
+        <tr><td><code>key</code></td><td><code>Item</code></td><td>The key item required. Only checked when <code>requireKey</code> is <code>true</code>.</td></tr>
+        <tr><td><code>audioSource</code></td><td><code>AudioSource</code></td><td>AudioSource for open and close sounds.</td></tr>
+        <tr><td><code>openSound</code></td><td><code>AudioClip</code></td><td>Played when the door opens.</td></tr>
+        <tr><td><code>closeSound</code></td><td><code>AudioClip</code></td><td>Played when the door closes.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Public Properties</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>isOpen</code></td><td><code>bool</code></td><td>Read-only. <code>true</code> while the door is open. Setting this drives the Animator and enables / disables the <code>Collider2D</code>.</td></tr>
+        <tr><td><code>OnInteract</code></td><td><code>UnityEvent</code></td><td>Fired each time the player successfully interacts with the door.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Public Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Open()</code></td><td>Opens the door — sets <code>isOpen = true</code>, disables the collider, and triggers the open animation. Only affects the execution clone.</td></tr>
+        <tr><td><code>Close()</code></td><td>Closes the door — sets <code>isOpen = false</code>, re-enables the collider, and triggers the close animation.</td></tr>
+        <tr><td><code>Interact(ExecutionContext context)</code></td><td>Toggles the door between open and closed. If <code>requireKey</code> is set, verifies that <code>context.inventory</code> contains the <code>key</code> item before opening.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>IObstacle Member</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td><code>Validate()</code></td><td>Returns <code>!isOpen</code> — blocks movement when closed, passable when open.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

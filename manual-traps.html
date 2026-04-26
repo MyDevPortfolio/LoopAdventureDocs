@@ -1,0 +1,299 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tile Traps — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link active">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Manual</div>
+    <h1>Tile Traps</h1>
+    <p class="page-desc">Add pressure plates and appearing spikes to a level. Both traps are self-scheduling — they run automatically every turn without any wiring beyond the Inspector.</p>
+  </div>
+
+  <h2>Overview</h2>
+  <p>Loop Adventure ships two ready-to-use tile trap prefabs. Each sits on exactly one tile and hooks into the turn loop through the <code>ITaskReceiver</code> interface, meaning it executes in parallel with the player and enemies every turn — no manual registration required.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Prefab</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td><code>Tile_Interactable_PressurePlate</code></td><td>Detects when the player or any pushable object stands on its tile and fires <code>OnActivated</code> / <code>OnDeactivated</code> events.</td></tr>
+        <tr><td><code>Tile_Interactable_AppearingSpikes</code></td><td>Cycles through a configurable stage pattern each turn. On spike stages it deals lethal damage to any entity with a <code>Health</code> component on the tile.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <strong>Automatic registration</strong>
+      Any <code>ExecutionContextElement</code> that implements <code>ITaskReceiver</code> is discovered automatically during level initialization. You do not need to call any registration method or add the trap to a list.
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>1 — Pressure Plate</h2>
+  <p>The pressure plate checks its tile once per turn — at the halfway point of the turn interval — and fires events when its activation state changes. Use it to open doors, lower bridges, trigger sounds, or drive any mechanism that depends on tile occupation.</p>
+
+  <ol class="steps">
+    <li>Drag the <strong>Tile_Interactable_PressurePlate</strong> prefab from <code>Assets/Prefabs/Interactables/</code> into the scene. Snap it to the tile grid.</li>
+    <li>Select the prefab instance. In the Inspector, expand <strong>On Activated</strong> and wire it to the object you want to trigger when the plate is pressed (e.g. call <code>Open()</code> on a door).</li>
+    <li>Expand <strong>On Deactivated</strong> and wire the reverse action (e.g. call <code>Close()</code> on the same door).</li>
+    <li>If the plate should start pre-pressed, set the <strong>Activated</strong> Animator parameter to <code>true</code> in the prefab's Animator component.</li>
+  </ol>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Inspector Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>OnActivated</code></td><td><code>UnityEvent</code></td><td>Fired the turn the plate transitions from released → pressed. Wire to doors, bridges, or any reaction.</td></tr>
+        <tr><td><code>OnDeactivated</code></td><td><code>UnityEvent</code></td><td>Fired the turn the plate transitions from pressed → released.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Animator Parameter</th><th>Type</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>Activated</code></td><td><code>bool</code></td><td><code>true</code> while the plate is pressed down.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>What counts as a trigger</strong>
+      The plate uses <code>Physics2D.OverlapBoxAll</code> at its tile centre. It detects the player (<code>PlayerController</code>) and any object with an <code>IObstacle</code> component — including pushable crates. Enemies do not activate the plate.
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>2 — Appearing Spikes</h2>
+  <p>The spikes cycle through a <code>stages</code> array — one entry per turn. A <code>true</code> entry means the spikes are extended and lethal; <code>false</code> means they are retracted and safe to walk on. The pattern loops automatically.</p>
+
+  <ol class="steps">
+    <li>Drag the <strong>Tile_Interactable_AppearingSpikes</strong> prefab from <code>Assets/Prefabs/Interactables/</code> into the scene. Snap it to the tile grid.</li>
+    <li>Select the instance. In the Inspector, find the <strong>Stages</strong> array. Set its size and fill each element with <code>true</code> (spikes out) or <code>false</code> (retracted).</li>
+    <li>The first entry is the state on Turn 1. The spikes advance one step each turn and wrap back to index 0 after the last entry.</li>
+    <li>To offset spikes so they are out of phase with each other, prepend extra <code>false</code> entries to delay when the lethal phase starts.</li>
+  </ol>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Pattern</th><th>Stages value</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td>Alternating</td><td><code>[false, true]</code></td><td>Safe turn 1, lethal turn 2, repeating. Default.</td></tr>
+        <tr><td>Mostly safe</td><td><code>[false, false, true]</code></td><td>Two safe turns, one lethal turn.</td></tr>
+        <tr><td>Mostly lethal</td><td><code>[true, true, false]</code></td><td>Two lethal turns, one safe turn.</td></tr>
+        <tr><td>Always lethal</td><td><code>[true]</code></td><td>Never retract — acts as a permanent hazard.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Animator Parameter</th><th>Type</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><code>Appeared</code></td><td><code>bool</code></td><td><code>true</code> while the spikes are extended.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Damage timing</strong>
+      The damage check runs at the midpoint of the turn interval so the spikes visually extend before the kill is applied. An entity that moves off the tile before the check runs survives. Use this to make spike puzzles fair — players who react correctly can escape.
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>3 — Placing Multiple Traps</h2>
+  <p>Multiple trap instances in the same scene are fully independent. They each maintain their own stage index and run their own turn task in parallel. To create staggered spike patterns across adjacent tiles, use copies of the same prefab with different <code>stages</code> offsets:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Tile</th><th>Stages</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td>Tile A</td><td><code>[false, true]</code></td><td>Safe → Lethal → Safe → …</td></tr>
+        <tr><td>Tile B</td><td><code>[true, false]</code></td><td>Lethal → Safe → Lethal → …</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>This creates a corridor where one tile is always safe but alternates — the player must time movement to step onto the safe tile each turn.</p>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <strong>Scripting reference</strong>
+      For the full class API — properties, events, and method signatures — see the <a href="sc-traps.html">Traps scripting reference</a>.
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>4 — Creating a Custom Trap</h2>
+  <p>Any class that extends <code>ExecutionContextElement</code> and implements <code>ITaskReceiver</code> is automatically discovered and scheduled every turn — the same way the built-in traps work. You only need to implement two methods.</p>
+
+  <h3>Required interface</h3>
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:38%"><col style="width:62%"></colgroup>
+      <thead><tr><th>Member</th><th>Responsibility</th></tr></thead>
+      <tbody>
+        <tr><td><code>GetTask()</code></td><td>Return the <code>Task</code> the runner should await each turn. Everything inside that task is your trap's per-turn behaviour.</td></tr>
+        <tr><td><code>Initialize(context, parent)</code></td><td>Called once during level init. Cache the <code>Animator</code> or any scene references here. Always call <code>base.Initialize()</code> first.</td></tr>
+        <tr><td><code>currentInstruction</code></td><td>Required property — return the <code>Instruction</code> currently running, or <code>null</code> if idle. Used by HUD indicators.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Step-by-step</h3>
+  <ol class="steps">
+    <li>Create a new script. Extend <code>ExecutionContextElement</code> and add <code>ITaskReceiver</code> to the class declaration.</li>
+    <li>Implement <code>Initialize()</code>. Call <code>base.Initialize(context, parent)</code> first, then cache any component references (Animator, AudioSource, Collider, etc.).</li>
+    <li>Implement <code>GetTask()</code>. Write an <code>async Task</code> method that performs your trap's per-turn logic — waits, checks positions, applies effects — and return it.</li>
+    <li>Implement the <code>currentInstruction</code> property. Return <code>null</code> if your trap does not use the instruction system.</li>
+    <li>Implement the four <code>ITaskReceiver</code> events (<code>OnStart</code>, <code>OnActionChange</code>, <code>OnEnd</code>, <code>OnExecute</code>). If you do not need them, declare them with empty setters.</li>
+    <li>Add the script to a GameObject with a <strong>BoxCollider2D</strong> (one tile, trigger or solid depending on your logic).</li>
+    <li>Save as a prefab under <code>Assets/Prefabs/Interactables/</code> and place it in the scene.</li>
+  </ol>
+
+  <h3>Example — Proximity alarm</h3>
+  <p>This trap checks every turn whether the player is within two tiles and sends a notification if so — no damage, just feedback.</p>
+
+<pre><span class="kw">using</span> System;
+<span class="kw">using</span> System.Collections;
+<span class="kw">using</span> UnityEngine;
+
+<span class="kw">namespace</span> LoopAdventure
+{
+    <span class="kw">public class</span> <span class="type">Tile_Interactable_ProximityAlarm</span> : <span class="type">ExecutionContextElement</span>, <span class="type">ITaskReceiver</span>
+    {
+        <span class="cmt">// ITaskReceiver events</span>
+        <span class="kw">public event</span> Action&lt;<span class="type">EnemyAction</span>&gt; OnStart;
+        <span class="kw">public event</span> Action&lt;<span class="type">EnemyAction</span>&gt; OnActionChange;
+        <span class="kw">public event</span> Action                OnEnd;
+        <span class="kw">public event</span> Action&lt;<span class="type">ExecutionContext</span>&gt; OnExecute;
+
+        <span class="kw">public</span> <span class="type">Instruction</span> currentInstruction => <span class="kw">null</span>;
+
+        <span class="type">CustomInstruction</span> _instruction;
+
+        <span class="kw">public override void</span> <span class="fn">Initialize</span>(<span class="type">ExecutionContext</span> ctx, <span class="type">ExecutionContextElement</span> parent)
+        {
+            <span class="kw">base</span>.<span class="fn">Initialize</span>(ctx, parent);
+            _instruction      = <span class="kw">new</span> <span class="type">CustomInstruction</span>();
+            _instruction.tick = <span class="fn">CheckProximity</span>;
+        }
+
+        <span class="kw">public</span> <span class="type">Task</span> <span class="fn">GetTask</span>() => <span class="type">Task</span>.<span class="fn">GetTask</span>(<span class="kw">this</span>, _instruction, context);
+
+        <span class="type">IEnumerator</span> <span class="fn">CheckProximity</span>(<span class="type">ExecutionContext</span> ctx)
+        {
+            <span class="type">Vector2</span> myPos     = transform.position;
+            <span class="type">Vector2</span> playerPos  = ctx.player.transform.position;
+
+            <span class="kw">if</span> (<span class="type">Vector2</span>.<span class="fn">Distance</span>(myPos, playerPos) &lt;= 2f * <span class="type">MapManager</span>.cellSize)
+            {
+                <span class="type">NotificationCenter</span>.<span class="fn">Notify</span>(
+                    <span class="type">NotificationCenter</span>.MessageType.Warning,
+                    <span class="str">"The alarm triggered!"</span>
+                );
+            }
+
+            <span class="kw">yield return null</span>;
+        }
+    }
+}</pre>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>The tick coroutine</strong>
+      The <code>tick</code> delegate is an <code>IEnumerator</code> that the runner drives as a Unity coroutine. Use <code>yield return new WaitForSeconds(t)</code> to pause mid-turn (e.g. wait for an animation before applying damage). Use <code>yield return null</code> to simply hand control back for one frame. The turn does not advance until the coroutine completes.
+    </div>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

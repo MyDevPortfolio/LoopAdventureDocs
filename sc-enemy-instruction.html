@@ -1,0 +1,143 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EnemyInstruction — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub active">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level & Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / Instructions</div>
+    <h1>EnemyInstruction</h1>
+    <p class="page-desc">Abstract base for all enemy actions. Extends <a href="sc-instruction.html">Instruction</a> directly and adds a reference to the enemy controller executing the action.</p>
+  </div>
+
+  <div class="tree">
+<span class="cls">Instruction</span>
+  <span class="arrow">└──</span> <span class="cls">EnemyInstruction</span>  <span class="dim">← you are here</span>
+      <span class="arrow">├──</span> <span class="cls">EnemyInstruction_Move</span>
+      <span class="arrow">├──</span> <span class="cls">EnemyInstruction_Attack</span>
+      <span class="arrow">├──</span> <span class="cls">EnemyInstruction_Block</span>
+      <span class="arrow">├──</span> <span class="cls">EnemyInstruction_Shoot</span>
+      <span class="arrow">└──</span> <span class="cls">EnemyInstruction_Wait</span>
+  </div>
+
+  <h2>Additional Field</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>controller</code></td><td><code>EnemyController</code></td><td>Reference to the enemy running this instruction. Injected at runtime by the task system before <code>Tick()</code> is called. Use it to access position, animations, health, and blocking state.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Inherited Members to Override</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>displayName</code></td><td>Name shown in the enemy's action HUD indicator during execution.</td></tr>
+      <tr><td><code>Execute()</code></td><td>Instant effects — deal damage, change state. Can be empty.</td></tr>
+      <tr><td><code>Tick(ExecutionContext ctx)</code></td><td>Coroutine. Use <code>controller</code> to drive enemy behaviour and <code>ctx.player</code> to read player state.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Example</h2>
+<pre><span class="kw">using</span> System.Collections;
+<span class="kw">using</span> UnityEngine;
+
+<span class="kw">namespace</span> LoopAdventure
+{
+    <span class="kw">public class</span> <span class="type">EnemyInstruction_Heal</span> : <span class="type">EnemyInstruction</span>
+    {
+        <span class="kw">public override string</span> displayName => <span class="str">"Heal"</span>;
+
+        <span class="kw">public override void</span> <span class="fn">Execute</span>()
+        {
+            controller.<span class="fn">GetComponent</span>&lt;<span class="type">EnemyHealth</span>&gt;().<span class="fn">Heal</span>(<span class="num">2</span>);
+        }
+
+        <span class="kw">protected override</span> IEnumerator <span class="fn">Tick</span>(<span class="type">ExecutionContext</span> ctx)
+        {
+            <span class="fn">Execute</span>();
+            controller.<span class="fn">PlayAnimation</span>(<span class="str">"Heal"</span>);
+            <span class="kw">yield return new</span> <span class="type">WaitForSeconds</span>(<span class="num">0.8f</span>);
+        }
+    }
+}</pre>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Full guide</strong>
+      See <a href="manual-enemy.html">Create an Enemy Instruction</a> in the Manual for the complete workflow including EnemyAction ScriptableObject setup.
+    </div>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

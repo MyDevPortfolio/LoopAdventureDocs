@@ -1,0 +1,167 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Audio Setup — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link active">Audio Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level & Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Manual</div>
+    <h1>Audio Setup</h1>
+    <p class="page-desc">How to configure persistent volume sliders and scene music so player preferences survive between sessions.</p>
+  </div>
+
+  <h2>How Volume Persistence Works</h2>
+  <p>
+    On startup, <code>SoundManager</code> reads every saved AudioMixer parameter from the save file and applies it to the mixer automatically.
+    When the player moves a slider, <code>GameOptionsMenu_SoundSlider</code> calls <code>SoundManager.Set()</code>, which updates the mixer and writes the new value to disk immediately.
+    Parameters not yet saved keep whatever default value was set in the AudioMixer asset.
+  </p>
+
+  <h2>Setting Up a Volume Slider</h2>
+  <ol class="steps">
+    <li>
+      <strong>Expose the parameter in your AudioMixer</strong><br>
+      Open your AudioMixer asset. Right-click the volume knob of the group you want to control and select <em>Expose to script</em>. In the Exposed Parameters list at the top, rename it clearly (e.g. <code>MusicVolume</code>).
+    </li>
+    <li>
+      <strong>Add a UI Slider to your canvas</strong><br>
+      Set <strong>Min Value</strong> to <code>−80</code> and <strong>Max Value</strong> to <code>0</code>. This maps the slider range to the decibel range of the AudioMixer volume parameter.
+    </li>
+    <li>
+      <strong>Add GameOptionsMenu_SoundSlider to the Slider's GameObject</strong><br>
+      The component requires a <code>Slider</code> on the same object — Unity will warn you if it's missing.
+    </li>
+    <li>
+      <strong>Configure the component in the Inspector</strong><br>
+      Assign the <strong>AudioMixer</strong> asset and set <strong>Parameter Name</strong> to the exact exposed parameter name (case-sensitive).
+    </li>
+    <li>
+      <strong>Wire OnValueChanged</strong><br>
+      In the Slider's <code>OnValueChanged</code> event, add an entry pointing to <code>GameOptionsMenu_SoundSlider.SetValue</code> (dynamic float).
+    </li>
+    <li>
+      <strong>Ensure SoundManager is in the scene</strong><br>
+      The <strong>SoundManager</strong> prefab must be present (or loaded via <code>DontDestroyOnLoad</code>) with the same AudioMixer assigned. If it is missing, <code>Set()</code> will throw a null reference.
+    </li>
+  </ol>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>First launch</strong>
+      On first play, the slider reads its position from the mixer asset's default value via <code>AudioMixer.GetFloat()</code>. After the player moves it for the first time the value is saved and restored on every subsequent session.
+    </div>
+  </div>
+
+  <h2>Setting Up Scene Music</h2>
+  <ol class="steps">
+    <li>
+      Add the <strong>MusicManager</strong> prefab to each scene that needs background music.
+    </li>
+    <li>
+      Assign the <strong>AudioSource</strong>, the <strong>AudioClip</strong> for that scene, and set <strong>Transition Duration</strong> (default 1 second).
+    </li>
+    <li>
+      When the scene loads, <code>MusicManager</code> checks whether the same clip is already playing:
+      <ul>
+        <li>Same clip → the new manager is destroyed, music continues uninterrupted.</li>
+        <li>Different clip → crossfade begins on the existing manager, then the new one is destroyed.</li>
+        <li>No manager exists → the new one becomes the singleton and starts playing.</li>
+      </ul>
+    </li>
+  </ol>
+
+  <div class="callout warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>DontDestroyOnLoad</strong>
+      <code>MusicManager</code> calls <code>DontDestroyOnLoad</code> on itself. Do not place it as a child of another <code>DontDestroyOnLoad</code> object — Unity does not support nested DontDestroyOnLoad hierarchies.
+    </div>
+  </div>
+
+  <h2>Playing Sound Effects from Instructions</h2>
+  <p>Inside any <code>Tick(ExecutionContext ctx)</code>, play a sound through the player's AudioSource:</p>
+<pre><span class="kw">protected override</span> IEnumerator <span class="fn">Tick</span>(<span class="type">ExecutionContext</span> ctx)
+{
+    ctx.player.<span class="fn">PlaySound</span>(mySoundResource);
+    <span class="cmt">// ... rest of instruction logic</span>
+    <span class="kw">yield return new</span> <span class="type">WaitForSeconds</span>(<span class="num">1f</span>);
+}</pre>
+
+  <p><code>PlaySound</code> stops any currently playing clip on the player's source before starting the new one, so calls do not stack.</p>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

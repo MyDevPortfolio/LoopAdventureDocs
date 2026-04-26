@@ -1,0 +1,178 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InstructionSequence — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub active">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level & Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / Instructions</div>
+    <h1>InstructionSequence</h1>
+    <p class="page-desc">Abstract base for instructions that hold an ordered list of child instructions and execute them sequentially within a single turn slot.</p>
+  </div>
+
+  <div class="tree">
+<span class="cls">Instruction</span> → <span class="cls">PlayerInstruction</span>
+  <span class="arrow">└──</span> <span class="cls">InstructionSequence</span>  <span class="dim">← you are here</span>
+      <span class="arrow">├──</span> <span class="cls">Instruction_Combo</span>
+      <span class="arrow">└──</span> <span class="cls">Instruction_PingPong</span>
+  </div>
+
+  <h2>Fields & Properties</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>childs</code></td><td><code>List&lt;PlayerInstruction&gt;</code></td><td>Internal serialized list of children. Access read-only via <code>Childrens</code>.</td></tr>
+      <tr><td><code>Childrens</code></td><td><code>IReadOnlyList&lt;PlayerInstruction&gt;</code></td><td>Read-only view of the child instruction list.</td></tr>
+      <tr><td><code>maxCapacity</code> <span class="badge badge-abstract">abstract</span></td><td><code>int</code></td><td>Maximum number of children this sequence accepts. The UI enforces this limit.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Abstract Methods — Must Override</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Execute()</code></td><td>Instant side-effects before animation. Usually empty for sequences.</td></tr>
+      <tr><td><code>Tick(ExecutionContext ctx)</code></td><td>Coroutine. For a pure sequence, leave the body empty and call <code>yield break</code> — children are automatically executed by <code>GetExecutionList()</code>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Public Methods</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>AddInstruction(PlayerInstruction i)</code></td><td>Appends a child to the sequence.</td></tr>
+      <tr><td><code>RemoveInstruction(PlayerInstruction i)</code></td><td>Removes a child from the sequence.</td></tr>
+      <tr><td><code>Insert(int index, PlayerInstruction i)</code></td><td>Inserts a child at a specific index.</td></tr>
+      <tr><td><code>Validate()</code> <span class="badge badge-override">override</span></td><td>Returns <code>false</code> if the child list is empty or any child is invalid.</td></tr>
+      <tr><td><code>GetExecutionList(int loop)</code> <span class="badge badge-override">override</span></td><td>Iterates all children and yields their execution lists in order. This is what makes children run sequentially.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>IInstructionSequenceLayout</h2>
+  <p>UI-side counterpart to <code>InstructionSequence</code>. Implemented by layout components that render a nested instruction list in the player's editor panel. Keeps the visual widget tree in sync with the underlying instruction model.</p>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:46%"><col style="width:16%"><col style="width:38%"></colgroup>
+      <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>gameObject</code></td><td><code>GameObject</code></td><td>Root GameObject of this sequence layout widget.</td></tr>
+        <tr><td><code>Childrens</code></td><td><code>IReadOnlyList&lt;INestedInstructionLayout&gt;</code></td><td>All child instruction widgets currently in the sequence.</td></tr>
+        <tr><td><code>Count</code></td><td><code>int</code></td><td>Number of child widgets.</td></tr>
+        <tr><td><code>lastSibling</code></td><td><code>INestedInstructionLayout</code></td><td>The last child widget, or <code>null</code> if the sequence is empty.</td></tr>
+        <tr><td><code>AddInstruction(Action action)</code></td><td><code>void</code></td><td>Creates and appends a new instruction widget from an action callback.</td></tr>
+        <tr><td><code>AddInstruction(<br>&nbsp;&nbsp;PlayerInstruction instruction,<br>&nbsp;&nbsp;Action action)</code></td><td><code>void</code></td><td>Appends a widget for an already-created instruction.</td></tr>
+        <tr><td><code>Insert(int index, Action action)</code></td><td><code>void</code></td><td>Inserts a new instruction widget at the given index.</td></tr>
+        <tr><td><code>RemoveInstruction(<br>&nbsp;&nbsp;INestedInstructionLayout instruction)</code></td><td><code>void</code></td><td>Removes a child widget and its associated instruction.</td></tr>
+        <tr><td><code>GetChild(int index)</code></td><td><code>INestedInstructionLayout</code></td><td>Returns the child widget at the given index.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── INestedInstructionLayout ── -->
+  <h2>INestedInstructionLayout</h2>
+  <p>Represents a single instruction card nested inside an <code>IInstructionSequenceLayout</code>. Bridges the visual widget and the underlying <code>PlayerInstruction</code> it displays.</p>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:28%"><col style="width:28%"><col style="width:44%"></colgroup>
+      <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>gameObject</code></td><td><code>GameObject</code></td><td>Root GameObject of this instruction widget.</td></tr>
+        <tr><td><code>instruction</code></td><td><code>PlayerInstruction</code></td><td>The instruction this widget represents.</td></tr>
+        <tr><td><code>container</code></td><td><code>IInstructionSequenceLayout</code></td><td>The parent sequence layout that owns this widget.</td></tr>
+        <tr><td><code>ResetLayout()</code></td><td><code>void</code></td><td>Resyncs the visual state to match the current instruction data.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <h2>Example</h2>
+<pre><span class="kw">namespace</span> LoopAdventure
+{
+    [<span class="type">TypeName</span>(<span class="str">"MyCombo"</span>)]
+    <span class="kw">public class</span> <span class="type">Instruction_MyCombo</span> : <span class="type">InstructionSequence</span>
+    {
+        <span class="kw">public override string</span> displayName  => <span class="str">"My Combo"</span>;
+        <span class="kw">public override int</span>    maxCapacity  => <span class="num">3</span>;
+
+        <span class="cmt">// Children are run automatically via GetExecutionList.</span>
+        <span class="kw">public override void</span>      <span class="fn">Execute</span>() { }
+        <span class="kw">protected override</span> IEnumerator <span class="fn">Tick</span>(<span class="type">ExecutionContext</span> ctx) { <span class="kw">yield break</span>; }
+    }
+}</pre>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

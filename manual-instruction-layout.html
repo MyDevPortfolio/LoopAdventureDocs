@@ -1,0 +1,159 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create an Instruction Layout — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  <a href="manual-instruction-layout.html" class="nav-link active">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+  <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+  <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Manual</div>
+    <h1>Create an Instruction Layout</h1>
+    <p class="page-desc">Every player instruction needs a prefab that renders it as a draggable widget on the sheet. This page walks through duplicating one, choosing the right layout component, configuring it, and wiring it to the instruction's C# class.</p>
+  </div>
+
+  <h2>Overview</h2>
+  <p>The instruction sheet displays each instruction as a draggable widget — that widget is an <strong>InstructionLayout</strong> prefab. Each palette item GameObject also carries an <strong>Action</strong> component that binds the widget to a specific instruction C# class and supplies the prefab that the sheet instantiates when the player places the instruction.</p>
+  <p>You never create a layout prefab from scratch. Instead, duplicate any built-in prefab from <code>Assets/Prefabs/Player Instructions/</code> and adapt it. Every built-in prefab already has the correct two-level structure and all required references set up.</p>
+
+  <h2>Step 1 — Duplicate a prefab</h2>
+  <p>In the Project window, navigate to <code>Assets/Prefabs/Player Instructions/</code>. Right-click any built-in instruction prefab and choose <strong>Duplicate</strong>. Rename it to match your new instruction (e.g. <code>Instruction_Teleport.prefab</code>).</p>
+  <p>Every instruction prefab has two GameObjects:</p>
+  <ul>
+    <li>The <strong>root</strong> — carries the <code>Action</code> component that links the widget to a C# class.</li>
+    <li>A <strong>child</strong> — carries the <code>InstructionLayout</code> component (or one of its subclasses) that drives the visual widget.</li>
+  </ul>
+
+  <h2>Step 2 — Choose the right layout type</h2>
+  <p>The child GameObject must carry the layout component that matches your instruction's base class. If the duplicated prefab already uses the right component, skip ahead. Otherwise remove the existing layout component and add the correct one.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Instruction base class</th><th>Required layout component</th></tr></thead>
+      <tbody>
+        <tr><td><code>PlayerInstruction</code></td><td><code>InstructionLayout</code></td></tr>
+        <tr><td><code>InstructionModifier</code></td><td><code>InstructionModifierLayout</code></td></tr>
+        <tr><td><code>InstructionSequence</code></td><td><code>InstructionSequenceLayout</code></td></tr>
+        <tr><td>Use-item instruction</td><td><code>InstructionUseLayout</code></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Step 3 — Configure InstructionLayout</h2>
+  <p>Select the child GameObject and fill in the <code>InstructionLayout</code> Inspector fields. The essential ones are:</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>What to set</th></tr></thead>
+      <tbody>
+        <tr><td><code>icon</code></td><td>The instruction's icon sprite — displayed on the widget in the sheet.</td></tr>
+        <tr><td><code>nameText</code></td><td>The <code>TMP_Text</code> label that shows the instruction's display name at runtime.</td></tr>
+        <tr><td><code>showDirectionButtons</code></td><td>Enable if your instruction reads the <code>direction</code> field. Disable for instructions that ignore direction.</td></tr>
+        <tr><td><code>showLoopCount</code></td><td>Enable to expose the loop counter badge on the widget.</td></tr>
+        <tr><td><code>backgrounds</code></td><td>Array of background images — the runner highlights the active index each turn to show execution progress.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Step 4 — Extra wiring for special layout types</h2>
+  <p>Modifier, Sequence, and Use layouts require additional references on top of the base <code>InstructionLayout</code> fields.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Layout type</th><th>Extra setup</th></tr></thead>
+      <tbody>
+        <tr><td><code>InstructionModifierLayout</code></td><td>Set <code>actionDropEventCaller</code> to the <code>DropActionEventCaller</code> component on the child slot — the area where the player drops another instruction to fill the modifier.</td></tr>
+        <tr><td><code>InstructionSequenceLayout</code></td><td>Set <code>childContainer</code> to the <code>Transform</code> that will parent the spawned child layout widgets when instructions are placed inside the sequence.</td></tr>
+        <tr><td><code>InstructionUseLayout</code></td><td>Wire <code>openInventoryButton</code> to the <code>Button</code> that opens the item picker so the player can assign an item to the slot.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Step 5 — Wire the Action component</h2>
+  <p>Select the <strong>root</strong> GameObject of the prefab and set the <code>Action</code> component fields:</p>
+  <ul>
+    <li><strong>Instruction Type</strong> — Assign your new C# class (e.g. <code>Instruction_Teleport</code>). This tells the sheet which runtime instruction to instantiate.</li>
+    <li><strong>Layout</strong> — Drag the child GameObject's <code>InstructionLayout</code> component (or subclass) into this slot. This is the prefab the sheet instantiates as the visible widget.</li>
+  </ul>
+  <p>The <code>Action</code> component uses both references together: <code>instructionType</code> to create the data object and <code>layout</code> to spawn the corresponding visual widget.</p>
+
+  <h2>Step 6 — Add to the palette</h2>
+  <p>Drag the prefab into the palette panel in your scene (a child of the Player Canvas). Each palette item must have a <code>DragAndDrop</code> component — without it the player cannot drag the instruction onto the sheet.</p>
+  <p>Once placed, the instruction appears in the palette and the player can drag it to the instruction sheet during gameplay.</p>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      See <a href="sc-instruction-layouts.html">Instruction Layouts</a> for the full property and method reference for each layout component type, and <a href="sc-action.html">Action</a> for the API of the root palette component.
+    </div>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

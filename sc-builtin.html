@@ -1,0 +1,133 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Built-in Instructions — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub active">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level & Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / Instructions</div>
+    <h1>Built-in Instructions</h1>
+    <p class="page-desc">Complete catalogue of all instructions included in the package. All extend <a href="sc-player-instruction.html">PlayerInstruction</a> unless noted otherwise.</p>
+  </div>
+
+  <h2>Player Instructions</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Name</th><th>Class</th><th>Type</th><th>Description</th><th>Constraints</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Move</strong></td><td><code>Instruction_Move</code></td><td>PlayerInstruction</td><td>Move one cell in the set direction with smooth lerp animation.</td><td>Blocked by any <code>IObstacle</code>.</td></tr>
+      <tr><td><strong>Jump</strong></td><td><code>Instruction_Jump</code></td><td>PlayerInstruction</td><td>Jump two cells along a 3-point arc.</td><td>Costs 2 stamina. Cannot carry.</td></tr>
+      <tr><td><strong>Attack</strong></td><td><code>Instruction_Attack</code></td><td>PlayerInstruction</td><td>Deal damage to all entities in the adjacent cell. Applies weapon effects.</td><td>Cannot carry.</td></tr>
+      <tr><td><strong>Heavy Attack</strong></td><td><code>Instruction_AttackHeavy</code></td><td>PlayerInstruction</td><td>Two-phase charged attack with higher damage output.</td><td>Cannot carry.</td></tr>
+      <tr><td><strong>Block</strong></td><td><code>Instruction_Block</code></td><td>PlayerInstruction</td><td>Enter a blocking state that reduces incoming damage from the set direction.</td><td>—</td></tr>
+      <tr><td><strong>Evade</strong></td><td><code>Instruction_Evade</code></td><td>PlayerInstruction</td><td>Dodge to avoid an incoming attack.</td><td>Costs stamina.</td></tr>
+      <tr><td><strong>Carry</strong></td><td><code>Instruction_Carry</code></td><td>PlayerInstruction</td><td>Pick up an <code>ICarryObject</code> in the set direction.</td><td>Must face a carriable object.</td></tr>
+      <tr><td><strong>Drop</strong></td><td><code>Instruction_Drop</code></td><td>PlayerInstruction</td><td>Drop the currently carried object at the player's position.</td><td>Must be carrying.</td></tr>
+      <tr><td><strong>Throw</strong></td><td><code>Instruction_Throw</code></td><td>PlayerInstruction</td><td>Throw the carried object in the set direction along an arc trajectory.</td><td>Must be carrying.</td></tr>
+      <tr><td><strong>Push</strong></td><td><code>Instruction_Push</code></td><td>PlayerInstruction</td><td>Push an <code>IPushable</code> object one cell in the set direction.</td><td>Must face a pushable object.</td></tr>
+      <tr><td><strong>Interact</strong></td><td><code>Instruction_Interact</code></td><td>PlayerInstruction</td><td>Activate an adjacent <code>IInteractable</code> (doors, chests, pressure plates).</td><td>—</td></tr>
+      <tr><td><strong>Use</strong></td><td><code>Instruction_Use</code></td><td>PlayerInstruction</td><td>Consume a usable item from inventory and apply its effects.</td><td>Inventory must contain a usable item.</td></tr>
+      <tr><td><strong>Wait</strong></td><td><code>Instruction_Wait</code></td><td>PlayerInstruction</td><td>Skip a turn without performing any action.</td><td>—</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Sequence Instructions</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Name</th><th>Class</th><th>Max Children</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Combo</strong></td><td><code>Instruction_Combo</code></td><td>4</td><td>Executes all child instructions in order within a single turn slot.</td></tr>
+      <tr><td><strong>Ping Pong</strong></td><td><code>Instruction_PingPong</code></td><td>4</td><td>Executes children forward on even loops and backward on odd loops, creating a back-and-forth pattern. For 3+ children, the backward pass skips the first and last to avoid repetition.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Modifier Instructions</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Name</th><th>Class</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Rotate</strong></td><td><code>Instruction_Rotate</code></td><td>Rotates the child instruction's direction 90° clockwise after each execution loop.</td></tr>
+      <tr><td><strong>Invert</strong></td><td><code>Instruction_Invert</code></td><td>Inverts the child instruction's direction (Up↔Down, Left↔Right) after each execution.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Built-in Enemy Instructions</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Name</th><th>Class</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Move</strong></td><td><code>EnemyInstruction_Move</code></td><td>Moves the enemy one cell in the configured direction.</td></tr>
+      <tr><td><strong>Attack</strong></td><td><code>EnemyInstruction_Attack</code></td><td>Deals damage to the player if adjacent in the attack direction.</td></tr>
+      <tr><td><strong>Block</strong></td><td><code>EnemyInstruction_Block</code></td><td>Sets the enemy into a blocking state, reducing incoming damage.</td></tr>
+      <tr><td><strong>Shoot</strong></td><td><code>EnemyInstruction_Shoot</code></td><td>Fires a projectile in the configured direction.</td></tr>
+      <tr><td><strong>Wait</strong></td><td><code>EnemyInstruction_Wait</code></td><td>Skips the enemy's turn.</td></tr>
+    </tbody>
+  </table></div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,261 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create an Interactable — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link active">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level & Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Manual</div>
+    <h1>Create an Interactable Object</h1>
+    <p class="page-desc">Add a new world object the player can interact with, carry, or push — by implementing one or more of the interactable interfaces.</p>
+  </div>
+
+  <h2>Overview</h2>
+  <p>World objects in Loop Adventure express their capabilities through interfaces. Each interface adds a distinct interaction type, and a single object can implement several at once.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Interface</th><th>What it enables</th><th>Triggered by</th></tr></thead>
+      <tbody>
+        <tr><td><code>IInteractable</code></td><td>Custom interaction — open chests, collect items, trigger doors</td><td><code>Instruction_Interact</code> or automatic collection on turn end</td></tr>
+        <tr><td><code>ICarryObject</code></td><td>Player can pick up and drop the object</td><td><code>Instruction_Carry</code> and <code>Instruction_Drop</code></td></tr>
+        <tr><td><code>IPushable</code></td><td>Player can push the object one tile in a direction</td><td><code>Instruction_Push</code></td></tr>
+        <tr><td><code>IObstacle</code></td><td>Object blocks player movement and push validation</td><td>Checked by <code>IPushable.Validate()</code> and movement instructions</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Prerequisite</strong>
+      Your class must extend <code>ExecutionContextElement</code> to participate in the execution lifecycle. The engine clones scene objects at runtime — without this base class, the object won't be included in execution.
+    </div>
+  </div>
+
+  <hr>
+
+  <h2>1 — Implement IInteractable</h2>
+  <p>Use <code>IInteractable</code> when you want the player to trigger a one-shot action: collect an item, open a container, activate a mechanism. If <code>automatic</code> is <code>true</code>, the interaction fires at the end of any turn the player occupies the same tile — no instruction needed.</p>
+
+  <ol class="steps">
+    <li>Create a new script that extends <code>ExecutionContextElement</code> and implements <code>IInteractable</code>.</li>
+    <li>Set <code>automatic</code>: return <code>true</code> for pickups that collect on touch; return <code>false</code> for chests or mechanisms that require an explicit Interact instruction.</li>
+    <li>Implement <code>Validate()</code>: return <code>true</code> if the interaction is currently legal (e.g. chest has an item). Return <code>false</code> to silently block — add a <code>NotificationCenter.Notify()</code> call before returning to give the player feedback.</li>
+    <li>Implement <code>Interact()</code>: put your behaviour here — add inventory items, play animations, destroy the object, fire events.</li>
+    <li>Declare <code>OnInteract</code> with a <code>[field: SerializeField]</code> attribute so it is wirable in the Inspector.</li>
+  </ol>
+
+<pre><span class="kw">using</span> UnityEngine;
+<span class="kw">using</span> UnityEngine.Events;
+
+<span class="kw">namespace</span> LoopAdventure
+{
+    <span class="kw">public class</span> <span class="type">InteractableObject_Sign</span> : <span class="type">ExecutionContextElement</span>, <span class="type">IInteractable</span>
+    {
+        [<span class="type">SerializeField</span>] <span class="kw">string</span> message;
+        [field: <span class="type">SerializeField</span>] <span class="kw">public</span> <span class="type">UnityEvent</span> OnInteract { <span class="kw">get</span>; <span class="kw">set</span>; }
+
+        <span class="cmt">// false = requires Interact instruction; true = collected automatically</span>
+        <span class="kw">public bool</span> automatic => <span class="kw">false</span>;
+
+        <span class="kw">public bool</span> <span class="fn">Validate</span>() => !<span class="kw">string</span>.IsNullOrEmpty(message);
+
+        <span class="kw">public void</span> <span class="fn">Interact</span>()
+        {
+            <span class="type">NotificationCenter</span>.<span class="fn">Notify</span>(<span class="type">NotificationCenter</span>.MessageType.Message, message);
+            OnInteract?.<span class="fn">Invoke</span>();
+        }
+    }
+}</pre>
+
+  <hr>
+
+  <h2>2 — Add ICarryObject Support</h2>
+  <p>Add <code>ICarryObject</code> to let the player pick up the object with <code>Instruction_Carry</code> and drop it with <code>Instruction_Drop</code>. The engine parents the object to the player during carry and clears the carry state on drop.</p>
+
+  <ol class="steps">
+    <li>Add <code>ICarryObject</code> to the class declaration.</li>
+    <li>Implement <code>Take()</code>: disable the collider so the carried object doesn't interfere with movement; play a pickup sound.</li>
+    <li>Implement <code>Drop()</code>: re-enable the collider and restore the object's normal state.</li>
+    <li>The engine handles parenting and unparenting automatically — you do not need to call <code>transform.SetParent()</code>.</li>
+  </ol>
+
+<pre><span class="kw">public class</span> <span class="type">InteractableObject_Pot</span> : <span class="type">ExecutionContextElement</span>, <span class="type">ICarryObject</span>
+{
+    [<span class="type">SerializeField</span>] <span class="type">AudioSource</span> audioSource;
+    [<span class="type">SerializeField</span>] <span class="type">AudioClip</span> pickupSound, dropSound;
+
+    <span class="cmt">// ICarryObject requires Transform — MonoBehaviour provides it automatically</span>
+    <span class="type">Transform</span> <span class="type">ICarryObject</span>.transform => transform;
+
+    <span class="kw">public void</span> <span class="fn">Take</span>()
+    {
+        <span class="fn">GetComponent</span>&lt;<span class="type">Collider2D</span>&gt;().enabled = <span class="kw">false</span>;
+        audioSource.<span class="fn">PlayOneShot</span>(pickupSound);
+    }
+
+    <span class="kw">public void</span> <span class="fn">Drop</span>()
+    {
+        <span class="fn">GetComponent</span>&lt;<span class="type">Collider2D</span>&gt;().enabled = <span class="kw">true</span>;
+        audioSource.<span class="fn">PlayOneShot</span>(dropSound);
+    }
+}</pre>
+
+  <hr>
+
+  <h2>3 — Add IPushable Support</h2>
+  <p>Add <code>IPushable</code> to let the player move the object one tile with <code>Instruction_Push</code>. The interface includes a default <code>Validate()</code> implementation that checks for <code>IObstacle</code> components in the target cell — you usually don't need to override it.</p>
+
+  <ol class="steps">
+    <li>Add <code>IPushable</code> to the class declaration.</li>
+    <li>Implement <code>Push(context, direction)</code>: move the object to the adjacent tile. Use <code>MapManager.cellSize</code> for the offset and match the movement style of the built-in objects (lerp or instant).</li>
+    <li>Implement <code>Stop()</code>: stop looping sounds or animations when the push completes.</li>
+    <li>If you also implement <code>IObstacle</code>, the default <code>Validate()</code> will detect your own collider as a blocker — make sure the object's collider is on a layer that doesn't trigger its own <code>IObstacle</code> check, or override <code>Validate()</code>.</li>
+  </ol>
+
+<pre><span class="type">Transform</span> <span class="type">IPushable</span>.transform => transform;
+
+<span class="kw">public void</span> <span class="fn">Push</span>(<span class="type">ExecutionContext</span> context, <span class="type">Direction</span> direction)
+{
+    <span class="type">Vector2</span> target = transform.position.<span class="fn">ToVector2</span>()
+                    + direction.<span class="fn">AsVector2</span>() * <span class="type">MapManager</span>.cellSize;
+    transform.position = <span class="kw">new</span> <span class="type">Vector3</span>(target.x, target.y, transform.position.z);
+    audioSource.<span class="fn">PlayOneShot</span>(pushSound);
+}
+
+<span class="kw">public void</span> <span class="fn">Stop</span>() { } <span class="cmt">// stop looping sounds here if any</span></pre>
+
+  <hr>
+
+  <h2>4 — Add IObstacle Support</h2>
+  <p><code>IObstacle</code> tells the engine that this object physically blocks movement. <code>IPushable.Validate()</code> uses it to decide whether a push is legal. Player movement instructions also check for it.</p>
+
+  <ol class="steps">
+    <li>Add <code>IObstacle</code> to the class declaration.</li>
+    <li>Implement <code>Validate()</code>: return <code>true</code> while the object should block (e.g. a closed door); return <code>false</code> when it should not (e.g. after a door opens). For static solid objects, always return <code>true</code>.</li>
+  </ol>
+
+<pre><span class="cmt">// Solid object — always blocks</span>
+<span class="kw">public bool</span> <span class="fn">Validate</span>() => <span class="kw">true</span>;
+
+<span class="cmt">// Togglable obstacle — door or gate</span>
+<span class="kw">bool</span> isOpen;
+<span class="kw">public bool</span> <span class="fn">Validate</span>() => !isOpen;</pre>
+
+  <hr>
+
+  <h2>5 — Combining Interfaces</h2>
+  <p>Interfaces are designed to be combined freely. The built-in objects demonstrate the most common combinations:</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Class</th><th>IInteractable</th><th>ICarryObject</th><th>IPushable</th><th>IObstacle</th></tr></thead>
+      <tbody>
+        <tr><td><code>InteractableObject_Pickup</code></td><td>✓ (automatic)</td><td></td><td></td><td></td></tr>
+        <tr><td><code>InteractableObject_Chest</code></td><td>✓ (manual)</td><td></td><td></td><td></td></tr>
+        <tr><td><code>InteractableObject_Carry</code></td><td></td><td>✓</td><td>✓</td><td>✓</td></tr>
+        <tr><td><code>InteractableObject_PushableObject</code></td><td></td><td></td><td>✓</td><td>✓</td></tr>
+        <tr><td><code>InteractableObject_Door</code></td><td></td><td></td><td></td><td>✓ (togglable)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <h2>6 — Prefab Setup</h2>
+
+  <ol class="steps">
+    <li>Create an empty GameObject. Name it to match your class (e.g. <code>Interactable_Sign</code>).</li>
+    <li>Add a <strong>BoxCollider2D</strong> — size it to one grid cell (<code>1 × 1</code> units). This is what the engine detects with <code>Physics2D.OverlapBox</code>.</li>
+    <li>Add your script component. Configure all Inspector fields.</li>
+    <li>Add a <strong>SpriteRenderer</strong> and an <strong>Animator</strong> if the object has visual feedback.</li>
+    <li>Add an <strong>AudioSource</strong> if the object plays sounds.</li>
+    <li>Save as a prefab under <code>Assets/Prefabs/Interactables/</code>.</li>
+    <li>Place the prefab in your level scene aligned to the tile grid.</li>
+  </ol>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Grid alignment</strong>
+      Objects must be snapped to the tile grid. Place them at integer world positions that match <code>MapManager.cellSize</code> (default 1.0). Use the scene snapping tool or set position manually in the Inspector.
+    </div>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,551 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scripting API — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="no-sidebar">
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting</div>
+    <h1>API Reference</h1>
+    <p class="page-desc">Complete class and method reference for every public API in the LoopAdventure namespace. Use the sidebar to jump directly to any class, or browse by group below.</p>
+  </div>
+
+  <!-- ── Instructions ── -->
+  <h2>Instructions</h2>
+  <p>The core class hierarchy for player and enemy instructions. Extend these to add new behaviour to the game.</p>
+  <div class="index-grid">
+
+    <a href="sc-instruction.html" class="index-card index-card--teal">
+      <div class="ic-icon">📄</div>
+      <div class="ic-body">
+        <div class="ic-title">Instruction</div>
+        <div class="ic-desc">Abstract base for every instruction. Defines the fields, serialized state, lifecycle events, and the Tick() method to override.</div>
+        <div class="ic-topics">
+          <span>Fields</span>
+          <span>OnInstructionStart</span>
+          <span>Tick()</span>
+          <span>Run()</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-player-instruction.html" class="index-card index-card--teal">
+      <div class="ic-icon">🧩</div>
+      <div class="ic-body">
+        <div class="ic-title">PlayerInstruction</div>
+        <div class="ic-desc">Extends Instruction for player-controlled actions. The base class to derive from when adding new sheet instructions.</div>
+        <div class="ic-topics">
+          <span>ExecutionContext</span>
+          <span>Stamina checks</span>
+          <span>Direction support</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-modifier.html" class="index-card index-card--teal">
+      <div class="ic-icon">🔄</div>
+      <div class="ic-body">
+        <div class="ic-title">InstructionModifier</div>
+        <div class="ic-desc">Wraps a single child instruction and modifies how it runs — used by Invert and Rotate.</div>
+        <div class="ic-topics">
+          <span>Child instruction</span>
+          <span>Modified Tick()</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-sequence.html" class="index-card index-card--teal">
+      <div class="ic-icon">📑</div>
+      <div class="ic-body">
+        <div class="ic-title">InstructionSequence</div>
+        <div class="ic-desc">Holds multiple child instructions and executes them as a group — used by Combo and Ping Pong.</div>
+        <div class="ic-topics">
+          <span>Child list</span>
+          <span>Sequential execution</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-enemy-instruction.html" class="index-card index-card--teal">
+      <div class="ic-icon">👹</div>
+      <div class="ic-body">
+        <div class="ic-title">EnemyInstruction</div>
+        <div class="ic-desc">Base class for enemy AI behaviours. Receives an EnemyAction context instead of ExecutionContext.</div>
+        <div class="ic-topics">
+          <span>EnemyAction</span>
+          <span>Tick()</span>
+          <span>Parallel run</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-execution-context.html" class="index-card index-card--teal">
+      <div class="ic-icon">⚡</div>
+      <div class="ic-body">
+        <div class="ic-title">ExecutionContext</div>
+        <div class="ic-desc">The runtime snapshot passed into every Tick(). Exposes the player controller, stamina, inventory, and turn events.</div>
+        <div class="ic-topics">
+          <span>player</span>
+          <span>stamina</span>
+          <span>inventory</span>
+          <span>OnTurnEnd</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-execution-subscriber.html" class="index-card index-card--teal">
+      <div class="ic-icon">📡</div>
+      <div class="ic-body">
+        <div class="ic-title">IExecutionSuscriber</div>
+        <div class="ic-desc">Lightweight notification interface for enemies that need to react to each instruction step — auto-discovered from the hierarchy, no manual wiring required.</div>
+        <div class="ic-topics">
+          <span>Execute()</span>
+          <span>Auto-registration</span>
+          <span>ShootSuscriber</span>
+          <span>vs ITaskReceiver</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-builtin.html" class="index-card index-card--teal">
+      <div class="ic-icon">📋</div>
+      <div class="ic-body">
+        <div class="ic-title">Built-in Instructions</div>
+        <div class="ic-desc">Complete catalogue of all 19 player instructions and 5 enemy instructions — parameters, behaviour, and notes.</div>
+        <div class="ic-topics">
+          <span>Move / Jump / Attack</span>
+          <span>Carry / Drop / Throw</span>
+          <span>Combo / Ping Pong</span>
+          <span>Enemy: Shoot / Block</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-custom-instruction.html" class="index-card index-card--teal">
+      <div class="ic-icon">⚙️</div>
+      <div class="ic-body">
+        <div class="ic-title">Custom Instructions</div>
+        <div class="ic-desc">CustomInstruction lets you define execution behaviour through delegates instead of subclassing — ideal for transient, runtime-generated instructions.</div>
+        <div class="ic-topics">
+          <span>CustomInstruction</span>
+          <span>tick / execute</span>
+          <span>displayName</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-tasks.html" class="index-card index-card--teal">
+      <div class="ic-icon">⏱️</div>
+      <div class="ic-body">
+        <div class="ic-title">Tasks</div>
+        <div class="ic-desc">Task wraps an instruction's execution as a stoppable coroutine. ITaskReceiver is implemented by enemies and NPCs that own a per-turn task scheduled in parallel.</div>
+        <div class="ic-topics">
+          <span>Task / Status</span>
+          <span>Start / Interrupt</span>
+          <span>ITaskReceiver</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-action.html" class="index-card index-card--teal">
+      <div class="ic-icon">🎯</div>
+      <div class="ic-body">
+        <div class="ic-title">Action</div>
+        <div class="ic-desc">MonoBehaviour bridge that pairs an instruction C# type with its InstructionLayout prefab. Lives on each draggable item in the instruction palette.</div>
+        <div class="ic-topics">
+          <span>instructionType</span>
+          <span>layout</span>
+          <span>CreateInstruction()</span>
+          <span>Palette setup</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-instruction-sheet.html" class="index-card index-card--teal">
+      <div class="ic-icon">📄</div>
+      <div class="ic-body">
+        <div class="ic-title">InstructionSheet</div>
+        <div class="ic-desc">Singleton that owns the instruction list, handles drag-and-drop onto the sheet, drives the execution cursor, and provides undo/redo with a 20-step history.</div>
+        <div class="ic-topics">
+          <span>current (singleton)</span>
+          <span>Insert / Remove</span>
+          <span>Undo / Redo</span>
+          <span>Load(LevelInfo)</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-instruction-runner.html" class="index-card index-card--teal">
+      <div class="ic-icon">▶️</div>
+      <div class="ic-body">
+        <div class="ic-title">InstructionRunner</div>
+        <div class="ic-desc">Execution engine that cycles through instructions turn by turn, runs parallel tasks, validates player state, and fires success/failure events.</div>
+        <div class="ic-topics">
+          <span>Play() / Observe()</span>
+          <span>Stop() / Reset()</span>
+          <span>ExecutionStatus</span>
+          <span>OnTurnStart / End</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ── Interactables ── -->
+  <h2>Interactables</h2>
+  <p>The interfaces and base class that define how world objects participate in player interactions, and the ready-made implementations you can use directly.</p>
+  <div class="index-grid">
+
+    <a href="sc-interactable.html" class="index-card index-card--teal">
+      <div class="ic-icon">📦</div>
+      <div class="ic-body">
+        <div class="ic-title">Interactable Interfaces</div>
+        <div class="ic-desc">IInteractable, ICarryObject, IPushable, IObstacle, and ExecutionContextElement — the full API for creating world objects the player can interact with, carry, push, and that block movement.</div>
+        <div class="ic-topics">
+          <span>IInteractable</span>
+          <span>ICarryObject</span>
+          <span>IPushable</span>
+          <span>IObstacle</span>
+          <span>ExecutionContextElement</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-builtin-interactables.html" class="index-card index-card--teal">
+      <div class="ic-icon">🏺</div>
+      <div class="ic-body">
+        <div class="ic-title">Built-in Interactables</div>
+        <div class="ic-desc">Ready-made implementations: Pickup (auto-collect), Chest (manual), Carry (carryable crate), PushableObject (stone block), and Door (togglable obstacle with optional key).</div>
+        <div class="ic-topics">
+          <span>Pickup / Chest</span>
+          <span>Carry / Push</span>
+          <span>Door</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-traps.html" class="index-card index-card--teal">
+      <div class="ic-icon">⚠️</div>
+      <div class="ic-body">
+        <div class="ic-title">Traps</div>
+        <div class="ic-desc">Tile-based hazards that run every turn as ITaskReceiver tasks. PressurePlate reacts to occupation; AppearingSpikes cycles through configurable stages and deals lethal damage.</div>
+        <div class="ic-topics">
+          <span>PressurePlate</span>
+          <span>AppearingSpikes</span>
+          <span>stages / OnActivated</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ── Inventory ── -->
+  <h2>Inventory</h2>
+  <p>The runtime inventory manager and save snapshot, plus the item and equipment ScriptableObject types and the effects system.</p>
+  <div class="index-grid">
+
+    <a href="sc-inventory.html" class="index-card index-card--teal">
+      <div class="ic-icon">🎒</div>
+      <div class="ic-body">
+        <div class="ic-title">PlayerInventory</div>
+        <div class="ic-desc">Runtime inventory manager with item slots and equipment slots. Also covers InventoryPreset for starting loadouts and InventoryData for save serialization.</div>
+        <div class="ic-topics">
+          <span>PlayerInventory</span>
+          <span>TryAddItem / TryUseItem</span>
+          <span>InventoryPreset</span>
+          <span>InventoryData</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-items.html" class="index-card index-card--teal">
+      <div class="ic-icon">🧪</div>
+      <div class="ic-body">
+        <div class="ic-title">Item</div>
+        <div class="ic-desc">Base ScriptableObject for collectible items. Holds display name, icon, stackable flag, and a list of Effects applied when used via Instruction_Use.</div>
+        <div class="ic-topics">
+          <span>displayName / image</span>
+          <span>stackable</span>
+          <span>ApplyEffects()</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-equipment.html" class="index-card index-card--teal">
+      <div class="ic-icon">⚔️</div>
+      <div class="ic-body">
+        <div class="ic-title">Equipment</div>
+        <div class="ic-desc">Extends Item with an equipment slot type and passive stat bonuses. Equipped gear contributes bonuses automatically via PlayerInventory.</div>
+        <div class="ic-topics">
+          <span>Equipment.Type</span>
+          <span>twoHanded</span>
+          <span>StatValue / GetStatValue()</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-effect.html" class="index-card index-card--teal">
+      <div class="ic-icon">✨</div>
+      <div class="ic-body">
+        <div class="ic-title">Effect</div>
+        <div class="ic-desc">Serializable stat modification embedded in Item assets. Controls the target stat, value, duration in turns, and whether the effect applies once upfront or once per turn.</div>
+        <div class="ic-topics">
+          <span>targetStat / value</span>
+          <span>duration</span>
+          <span>applyPerTurn</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ── Level & Utility ── -->
+  <h2>Level &amp; Utility</h2>
+  <p>Singletons and helpers for interacting with the level state, the tile grid, and the in-game notification system.</p>
+  <div class="index-grid">
+
+    <a href="sc-level-manager.html" class="index-card index-card--teal">
+      <div class="ic-icon">🎮</div>
+      <div class="ic-body">
+        <div class="ic-title">LevelManager</div>
+        <div class="ic-desc">Central singleton for a level scene. Call Play / Stop / Reset and subscribe to lifecycle events from any script.</div>
+        <div class="ic-topics">
+          <span>OnPlay / OnStop</span>
+          <span>OnTurnStart / End</span>
+          <span>OnLevelCompleted</span>
+          <span>Play() / Reset()</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-level-goals.html" class="index-card index-card--teal">
+      <div class="ic-icon">⭐</div>
+      <div class="ic-body">
+        <div class="ic-title">LevelGoal</div>
+        <div class="ic-desc">Abstract base for optional star-granting objectives. Subclass it to define any measurable win condition evaluated against the player's completed run.</div>
+        <div class="ic-topics">
+          <span>displayText</span>
+          <span>Check()</span>
+          <span>LevelData</span>
+          <span>Custom goals</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-map-manager.html" class="index-card index-card--teal">
+      <div class="ic-icon">🗾</div>
+      <div class="ic-body">
+        <div class="ic-title">MapManager</div>
+        <div class="ic-desc">Spatial queries over the tile grid — snap positions to cells, look up tiles, and get the start and end tiles.</div>
+        <div class="ic-topics">
+          <span>cellSize</span>
+          <span>GetTile()</span>
+          <span>CellPosition()</span>
+          <span>startTile / endTile</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-notification.html" class="index-card index-card--teal">
+      <div class="ic-icon">💬</div>
+      <div class="ic-body">
+        <div class="ic-title">NotificationCenter</div>
+        <div class="ic-desc">Spawns in-game pop-up messages. Call statically from any instruction to give the player feedback on failure.</div>
+        <div class="ic-topics">
+          <span>Notify()</span>
+          <span>Message / Warning / Error</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ── Scriptable Objects ── -->
+  <h2>Scriptable Objects</h2>
+  <p>Base classes and utilities for project-wide ScriptableObject infrastructure.</p>
+  <div class="index-grid">
+
+    <a href="sc-items-references.html" class="index-card index-card--teal">
+      <div class="ic-icon">📋</div>
+      <div class="ic-body">
+        <div class="ic-title">ItemsReferences</div>
+        <div class="ic-desc">Master list ScriptableObject read by DatabaseManager at startup to register all Item assets into the runtime database for save-safe ID lookups.</div>
+        <div class="ic-topics">
+          <span>Items (read-only list)</span>
+          <span>Contains / Add</span>
+          <span>DatabaseManager</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-scriptable-objects.html" class="index-card index-card--teal">
+      <div class="ic-icon">🗂️</div>
+      <div class="ic-body">
+        <div class="ic-title">IdentifiableSO</div>
+        <div class="ic-desc">Abstract base for ScriptableObjects that require a stable GUID-based ID across save and load cycles. Subclass it for any asset that needs to be referenced from save data.</div>
+        <div class="ic-topics">
+          <span>ID (GUID)</span>
+          <span>Save-safe reference</span>
+          <span>Item / Equipment</span>
+          <span>Subclassing</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-stat.html" class="index-card index-card--teal">
+      <div class="ic-icon">📊</div>
+      <div class="ic-body">
+        <div class="ic-title">Stat</div>
+        <div class="ic-desc">Named ScriptableObject key for a character attribute. Acts as a dictionary key linking equipment bonuses, item effects, and character receivers to a shared identifier.</div>
+        <div class="ic-topics">
+          <span>displayName / icon</span>
+          <span>damage / defense</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ── Audio ── -->
+  <h2>Audio</h2>
+  <p>The three audio classes that make up the persistent sound system — settings, music crossfade, and the UI slider component.</p>
+  <div class="index-grid">
+
+    <a href="sc-sound-manager.html" class="index-card index-card--teal">
+      <div class="ic-icon">🔊</div>
+      <div class="ic-body">
+        <div class="ic-title">SoundManager</div>
+        <div class="ic-desc">DontDestroyOnLoad singleton that restores all AudioMixer parameter values from the save file on startup, and writes them back whenever a slider changes.</div>
+        <div class="ic-topics">
+          <span>Set()</span>
+          <span>DontDestroyOnLoad</span>
+          <span>Order −100</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-music-manager.html" class="index-card index-card--teal">
+      <div class="ic-icon">🎵</div>
+      <div class="ic-body">
+        <div class="ic-title">MusicManager</div>
+        <div class="ic-desc">Plays and crossfades background music across scene transitions. Persists for the full game session.</div>
+        <div class="ic-topics">
+          <span>CrossfadeTo()</span>
+          <span>DontDestroyOnLoad</span>
+          <span>Per-scene clip</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-sound-slider.html" class="index-card index-card--teal">
+      <div class="ic-icon">🎚️</div>
+      <div class="ic-body">
+        <div class="ic-title">SoundSlider</div>
+        <div class="ic-desc">Thin UI wrapper — reads the current mixer value in Start() to sync the slider visually, then delegates any change to SoundManager.Set().</div>
+        <div class="ic-topics">
+          <span>parameterName</span>
+          <span>SetValue()</span>
+          <span>AudioMixer sync</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <!-- ── UI ── -->
+  <h2>UI</h2>
+  <p>MonoBehaviour components for displaying and interacting with the game UI — modal windows, live HUD bars, inventory panels, and notification pop-ups.</p>
+  <div class="index-grid">
+
+    <a href="sc-window.html" class="index-card index-card--teal">
+      <div class="ic-icon">🪟</div>
+      <div class="ic-body">
+        <div class="ic-title">Window</div>
+        <div class="ic-desc">Abstract base class for all modal panels. Toggles the GameObject on Open/Close and plays optional sound effects. Subclass it to create custom windows.</div>
+        <div class="ic-topics">
+          <span>Open() / Close()</span>
+          <span>openSound / closeSound</span>
+          <span>Subclassing</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-hud.html" class="index-card index-card--teal">
+      <div class="ic-icon">❤️</div>
+      <div class="ic-body">
+        <div class="ic-title">HUD</div>
+        <div class="ic-desc">PlayerHealthBar, PlayerStaminaBar, and HUD_ShowStatEffectNumber — live stat display components that auto-subscribe to LevelManager and player health events.</div>
+        <div class="ic-topics">
+          <span>PlayerHealthBar</span>
+          <span>PlayerStaminaBar</span>
+          <span>ShowNumber()</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-inventory-ui.html" class="index-card index-card--teal">
+      <div class="ic-icon">🎒</div>
+      <div class="ic-body">
+        <div class="ic-title">Inventory UI</div>
+        <div class="ic-desc">InventoryWindow singleton, ItemSlotLayout, EquipmentSlotLayout, and the floating equipment tooltip — the full set of inventory display widgets.</div>
+        <div class="ic-topics">
+          <span>InventoryWindow.current</span>
+          <span>Refresh()</span>
+          <span>StatSlot</span>
+          <span>Tooltip</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-notification-layout.html" class="index-card index-card--teal">
+      <div class="ic-icon">🔔</div>
+      <div class="ic-body">
+        <div class="ic-title">Notifications</div>
+        <div class="ic-desc">NotificationLayout toast pop-up with auto-dismiss, and EquipmentNotification for a persistent queue that announces newly received equipment across scenes.</div>
+        <div class="ic-topics">
+          <span>CreateInstance()</span>
+          <span>AddEquipment()</span>
+          <span>Queue</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-instruction-layouts.html" class="index-card index-card--teal">
+      <div class="ic-icon">🧩</div>
+      <div class="ic-body">
+        <div class="ic-title">Instruction Layouts</div>
+        <div class="ic-desc">Widget classes that render instructions on the sheet — InstructionLayout base plus Modifier, Sequence, and Use subclasses with drag-and-drop and undo/redo support.</div>
+        <div class="ic-topics">
+          <span>CreateInstance()</span>
+          <span>SetDirection()</span>
+          <span>Modifier / Sequence / Use</span>
+          <span>ResetLayout()</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-drag-drop.html" class="index-card index-card--teal">
+      <div class="ic-icon">↕️</div>
+      <div class="ic-body">
+        <div class="ic-title">Drag &amp; Drop</div>
+        <div class="ic-desc">DragAndDrop handles palette item drag visuals and insert-indicator updates. DropActionEventCaller is a lightweight drop zone for modifier child slots.</div>
+        <div class="ic-topics">
+          <span>currentDragging</span>
+          <span>dragCaptured</span>
+          <span>AddDropEvent()</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

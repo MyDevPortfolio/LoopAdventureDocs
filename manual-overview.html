@@ -1,0 +1,177 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Overview — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link active">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level & Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Manual</div>
+    <h1>Overview</h1>
+    <p class="page-desc">Quick start, project structure, requirements, and how the systems connect to each other.</p>
+  </div>
+
+  <h2>Quick Start</h2>
+  <ol class="steps">
+    <li>Open <code>Assets/Scenes/GameMapScene.unity</code></li>
+    <li>Press <strong>Play</strong> in the Unity Editor</li>
+    <li>Select a level from the world map to enter it</li>
+    <li>Drag instructions from the palette onto the instruction sheet</li>
+    <li>Click <strong>Play</strong> in the in-game UI to execute the sequence</li>
+    <li>Reach the exit tile to complete the level</li>
+  </ol>
+
+  <h2>Requirements</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Requirement</th><th>Version</th></tr></thead>
+      <tbody>
+        <tr><td>Unity Editor</td><td>6000.3.6f1 or later</td></tr>
+        <tr><td>Render Pipeline</td><td>Universal Render Pipeline (URP) 17.3+</td></tr>
+        <tr><td>2D Feature Pack</td><td>com.unity.feature.2d 2.0.2+</td></tr>
+        <tr><td>Platform</td><td>Any platform supported by Unity URP</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Project Structure</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Folder</th><th>Contents</th></tr></thead>
+      <tbody>
+        <tr><td><code>Assets/Documentation/</code></td><td>This documentation site and legacy .doc guides</td></tr>
+        <tr><td><code>Assets/Prefabs/</code></td><td>70+ ready-to-use prefabs — enemies, interactables, instructions, UI</td></tr>
+        <tr><td><code>Assets/Animations/</code></td><td>Character and UI animation controllers</td></tr>
+        <tr><td><code>Assets/Scenes/</code></td><td>5 tutorial levels and world map scene</td></tr>
+        <tr><td><code>Assets/Scriptable Objects/</code></td><td>Item, equipment, and level databases</td></tr>
+        <tr><td><code>Assets/Scripts/</code></td><td>147 C# scripts organized by system</td></tr>
+        <tr><td><code>Assets/Sounds/</code></td><td>Kenney RPG and UI audio packs (CC0)</td></tr>
+        <tr><td><code>Assets/Sprites/</code></td><td>Character, tile, and UI art</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Singleton Persistence Chain</h2>
+  <p>Three managers use <code>DontDestroyOnLoad</code> and must be present in the first scene that loads. They persist for the entire game session.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Manager</th><th>Execution Order</th><th>Responsibility</th></tr></thead>
+      <tbody>
+        <tr><td><code>GameDataManager</code></td><td>−300</td><td>Loads save data from disk on Awake. All other systems read from it.</td></tr>
+        <tr><td><code>SoundManager</code></td><td>−100</td><td>Reads saved audio settings and applies them to the AudioMixer.</td></tr>
+        <tr><td><code>MusicManager</code></td><td>default</td><td>Plays and crossfades background music across scene transitions.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Execution Flow</h2>
+  <p>What happens when the player presses Play in the instruction sheet:</p>
+  <div class="tree">
+<span class="dim">Player arranges instructions in</span> <span class="cls">InstructionSheet</span>
+    <span class="arrow">↓  Play button pressed</span>
+<span class="cls">LevelManager</span><span class="dim">.Play() creates</span> <span class="cls">ExecutionContext</span> <span class="dim">+</span> <span class="cls">InstructionRunner</span>
+    <span class="arrow">↓  for each instruction in the sheet</span>
+<span class="cls">Instruction</span><span class="dim">.Run(context) → fires</span> <span class="cls">OnInstructionStart</span> <span class="dim">→ calls</span> <span class="cls">Tick(context)</span>
+    <span class="arrow">↓  simultaneously, each turn</span>
+<span class="cls">TaskSchedule</span> <span class="dim">runs each enemy's action in parallel with the player's turn</span>
+    <span class="arrow">↓  on success</span>
+<span class="cls">LevelManager</span><span class="dim">.OnAnySuccessfulExit fires → saves progress to disk</span>
+  </div>
+
+  <h2>What Can You Extend?</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>What to extend</th><th>Base class</th><th>Guide</th></tr></thead>
+      <tbody>
+        <tr><td>New player action in the instruction sheet</td><td><code>PlayerInstruction</code></td><td><a href="manual-instruction.html">Create an Instruction</a></td></tr>
+        <tr><td>Instruction that wraps and modifies another</td><td><code>InstructionModifier</code></td><td><a href="manual-instruction.html">Create an Instruction</a></td></tr>
+        <tr><td>Instruction that holds multiple children</td><td><code>InstructionSequence</code></td><td><a href="manual-instruction.html">Create an Instruction</a></td></tr>
+        <tr><td>New enemy behaviour</td><td><code>EnemyInstruction</code></td><td><a href="manual-enemy.html">Create an Enemy Instruction</a></td></tr>
+        <tr><td>Volume control slider</td><td><code>GameOptionsMenu_SoundSlider</code></td><td><a href="manual-audio.html">Audio Setup</a></td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Namespace</strong>
+      All scripts use the <code>LoopAdventure</code> namespace. Include <code>using LoopAdventure;</code> at the top of any new script that references engine classes.
+    </div>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,210 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>PlayerInventory — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub active">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting</div>
+    <h1>PlayerInventory</h1>
+    <p class="page-desc">The runtime inventory manager, its starting-loadout preset, and the serialization snapshot used by the save system. For item and equipment ScriptableObject types see <a href="sc-items.html">Item</a> and <a href="sc-equipment.html">Equipment</a>.</p>
+  </div>
+
+  <!-- ── PlayerInventory ── -->
+  <h2>PlayerInventory</h2>
+  <p>Holds a fixed-size array of item slots and a dictionary of equipment slots. The engine maintains two instances simultaneously: <code>PlayerInventory.current</code> (persistent, survives scene loads) and the execution copy accessed via <code>context.inventory</code> (cloned per level run, committed on success). Always use <code>context.inventory</code> inside <code>Tick()</code>.</p>
+
+  <h3>Static Members</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>current</code></td><td><code>PlayerInventory</code></td><td>The persistent inventory shared across all level runs. Do not modify from inside <code>Tick()</code> — use <code>context.inventory</code> instead.</td></tr>
+        <tr><td><code>CreateExecutionInstance()</code></td><td><code>PlayerInventory</code></td><td>Creates a deep copy of <code>current</code> for use during a level run. Called automatically by the engine at execution start.</td></tr>
+        <tr><td><code>Deserialize(InventoryData data)</code></td><td><code>PlayerInventory</code></td><td>Reconstructs a <code>PlayerInventory</code> from a saved snapshot. Returns <code>null</code> if the data is invalid.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Properties</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>equipment</code></td><td><code>IReadOnlyDictionary&lt;Equipment.Type, Equipment&gt;</code></td><td>Read-only view of all five equipment slots. Slots with no item map to <code>null</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Item Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>TryAddItem(Item item)</code></td><td><code>bool</code></td><td>Adds one unit of <code>item</code>. Stacks into an existing slot if <code>item.stackable</code> is <code>true</code>. Returns <code>false</code> if all slots are full.</td></tr>
+        <tr><td><code>TryAddItem(Item item, int amount)</code></td><td><code>bool</code></td><td>Adds <code>amount</code> units. Returns <code>false</code> if no slot is available.</td></tr>
+        <tr><td><code>TryRemoveItem(Item item)</code></td><td><code>bool</code></td><td>Removes the entire slot containing <code>item</code>. Returns <code>false</code> if not present. Prefer <code>TryUseItem</code> for stackable consumables.</td></tr>
+        <tr><td><code>TryUseItem(Item item)</code></td><td><code>bool</code></td><td>Decrements the stack count by one; removes the slot when it reaches zero. Returns <code>false</code> if the item is not present.</td></tr>
+        <tr><td><code>ContainsItem(Item item)</code></td><td><code>bool</code></td><td>Returns <code>true</code> if at least one slot holds <code>item</code>.</td></tr>
+        <tr><td><code>GetItemAtIndex(int index, out Item item, out int amount)</code></td><td><code>void</code></td><td>Outputs the item and stack count at the given slot index. <code>item</code> is <code>null</code> for an empty slot.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Equipment Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Equip(Equipment equipment)</code></td><td><code>void</code></td><td>Places <code>equipment</code> in its designated slot, replacing any existing item of the same type.</td></tr>
+        <tr><td><code>Unequip(Equipment.Type type, out Equipment equipped)</code></td><td><code>void</code></td><td>Removes and returns the item in <code>type</code> slot. <code>equipped</code> is <code>null</code> if the slot was empty.</td></tr>
+        <tr><td><code>GetEquipment(Equipment.Type type)</code></td><td><code>Equipment</code></td><td>Returns the equipment in <code>type</code> slot, or <code>null</code> if empty.</td></tr>
+        <tr><td><code>Equipped(Equipment equipment)</code></td><td><code>bool</code></td><td>Returns <code>true</code> if <code>equipment</code> currently occupies its slot.</td></tr>
+        <tr><td><code>GetStatValue(Stat stat)</code></td><td><code>int</code></td><td>Sums the bonus contributed to <code>stat</code> by all currently equipped items and returns the total.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Serialization</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Serialize()</code></td><td><code>InventoryData</code></td><td>Converts this inventory to a JSON-serializable snapshot. Items and equipment are stored by their asset IDs.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── InventoryPreset ── -->
+  <h2>InventoryPreset</h2>
+  <p>Defines the player's starting loadout for a new game session. Assigned in the game configuration. Create instances with <strong>Create → Loop Adventure → Inventory → Inventory Preset</strong>.</p>
+
+  <h3>Properties</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>inventoryCapacity</code></td><td><code>int</code></td><td>Total number of item slots available to the player.</td></tr>
+        <tr><td><code>startingItems</code></td><td><code>IReadOnlyList&lt;Item&gt;</code></td><td>Items added to the inventory at the start of the first run.</td></tr>
+        <tr><td><code>equipment</code></td><td><code>IReadOnlyList&lt;Equipment&gt;</code></td><td>Equipment pre-equipped in the order Weapon → Shield → Helmet → Armor → Boots.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── InventoryData ── -->
+  <h2>InventoryData</h2>
+  <p>JSON-serializable snapshot of a <code>PlayerInventory</code>. Items and equipment are stored by their asset ID strings. Used internally by the save system — you typically do not interact with this class directly.</p>
+
+  <h3>Fields</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>slots</code></td><td><code>SlotData[]</code></td><td>One entry per inventory slot. Empty slots have an empty <code>itemId</code>.</td></tr>
+        <tr><td><code>equipment</code></td><td><code>EquipmentSlotData[]</code></td><td>One entry per equipment type. Empty slots have an empty <code>equipmentId</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>InventoryData.SlotData</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>itemId</code></td><td><code>string</code></td><td>Asset ID of the item in this slot, or empty string if the slot is empty.</td></tr>
+        <tr><td><code>amount</code></td><td><code>int</code></td><td>Stack count for this slot.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>InventoryData.EquipmentSlotData</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>type</code></td><td><code>Equipment.Type</code></td><td>The equipment slot this entry represents.</td></tr>
+        <tr><td><code>equipmentId</code></td><td><code>string</code></td><td>Asset ID of the equipped item, or empty string if the slot is empty.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

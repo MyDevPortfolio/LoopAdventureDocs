@@ -1,0 +1,193 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tasks — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub active">Tasks</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting</div>
+    <h1>Tasks</h1>
+    <p class="page-desc"><code>Task</code> wraps a single instruction's execution as a coroutine that can be started, stopped, or interrupted. <code>ITaskReceiver</code> is implemented by objects — typically enemies — that own a task to be scheduled in parallel each turn.</p>
+  </div>
+
+  <!-- ── Task ── -->
+  <h2>Task</h2>
+  <p>The engine creates <code>Task</code> objects automatically at the start of each turn to run enemy and NPC behaviours in parallel with the player's action. You can also create tasks manually to schedule any instruction outside the normal sheet.</p>
+
+  <h3>Task.Status Enum</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Value</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Uninitialized</code></td><td>Created but not yet started.</td></tr>
+        <tr><td><code>Running</code></td><td>Coroutine is actively executing.</td></tr>
+        <tr><td><code>Finished</code></td><td>Coroutine ran to completion normally.</td></tr>
+        <tr><td><code>Interrupted</code></td><td>Stopped before completion via <code>Interrupt()</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Properties &amp; Events</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>status</code></td><td><code>Task.Status</code></td><td>Read-only. Current state of the task.</td></tr>
+        <tr><td><code>OnStart</code></td><td><code>event System.Action</code></td><td>Raised when <code>Start()</code> is called and execution begins.</td></tr>
+        <tr><td><code>OnEnd</code></td><td><code>event System.Action</code></td><td>Raised when the task finishes or is interrupted.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Static Factory Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>GetTask(<br>&nbsp;&nbsp;ITaskReceiver receiver,<br>&nbsp;&nbsp;ExecutionContext context)</code></td><td><code>Task</code></td><td>Creates a task from the receiver's own <code>GetTask()</code> definition and the given context.</td></tr>
+        <tr><td><code>GetTask(<br>&nbsp;&nbsp;ITaskReceiver target,<br>&nbsp;&nbsp;Instruction instruction,<br>&nbsp;&nbsp;ExecutionContext context)</code></td><td><code>Task</code></td><td>Creates a task that runs a specific instruction on behalf of a given receiver.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Start()</code></td><td>Begins task execution immediately. Changes <code>status</code> to <code>Running</code> and raises <code>OnStart</code>.</td></tr>
+        <tr><td><code>Stop()</code></td><td>Halts the coroutine without changing <code>status</code> to <code>Interrupted</code>.</td></tr>
+        <tr><td><code>Interrupt()</code></td><td>Halts the coroutine, sets <code>status</code> to <code>Interrupted</code>, and raises <code>OnEnd</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+<pre><span class="cmt">// Run a CustomInstruction as a one-shot task on a MonoBehaviour</span>
+<span class="kw">var</span> instruction = <span class="kw">new</span> <span class="type">CustomInstruction</span>();
+instruction.tick = (ctx) => <span class="fn">MyRoutine</span>(ctx);
+
+<span class="kw">var</span> task = <span class="type">Task</span>.<span class="fn">GetTask</span>(receiver, instruction, context);
+task.OnEnd += () => <span class="type">Debug</span>.<span class="fn">Log</span>(<span class="str">"done"</span>);
+task.<span class="fn">Start</span>();</pre>
+
+  <hr>
+
+  <!-- ── ITaskReceiver ── -->
+  <h2>ITaskReceiver</h2>
+  <p>Implemented by objects (typically enemies) that own a task to run each turn. The <code>InstructionRunner</code> queries every registered <code>ITaskReceiver</code> at the start of each turn, retrieves its task, and starts it in parallel with the player's instruction. HUD elements subscribe to the lifecycle events to update indicators in real time.</p>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <strong>Registration is automatic</strong>
+      Any <code>ExecutionContextElement</code> that also implements <code>ITaskReceiver</code> is discovered and registered with the <code>ExecutionContext</code> during initialization. You do not need to register manually.
+    </div>
+  </div>
+
+  <h3>Properties</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>currentInstruction</code></td><td><code>Instruction</code></td><td>The instruction currently being executed. Exposed so the HUD can display the enemy's active action.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Events</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Event</th><th>Signature</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>OnStart</code></td><td><code>Action&lt;EnemyAction&gt;</code></td><td>Raised when task execution begins, passing the first enemy action.</td></tr>
+        <tr><td><code>OnActionChange</code></td><td><code>Action&lt;EnemyAction&gt;</code></td><td>Raised each time the active enemy action changes during execution.</td></tr>
+        <tr><td><code>OnEnd</code></td><td><code>Action</code></td><td>Raised when task execution ends.</td></tr>
+        <tr><td><code>OnExecute</code></td><td><code>Action&lt;ExecutionContext&gt;</code></td><td>Raised each time an instruction step executes, providing the current context.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>GetTask()</code></td><td><code>Task</code></td><td>Returns the <code>Task</code> this receiver should run during the current turn. Called by <code>InstructionRunner</code> at the start of every turn.</td></tr>
+        <tr><td><code>Execute()</code></td><td><code>void</code></td><td>Triggers execution of the task. Called by the runner after <code>GetTask()</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

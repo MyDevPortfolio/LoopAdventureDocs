@@ -1,0 +1,123 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Item — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub active">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+  <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / Inventory</div>
+    <h1>Item</h1>
+    <p class="page-desc">Base <code>ScriptableObject</code> class for all collectible items. <code>Equipment</code> extends this for gear with passive stat bonuses. Create instances with <strong>Create → Loop Adventure → Inventory → Item</strong>.</p>
+  </div>
+
+  <h2>Properties</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>displayName</code></td><td><code>string</code></td><td>Name shown in the inventory UI and tooltips.</td></tr>
+        <tr><td><code>description</code></td><td><code>string</code></td><td>Detailed description shown in tooltips.</td></tr>
+        <tr><td><code>image</code></td><td><code>Sprite</code></td><td>Icon displayed in inventory slots and the HUD.</td></tr>
+        <tr><td><code>stackable</code></td><td><code>bool</code></td><td>When <code>true</code>, multiple copies share one inventory slot with a stack counter.</td></tr>
+        <tr><td><code>effects</code></td><td><code>IReadOnlyList&lt;Effect&gt;</code></td><td>Stat modifications applied when this item is used via <code>Instruction_Use</code>. See <a href="sc-effect.html">Effect</a>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Methods</h2>
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:46%"><col style="width:54%"></colgroup>
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>ApplyEffects(<br>&nbsp;&nbsp;IStatEffectReceiver[] receivers,<br>&nbsp;&nbsp;ActiveEffectsController tracker = null)</code></td><td>Applies all effects to the matching stat receivers. Instant effects (duration 0) are applied immediately. Timed effects are registered with <code>tracker</code> for automatic reversion at the end of their duration. Pass <code>null</code> for <code>tracker</code> to treat all effects as permanent for the current run.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Create an Item</h2>
+  <ol>
+    <li>In the Project window right-click <strong>Assets/Scriptable Objects/Items/</strong> → <strong>Create → Loop Adventure → Inventory → Item</strong>.</li>
+    <li>Give the asset a descriptive file name. The file name is only shown in the Project window; the in-game name comes from <code>displayName</code>.</li>
+    <li>In the Inspector fill in <code>displayName</code>, <code>description</code>, and assign a <code>Sprite</code> to <code>image</code>.</li>
+    <li>Enable <code>stackable</code> if multiple copies of this item should share a single inventory slot with a count badge.</li>
+    <li>(Optional) Open the <strong>Effects</strong> list and click <strong>+</strong> to add stat modifications that trigger when the item is used. See <a href="sc-effect.html">Effect</a> for field details.</li>
+    <li>Register the asset in the <a href="sc-items-references.html">ItemsReferences</a> collection so <code>DatabaseManager</code> can look it up by ID at runtime.</li>
+  </ol>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

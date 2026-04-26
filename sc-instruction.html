@@ -1,0 +1,150 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Instruction — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub active">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level & Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / Instructions</div>
+    <h1>Instruction</h1>
+    <p class="page-desc">Abstract base class for every instruction in the system. Owns direction, loop count, execution context, and the coroutine lifecycle shared by all instruction types.</p>
+  </div>
+
+  <div class="tree">
+<span class="cls">Instruction</span>  <span class="dim">← you are here</span>
+  <span class="arrow">├──</span> <span class="cls">PlayerInstruction</span>
+  <span class="arrow">└──</span> <span class="cls">EnemyInstruction</span>
+  </div>
+
+  <h2>Serialized Fields</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Range</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>_direction</code></td><td><code>Direction</code></td><td>Up / Down / Left / Right</td><td>The direction this instruction acts in. Access via the <code>direction</code> property.</td></tr>
+      <tr><td><code>_loop</code></td><td><code>int</code></td><td>1 – 12</td><td>How many times this instruction repeats. Access via the <code>loop</code> property.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Properties</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>displayName</code> <span class="badge badge-abstract">abstract</span></td><td><code>string</code></td><td>Label shown in the instruction sheet UI. Must be overridden in every subclass.</td></tr>
+      <tr><td><code>direction</code></td><td><code>Direction</code></td><td>Current direction. Set via <code>SetDirection()</code>.</td></tr>
+      <tr><td><code>loop</code></td><td><code>int</code></td><td>Current repetition count (1–12).</td></tr>
+      <tr><td><code>context</code></td><td><code>ExecutionContext</code></td><td>Injected by <code>Run()</code> before <code>Tick()</code> is called. Read only.</td></tr>
+      <tr><td><code>resolution</code> <span class="badge badge-virtual">virtual</span></td><td><code>bool</code></td><td>True by default. Set to <code>false</code> inside <code>Tick()</code> then <code>yield break</code> to stop the runner.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Events</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Event</th><th>Signature</th><th>When</th></tr></thead>
+    <tbody>
+      <tr><td><code>OnInstructionStart</code></td><td><code>Action</code></td><td>Fired at the start of <code>Run()</code>, before <code>Tick()</code>.</td></tr>
+      <tr><td><code>OnInstructionEnd</code></td><td><code>Action</code></td><td>Fired after <code>Tick()</code> completes.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Abstract Methods — Must Override</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Execute()</code></td><td><code>void</code></td><td>Instant synchronous side-effects before animation — deal damage, spawn a prefab, change state. Called by the runner via animation events. Can be left empty.</td></tr>
+      <tr><td><code>Tick(ExecutionContext ctx)</code></td><td><code>IEnumerator</code></td><td>The coroutine driving animation and logic. Yield to wait. To fail: set <code>resolution = false</code> then <code>yield break</code>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Virtual Methods — Optional Override</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Default</th><th>When to override</th></tr></thead>
+    <tbody>
+      <tr><td><code>Validate()</code></td><td>Returns <code>true</code></td><td>Return <code>false</code> to block execution before the turn begins and show an error notification.</td></tr>
+      <tr><td><code>GetExecutionList(int loop)</code></td><td>Yields <code>this</code> once</td><td>Override in sequences and modifiers that expand into multiple execution steps.</td></tr>
+      <tr><td><code>SetDirection(Direction d)</code></td><td>Sets <code>this.direction</code></td><td>Override in modifiers to also sync the child instruction's direction.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Utility Methods</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>IncreaseLoop()</code></td><td>Increments loop count by 1 (max 12). Called from the instruction sheet UI.</td></tr>
+      <tr><td><code>DecreaseLoop()</code></td><td>Decrements loop count by 1 (min 1). Called from the instruction sheet UI.</td></tr>
+      <tr><td><code>SetLoop(int n)</code></td><td>Sets loop count directly.</td></tr>
+      <tr><td><code>Clone()</code></td><td>Returns a deep copy via serialize/deserialize round-trip. Used by the runner before each execution.</td></tr>
+      <tr><td><code>Serialize()</code></td><td>Returns a <code>SerializedInstruction</code> for JSON storage.</td></tr>
+    </tbody>
+  </table></div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

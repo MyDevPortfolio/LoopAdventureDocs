@@ -1,0 +1,241 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Traps — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub active">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / Interactables</div>
+    <h1>Traps</h1>
+    <p class="page-desc">The two built-in tile-based trap classes. Both extend <code>ExecutionContextElement</code> and implement <a href="sc-tasks.html">ITaskReceiver</a>, so they are scheduled automatically every turn and run in parallel with the player and enemies.</p>
+  </div>
+
+  <!-- ── Overview ── -->
+  <h2>Overview</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Class</th><th>Behaviour</th></tr></thead>
+      <tbody>
+        <tr><td><code>Tile_Interactable_PressurePlate</code></td><td>Detects when the player or any obstacle stands on its tile and fires <code>OnActivated</code> / <code>OnDeactivated</code> events. Useful for triggering doors, bridges, or any reaction that depends on occupation state.</td></tr>
+        <tr><td><code>Tile_Interactable_AppearingSpikes</code></td><td>Cycles through a configurable array of stages each turn. On spike stages it deals lethal damage to any entity with a <code>Health</code> component on the tile.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <strong>Automatic registration</strong>
+      Any <code>ExecutionContextElement</code> that also implements <code>ITaskReceiver</code> is discovered and registered automatically during initialization. You do not need to register trap objects manually.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ── PressurePlate ── -->
+  <h2>Tile_Interactable_PressurePlate</h2>
+  <p>Checks its tile once per turn — at the halfway point of the turn interval — and transitions between pressed and released states based on whether the player or an <code>IObstacle</code> is present.</p>
+
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>OnActivated</code></td><td><code>UnityEvent</code></td><td>Fired the turn the plate transitions from released to pressed. Wire this to doors, bridges, or any reaction object.</td></tr>
+        <tr><td><code>OnDeactivated</code></td><td><code>UnityEvent</code></td><td>Fired the turn the plate transitions from pressed to released.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Properties</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>currentInstruction</code></td><td><code>Instruction</code></td><td>The instruction currently being executed. Exposed so HUD indicators can display the trap's active action.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>ITaskReceiver Events</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Event</th><th>Signature</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>OnStart</code></td><td><code>Action&lt;EnemyAction&gt;</code></td><td>Raised when the trap's task begins executing for this turn.</td></tr>
+        <tr><td><code>OnActionChange</code></td><td><code>Action&lt;EnemyAction&gt;</code></td><td>Raised when transitioning between internal execution stages.</td></tr>
+        <tr><td><code>OnEnd</code></td><td><code>Action</code></td><td>Raised when the trap's task finishes for this turn.</td></tr>
+        <tr><td><code>OnExecute</code></td><td><code>Action&lt;ExecutionContext&gt;</code></td><td>Raised each time an execution step runs, providing the current context.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:44%"><col style="width:14%"><col style="width:42%"></colgroup>
+      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>GetTask()</code></td><td><code>Task</code></td><td>Returns the Task the runner should execute this turn. Called automatically by <code>InstructionRunner</code>.</td></tr>
+        <tr><td><code>Initialize(<br>&nbsp;&nbsp;ExecutionContext context,<br>&nbsp;&nbsp;ExecutionContextElement parent)</code></td><td><code>void</code></td><td>Called during level initialization. Caches the <code>Animator</code> and sets up the internal <code>CustomInstruction</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Detection logic</strong>
+      The plate uses <code>Physics2D.OverlapBoxAll</code> at the halfway point of the turn interval (<code>context.turnInterval × 0.5f</code>). It detects any collider that has either an <code>IObstacle</code> component or a <code>PlayerController</code> component. Pushable objects and carried crates count as obstacles.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ── AppearingSpikes ── -->
+  <h2>Tile_Interactable_AppearingSpikes</h2>
+  <p>Cycles through a configurable <code>stages</code> array each turn. A <code>true</code> entry means spikes are extended and deal lethal damage; <code>false</code> means they are retracted and safe to walk on. The stage advances automatically at the end of each turn.</p>
+
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>stages</code></td><td><code>bool[]</code></td><td>Ordered list of spike states. Default is <code>[false, true]</code> — safe on turn 1, lethal on turn 2, repeating. Add more entries to create longer patterns (e.g. <code>[false, false, true]</code> for safe-safe-lethal).</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Properties</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>currentInstruction</code></td><td><code>Instruction</code></td><td>The instruction currently being executed. Exposed for HUD display.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>ITaskReceiver Events</h3>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Event</th><th>Signature</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>OnStart</code></td><td><code>Action&lt;EnemyAction&gt;</code></td><td>Raised when the trap's task begins executing for this turn.</td></tr>
+        <tr><td><code>OnActionChange</code></td><td><code>Action&lt;EnemyAction&gt;</code></td><td>Raised when transitioning between internal execution stages.</td></tr>
+        <tr><td><code>OnEnd</code></td><td><code>Action</code></td><td>Raised when the trap's task finishes for this turn.</td></tr>
+        <tr><td><code>OnExecute</code></td><td><code>Action&lt;ExecutionContext&gt;</code></td><td>Raised each time an execution step runs, providing the current context.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Methods</h3>
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:44%"><col style="width:14%"><col style="width:42%"></colgroup>
+      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>GetTask()</code></td><td><code>Task</code></td><td>Returns the Task the runner should execute this turn.</td></tr>
+        <tr><td><code>Initialize(<br>&nbsp;&nbsp;ExecutionContext context,<br>&nbsp;&nbsp;ExecutionContextElement parent)</code></td><td><code>void</code></td><td>Called during level initialization. Caches the <code>Animator</code> and sets up the internal <code>CustomInstruction</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong>Damage model</strong>
+      When a spike stage is active, the trap calls <code>Health.Kill()</code> on every object with a <code>Health</code> component found by <code>Physics2D.OverlapBoxAll</code> on its tile. The check runs mid-turn so the spikes animate before the kill is applied. Entities that move off the tile before the check survives.
+    </div>
+  </div>
+
+  <hr>
+
+  <!-- ── Animator params ── -->
+  <h2>Animator Parameters</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Class</th><th>Parameter</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Tile_Interactable_PressurePlate</code></td><td><code>Activated</code></td><td><code>bool</code></td><td><code>true</code> while the plate is pressed down.</td></tr>
+        <tr><td><code>Tile_Interactable_AppearingSpikes</code></td><td><code>Appeared</code></td><td><code>bool</code></td><td><code>true</code> while the spikes are extended.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,157 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InstructionRunner — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub active">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+  <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+  <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / Instructions</div>
+    <h1>InstructionRunner</h1>
+    <p class="page-desc">Execution engine that drives instructions through turn cycles. Manages per-turn task scheduling, validates player state between instructions, checks <a href="sc-level-goals.html">LevelGoals</a>, and fires events that drive the UI and other game systems. Owned and started by <a href="sc-level-manager.html">LevelManager</a>.</p>
+  </div>
+
+  <h2>ExecutionStatus</h2>
+  <p>Enum representing the runner's current state.</p>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Value</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Uninitialized</code></td><td>The runner has not been started yet.</td></tr>
+        <tr><td><code>Stopped</code></td><td>Execution was stopped manually via <code>Stop()</code>.</td></tr>
+        <tr><td><code>Running</code></td><td>Instructions are actively executing.</td></tr>
+        <tr><td><code>Observing</code></td><td>Running in observe mode (no validation, infinite loop).</td></tr>
+        <tr><td><code>Finished</code></td><td>All instructions completed — either success or failure.</td></tr>
+        <tr><td><code>Fail</code></td><td>Execution ended due to a validation failure or player death.</td></tr>
+        <tr><td><code>Success</code></td><td>All level goals were met and the player reached the end tile.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Properties</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>status</code></td><td><code>ExecutionStatus</code></td><td>The runner's current execution state.</td></tr>
+        <tr><td><code>context</code></td><td><code>ExecutionContext</code></td><td>The active <a href="sc-execution-context.html">ExecutionContext</a> for the current run. <code>null</code> when <code>status</code> is <code>Stopped</code> or <code>Uninitialized</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Methods</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Play()</code></td><td>Starts a full execution run. Calls each instruction's <code>Validate()</code> before execution and checks level goals at the end. Fires <code>OnStartExecution</code>.</td></tr>
+        <tr><td><code>Observe()</code></td><td>Starts execution in observe mode — instructions run in an infinite loop without validation or goal checking. Used to let designers preview behaviour. Fires <code>OnStartExecution</code>.</td></tr>
+        <tr><td><code>Stop()</code></td><td>Halts any running coroutine, resets <code>Time.timeScale</code> to 1, stops all scheduled tasks, and fires <code>OnStopExecution</code>.</td></tr>
+        <tr><td><code>Reset()</code></td><td>Calls <code>context.Reset()</code> to restore cloned game objects to their pre-run state, then fires <code>OnReset</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Events</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Event</th><th>Signature</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>OnTurnStart</code></td><td><code>Action</code></td><td>Raised at the beginning of each turn cycle, before any instruction executes.</td></tr>
+        <tr><td><code>OnTurnEnd</code></td><td><code>Action</code></td><td>Raised at the end of each turn cycle, after all tasks complete.</td></tr>
+        <tr><td><code>OnAnyTurnEnd</code></td><td><code>static Action</code></td><td>Static version of <code>OnTurnEnd</code> — fired by every runner instance. Useful for systems that need to react to any turn ending regardless of which runner is active.</td></tr>
+        <tr><td><code>OnReset</code></td><td><code>Action</code></td><td>Raised after <code>Reset()</code> restores the scene to its pre-run state.</td></tr>
+        <tr><td><code>OnStartExecution</code></td><td><code>Action&lt;ExecutionContext&gt;</code></td><td>Raised when <code>Play()</code> or <code>Observe()</code> is called. The context passed is the one for this run.</td></tr>
+        <tr><td><code>OnStopExecution</code></td><td><code>Action&lt;ExecutionContext&gt;</code></td><td>Raised when <code>Stop()</code> is called manually. Not fired when the run ends naturally.</td></tr>
+        <tr><td><code>OnFinishExecution</code></td><td><code>Action&lt;ExecutionContext&gt;</code></td><td>Raised when the run ends — either with success or failure. Always fired after <code>OnSucceedExecution</code> or <code>OnFailedExecution</code>.</td></tr>
+        <tr><td><code>OnFailedExecution</code></td><td><code>Action&lt;ExecutionContext&gt;</code></td><td>Raised when an instruction signals failure (<code>resolution = false</code>) or the player dies mid-run.</td></tr>
+        <tr><td><code>OnSucceedExecution</code></td><td><code>Action&lt;ExecutionContext&gt;</code></td><td>Raised when all instructions complete without failure and all level goals are satisfied.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Turn Cycle</h2>
+  <p>Each turn follows this sequence:</p>
+  <ol>
+    <li><code>OnTurnStart</code> fires.</li>
+    <li>All <code>ITaskReceiver</code> tasks in the context (enemies, interactables) are started in parallel via <code>TaskSchedule</code>.</li>
+    <li>The current instruction's <code>Execute()</code> is called, then <code>Tick()</code> runs as a coroutine.</li>
+    <li>The runner waits until both the instruction's coroutine and all parallel tasks finish.</li>
+    <li><code>OnTurnEnd</code> and <code>OnAnyTurnEnd</code> fire.</li>
+    <li>Player health and position are validated. If invalid, <code>Fail()</code> is called.</li>
+    <li>Execution advances to the next instruction. When all instructions are exhausted, goals are evaluated.</li>
+  </ol>
+
+  <h2>InstructionRunner.TaskSchedule</h2>
+  <p>Inner helper class created at the start of each run. It collects all <code>ITaskReceiver</code> objects from <code>context.taskSchedulers</code> (enemies, traps, interactables) and starts their tasks in parallel at the beginning of each turn. The runner waits for <code>TaskSchedule.running</code> to become <code>false</code> before advancing to the next turn.</p>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

@@ -1,0 +1,221 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create an Instruction — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link active">Create an Instruction</a>
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level & Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Manual</div>
+    <h1>Create a New Player Instruction</h1>
+    <p class="page-desc">Add a custom action to the instruction sheet. Every instruction is one C# class plus one prefab.</p>
+  </div>
+
+  <h2>Creating a Standard Instruction</h2>
+  <ol class="steps">
+    <li>
+      <strong>Create the C# class</strong> in <code>Assets/Scripts/Instructions/</code><br>
+      Extend <code>PlayerInstruction</code> and add the <code>[TypeName("YourName")]</code> attribute. The TypeName is how the instruction is stored in save files — never change it after shipping.
+    </li>
+    <li>
+      <strong>Override <code>displayName</code></strong><br>
+      Return the string shown in the instruction sheet UI (e.g. <code>"Teleport"</code>).
+    </li>
+    <li>
+      <strong>Override <code>Execute()</code></strong><br>
+      Apply instant, synchronous effects here — dealing damage, spawning a prefab, modifying a state flag. This runs before any animation. Leave it empty if your instruction is purely animated.
+    </li>
+    <li>
+      <strong>Override <code>Tick(ExecutionContext ctx)</code></strong><br>
+      This is the coroutine. Use <code>yield return new WaitForSeconds(t)</code> to wait for animations. To cancel execution and signal a failure, set <code>resolution = false</code> then <code>yield break</code>. Always show a notification first so the player understands why it failed.
+    </li>
+    <li>
+      <strong>Create the prefab</strong><br>
+      Duplicate any prefab from <code>Assets/Prefabs/Player Instructions/</code>. Swap the script component with your new class. See <a href="manual-instruction-layout.html">Create an Instruction Layout</a> for the full prefab setup workflow.
+    </li>
+    <li>
+      <strong>Configure the InstructionLayout</strong><br>
+      On the child GameObject, set the display name, icon, and which direction buttons appear in the <code>InstructionLayout</code> component. See <a href="manual-instruction-layout.html">Create an Instruction Layout</a> for all configurable fields.
+    </li>
+    <li>
+      <strong>Add to the palette</strong><br>
+      Place the prefab inside the palette panel in your scene. Make sure each palette item has a <code>DragAndDrop</code> component. See <a href="manual-instruction-layout.html">Create an Instruction Layout</a> for placement details.
+    </li>
+  </ol>
+
+  <h2>Example — Teleport</h2>
+  <p>Moves the player three cells forward. Fails if the destination is not a valid path tile.</p>
+<pre><span class="kw">using</span> System.Collections;
+<span class="kw">using</span> UnityEngine;
+
+<span class="kw">namespace</span> LoopAdventure
+{
+    [<span class="type">TypeName</span>(<span class="str">"Teleport"</span>)]
+    <span class="kw">public class</span> <span class="type">Instruction_Teleport</span> : <span class="type">PlayerInstruction</span>
+    {
+        <span class="kw">public override string</span> displayName => <span class="str">"Teleport"</span>;
+
+        <span class="kw">public override void</span> <span class="fn">Execute</span>() { }
+
+        <span class="kw">protected override</span> IEnumerator <span class="fn">Tick</span>(<span class="type">ExecutionContext</span> ctx)
+        {
+            <span class="type">Vector2</span> target = ctx.player.position
+                           + direction.<span class="fn">AsVector2</span>() * <span class="type">MapManager</span>.cellSize * <span class="num">3</span>;
+
+            <span class="kw">if</span> (!ctx.player.<span class="fn">ValidatePosition</span>(target))
+            {
+                <span class="type">NotificationCenter</span>.<span class="fn">Notify</span>(
+                    <span class="type">NotificationCenter</span>.MessageType.Warning,
+                    <span class="str">"Can't teleport there!"</span>);
+                resolution = <span class="kw">false</span>;
+                <span class="kw">yield break</span>;
+            }
+
+            ctx.player.position = target;
+            ctx.player.<span class="fn">PlayAnimation</span>(<span class="str">"Idle"</span>);
+        }
+    }
+}</pre>
+
+  <h2>Creating a Modifier Instruction</h2>
+  <p>A modifier wraps one child instruction and alters its behaviour every loop. Extend <code>InstructionModifier</code> and implement <code>ModifyInstruction()</code> — called automatically after the child executes each iteration.</p>
+
+  <ol class="steps">
+    <li>Extend <code>InstructionModifier</code> instead of <code>PlayerInstruction</code></li>
+    <li>Implement <code>ModifyInstruction()</code> — change <code>instruction.direction</code>, state, or any property of the child</li>
+    <li>The prefab needs an <code>InstructionModifier_Layout</code> (not a plain <code>InstructionLayout</code>) so the UI renders the child slot — see <a href="manual-instruction-layout.html">Create an Instruction Layout</a></li>
+  </ol>
+
+<pre><span class="kw">namespace</span> LoopAdventure
+{
+    [<span class="type">TypeName</span>(<span class="str">"RotateRight"</span>)]
+    <span class="kw">public class</span> <span class="type">Instruction_RotateRight</span> : <span class="type">InstructionModifier</span>
+    {
+        <span class="kw">public override string</span> displayName => <span class="str">"Rotate Right"</span>;
+        <span class="kw">public override void</span> <span class="fn">Execute</span>() { }
+
+        <span class="cmt">// Called after the child instruction executes each loop.</span>
+        <span class="kw">public override void</span> <span class="fn">ModifyInstruction</span>()
+        {
+            <span class="type">Direction</span> next = (<span class="type">Direction</span>)(((int)instruction.direction + <span class="num">1</span>) % <span class="num">4</span>);
+            instruction.<span class="fn">SetDirection</span>(next);
+        }
+    }
+}</pre>
+
+  <h2>Creating a Sequence Instruction</h2>
+  <p>A sequence holds multiple child instructions and executes them in order within a single turn. Extend <code>InstructionSequence</code> and define <code>maxCapacity</code>.</p>
+
+  <ol class="steps">
+    <li>Extend <code>InstructionSequence</code></li>
+    <li>Override <code>maxCapacity</code> to set the maximum number of children (e.g. <code>4</code>)</li>
+    <li>The prefab needs an <code>InstructionSequence_Layout</code> component for the child slot UI — see <a href="manual-instruction-layout.html">Create an Instruction Layout</a></li>
+    <li><code>Execute()</code> and <code>Tick()</code> can be left empty — the sequence parent calls each child automatically</li>
+  </ol>
+
+<pre><span class="kw">namespace</span> LoopAdventure
+{
+    [<span class="type">TypeName</span>(<span class="str">"MyCombo"</span>)]
+    <span class="kw">public class</span> <span class="type">Instruction_MyCombo</span> : <span class="type">InstructionSequence</span>
+    {
+        <span class="kw">public override string</span> displayName => <span class="str">"My Combo"</span>;
+        <span class="kw">public override int</span>    maxCapacity  => <span class="num">3</span>;
+
+        <span class="kw">public override void</span>      <span class="fn">Execute</span>() { }
+        <span class="kw">protected override</span> IEnumerator <span class="fn">Tick</span>(<span class="type">ExecutionContext</span> ctx) { <span class="kw">yield break</span>; }
+    }
+}</pre>
+
+  <h2>Signalling Failure</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Pattern</th><th>Effect</th></tr></thead>
+      <tbody>
+        <tr><td><code>resolution = false; yield break;</code></td><td>Marks the instruction as failed. The runner stops execution and shows the failure animation.</td></tr>
+        <tr><td><code>NotificationCenter.Notify(type, message)</code></td><td>Displays a pop-up to the player. Always call this before <code>yield break</code> so the player knows what went wrong.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout warn">
+    <div class="callout-icon">⚠️</div>
+    <div class="callout-body">
+      <strong>TypeName is permanent</strong>
+      The string in <code>[TypeName("...")]</code> is written into save files. Changing it after release will break any save that contains the old instruction name.
+    </div>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

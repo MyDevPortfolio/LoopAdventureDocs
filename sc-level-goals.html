@@ -1,0 +1,195 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LevelGoal — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub active">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+    <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+    <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / Level &amp; Utility</div>
+    <h1>LevelGoal</h1>
+    <p class="page-desc">Abstract base class for level challenge objectives. Goals are optional bonus conditions evaluated against the player's completed run — they award stars but are not required for level completion. Subclass <code>LevelGoal</code> to define any measurable win condition.</p>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <strong>Goals do not gate completion.</strong> A level is completed when the player reaches the End tile, regardless of goals. Goals award stars (one per satisfied goal) shown on the world map and level-select screen.
+    </div>
+  </div>
+
+  <!-- ── LevelGoal ── -->
+  <h2>LevelGoal</h2>
+  <p>Plain C# abstract class — not a ScriptableObject. Concrete subclasses are referenced by type name inside the <code>LevelInfo.Goal</code> struct and instantiated on demand via reflection. No manual registration is needed: the Inspector dropdown discovers all subclasses automatically.</p>
+
+  <h3>Abstract Members</h3>
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:34%"><col style="width:16%"><col style="width:50%"></colgroup>
+      <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>displayText</code></td>
+          <td><code>string</code> (get)</td>
+          <td>Human-readable label shown in the level-select UI next to the goal's star indicator. Example: <em>"Use less loops"</em>.</td>
+        </tr>
+        <tr>
+          <td><code>Check(<br>&nbsp;&nbsp;LevelData level,<br>&nbsp;&nbsp;int amountRequired)</code></td>
+          <td><code>bool</code></td>
+          <td>Returns <code>true</code> if the player satisfied this goal. <code>level</code> contains the completed run's statistics; <code>amountRequired</code> is the threshold set per-level in the <code>LevelInfo</code> Inspector.</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── Built-in Goals ── -->
+  <h2>Built-in Goals</h2>
+  <p>Two concrete implementations ship with the project. Select them from the <code>goals</code> dropdown in any <code>LevelInfo</code> asset.</p>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:34%"><col style="width:28%"><col style="width:20%"><col style="width:18%"></colgroup>
+      <thead><tr><th>Class</th><th><code>displayText</code></th><th>Win condition</th><th>Inspector name</th></tr></thead>
+      <tbody>
+        <tr>
+          <td><code>LevelGoal_InstructionCount</code></td>
+          <td><em>"Make an instruction sheet"</em></td>
+          <td><code>instructionsCount ≤ amountRequired</code></td>
+          <td>Instruction Count</td>
+        </tr>
+        <tr>
+          <td><code>LevelGoal_LoopCount</code></td>
+          <td><em>"Use less loops"</em></td>
+          <td><code>loops ≤ amountRequired</code></td>
+          <td>Loop Count</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── LevelData ── -->
+  <h2>LevelData</h2>
+  <p>The object passed to <code>Check()</code>. It is saved when the player completes a level and read back whenever goals are evaluated. Use its properties to drive custom goal logic.</p>
+
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:30%"><col style="width:16%"><col style="width:54%"></colgroup>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>instructionsCount</code></td><td><code>int</code></td><td>Total number of instructions placed on the sheet when the level was completed.</td></tr>
+        <tr><td><code>loops</code></td><td><code>int</code></td><td>Sum of all loop iteration counts across every sequence instruction in the sheet.</td></tr>
+        <tr><td><code>completed</code></td><td><code>bool</code></td><td><code>true</code> if the player has reached the End tile at least once.</td></tr>
+        <tr><td><code>instructions</code></td><td><code>SerializedInstruction[]</code></td><td>Raw serialized instruction data from the winning solution. Use this for advanced goals that inspect the structure of the sheet.</td></tr>
+        <tr><td><code>levelID</code></td><td><code>string</code></td><td>ID matching the <code>LevelInfo</code> this data belongs to.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr>
+
+  <!-- ── Create a custom goal ── -->
+  <h2>Create a Custom Goal</h2>
+
+  <ol>
+    <li>Create a new C# script in <strong>Assets / Scripts / Levels / Goals /</strong>.</li>
+    <li>Inherit from <code>LevelGoal</code> and add the <code>[TypeName]</code> attribute with a user-friendly label — this is the name shown in the Inspector dropdown.</li>
+    <li>Override <code>displayText</code> with the string the UI will show next to the star indicator.</li>
+    <li>Override <code>Check()</code> with your evaluation logic. Return <code>true</code> if the player satisfies the goal.</li>
+  </ol>
+
+  <p>No registration step is required. The Inspector dropdown uses <code>TypeCache.GetTypesDerivedFrom&lt;LevelGoal&gt;()</code> to discover all concrete subclasses at editor time.</p>
+
+<pre><span class="kw">using</span> LoopAdventure;
+
+[<span class="type">TypeName</span>(<span class="str">"No Loops Used"</span>)]
+<span class="kw">public class</span> <span class="type">LevelGoal_NoLoops</span> : <span class="type">LevelGoal</span>
+{
+    <span class="kw">public override string</span> displayText => <span class="str">"Complete without loops"</span>;
+
+    <span class="kw">public override bool</span> <span class="fn">Check</span>(<span class="type">LevelData</span> level, <span class="kw">int</span> amountRequired)
+    {
+        <span class="kw">return</span> level.loops == <span class="num">0</span>;
+    }
+}</pre>
+
+  <div class="callout tip">
+    <div class="callout-icon">💡</div>
+    <div class="callout-body">
+      <strong><code>amountRequired</code> is optional.</strong> If your goal has no numeric threshold (like the example above), simply ignore the parameter. The field will still appear in the Inspector but its value will have no effect.
+    </div>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>
