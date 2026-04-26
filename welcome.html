@@ -1,0 +1,401 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Loop Adventure — Documentation</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="welcome-body">
+
+  <!-- ── Hero ──────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="hero-inner">
+
+      <div class="hero-badge">Unity 6 &nbsp;·&nbsp; URP 17.3 &nbsp;·&nbsp; v1.0</div>
+
+      <div class="hero-logo">LOOP<br>ADVENTURE</div>
+
+      <div class="hero-rule"></div>
+      <p class="hero-subtitle">Documentation</p>
+
+      <p class="hero-desc">
+        A complete 2D puzzle-adventure game kit built on an
+        instruction-based programming system. Drop it into your
+        project and start shipping levels — or extend every system
+        with clean, well-documented APIs.
+      </p>
+
+    </div>
+
+    <div class="welcome-categories hero-categories">
+
+      <a href="manual-index.html" class="cat-block cat-block--manual">
+        <div class="cb-eyebrow">Manual</div>
+        <div class="cb-title">Workflows &amp; Guides</div>
+        <div class="cb-desc">Step-by-step walkthroughs for the most common tasks — from first run to writing custom instructions and enemy behaviours.</div>
+        <div class="cb-chips">
+          <span class="cb-chip">Overview</span>
+          <span class="cb-chip">Create an Instruction</span>
+          <span class="cb-chip">Create an Enemy Instruction</span>
+          <span class="cb-chip">Audio Setup</span>
+        </div>
+        <div class="cb-cta">Browse guides &nbsp;→</div>
+      </a>
+
+      <a href="scripting-index.html" class="cat-block cat-block--scripting">
+        <div class="cb-eyebrow">Scripting</div>
+        <div class="cb-title">API Reference</div>
+        <div class="cb-desc">Complete class and method reference for every public API — instruction classes, execution context, level managers, and audio systems.</div>
+        <div class="cb-chips">
+          <span class="cb-chip">Instruction</span>
+          <span class="cb-chip">ExecutionContext</span>
+          <span class="cb-chip">LevelManager</span>
+          <span class="cb-chip">+10 more</span>
+        </div>
+        <div class="cb-cta">Browse API &nbsp;→</div>
+      </a>
+
+    </div>
+
+  </section>
+
+  <!-- ── Overview ─────────────────────────────────────── -->
+  <div class="welcome-sections">
+
+    <div class="welcome-section-label">Overview</div>
+
+    <p class="overview-intro">
+      Loop Adventure is a complete 2D puzzle-adventure game kit for Unity 6 built around one central mechanic:
+      <strong>players program their character by composing sequences of instructions on a visual sheet</strong>,
+      then watch the engine execute them turn by turn against enemies, traps, and puzzles.
+      It ships as a fully playable game with five tutorial levels — and every system is cleanly
+      interfaced and designed to be extended without touching engine code.
+    </p>
+
+    <!-- 3-step flow -->
+    <div class="overview-flow">
+
+      <div class="ovf-step">
+        <div class="ovf-num">1</div>
+        <div class="ovf-title">Compose</div>
+        <p class="ovf-desc">The player drags instructions from the palette onto the sheet — Move, Attack, Block, Combo sequences, and more. Order and direction matter; the sheet is the program.</p>
+      </div>
+
+      <div class="ovf-divider"></div>
+
+      <div class="ovf-step">
+        <div class="ovf-num">2</div>
+        <div class="ovf-title">Execute</div>
+        <p class="ovf-desc">Hitting Play runs each instruction as a coroutine turn. An animated pointer follows execution in real time, looping back to the top automatically each cycle.</p>
+      </div>
+
+      <div class="ovf-divider"></div>
+
+      <div class="ovf-step">
+        <div class="ovf-num">3</div>
+        <div class="ovf-title">Resolve</div>
+        <p class="ovf-desc">Enemies and traps act in parallel each turn using the same task scheduler. On failure the scene resets completely — nothing is permanent until the player reaches the exit.</p>
+      </div>
+
+    </div>
+
+    <!-- 3 trait boxes -->
+    <div class="overview-traits">
+
+      <div class="ovt-item">
+        <span class="ovt-icon">🎯</span>
+        <div>
+          <div class="ovt-title">Who it's for</div>
+          <p class="ovt-desc">Developers building programming-puzzle, logic, or turn-based adventure games. Use the kit as-is — swap art and levels — or extend every system through its public C# APIs.</p>
+        </div>
+      </div>
+
+      <div class="ovt-item">
+        <span class="ovt-icon">🧱</span>
+        <div>
+          <div class="ovt-title">Unified architecture</div>
+          <p class="ovt-desc">Everything is an <code>Instruction</code> subclass. The same pattern that drives the player's Move and Attack also drives custom enemy behaviours, tile traps, and scripted cutscene events.</p>
+        </div>
+      </div>
+
+      <div class="ovt-item">
+        <span class="ovt-icon">🔌</span>
+        <div>
+          <div class="ovt-title">Interface-driven extensibility</div>
+          <p class="ovt-desc">All major systems expose interfaces: <code>IInteractable</code>, <code>ITaskReceiver</code>, <code>IPushable</code>, <code>IObstacle</code>. Add a class and a prefab — no engine modifications required.</p>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ── What's Included ───────────────────────────────── -->
+  <div class="welcome-sections welcome-sections--features">
+
+    <div class="welcome-section-label">What's Included</div>
+
+    <p class="features-intro">
+      Everything you need to ship a fully playable game — or the foundation
+      to build your own. Every system is self-contained, documented, and
+      designed to be extended with minimal friction.
+    </p>
+
+    <div class="feature-grid">
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">🧩</span>
+          <span class="fc-title">19 Built-in Player Instructions</span>
+        </div>
+        <p class="fc-desc">A rich library of ready-to-use actions players can drag onto the instruction sheet and execute immediately.</p>
+        <ul class="fc-list">
+          <li>Movement: Move, Jump, Evade, Push</li>
+          <li>Combat: Attack, Heavy Attack, Block</li>
+          <li>Items: Carry, Drop, Throw, Use, Interact</li>
+          <li>Flow control: Combo, Ping Pong, Rotate, Invert, Wait</li>
+          <li>Every instruction supports directional modifiers (Up / Down / Left / Right)</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">📋</span>
+          <span class="fc-title">Drag-and-Drop Instruction Sheet</span>
+        </div>
+        <p class="fc-desc">The player's coding interface — intuitive, responsive, and fully animated.</p>
+        <ul class="fc-list">
+          <li>Drag, drop, and reorder instructions visually</li>
+          <li>Undo / Redo with 20-step history (Ctrl+Z / Ctrl+Y)</li>
+          <li>Animated pointer that follows execution in real time</li>
+          <li>Speed toggle: 1× and 2×</li>
+          <li>Context-aware Play, Stop, and Clear buttons</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">⚙️</span>
+          <span class="fc-title">Turn-Based Execution Engine</span>
+        </div>
+        <p class="fc-desc">A robust runner that keeps player and enemy actions perfectly in sync, turn by turn.</p>
+        <ul class="fc-list">
+          <li>Three execution modes: Play, Observe, and Stopped</li>
+          <li>Configurable turn interval — slow down for drama, speed up for arcade feel</li>
+          <li>Parallel task scheduling for simultaneous enemy actions</li>
+          <li>Non-destructive execution via ExecutionContext — the scene state is restored on Reset</li>
+          <li>Per-turn validation with automatic failure detection</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">👹</span>
+          <span class="fc-title">Enemy AI System</span>
+        </div>
+        <p class="fc-desc">Enemies that think and act every turn, with the same extensible instruction pattern as the player.</p>
+        <ul class="fc-list">
+          <li>5 built-in enemy behaviours: Move, Attack, Block, Shoot, Wait</li>
+          <li>Shoot fires a live projectile that travels across the grid and deals damage on impact</li>
+          <li>Enemy health bar and action-indicator HUD out of the box</li>
+          <li>Enemies run their sequences in parallel with the player's turn</li>
+          <li>Add new behaviours by extending EnemyInstruction — one class, one prefab</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">📦</span>
+          <span class="fc-title">Interactive World Objects</span>
+        </div>
+        <p class="fc-desc">Five ready-made prefabs the player can discover, collect, carry, and manipulate to build environmental puzzles.</p>
+        <ul class="fc-list">
+          <li>Pickup: automatically collected when the player steps on it</li>
+          <li>Chest: manually activated to collect its item reward</li>
+          <li>Carry object: pick up a crate, carry it, and throw it to reach new positions</li>
+          <li>Pushable block: shove heavy objects onto pressure plates or into gaps</li>
+          <li>Door: togglable obstacle with optional key requirement</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">⚠️</span>
+          <span class="fc-title">Tile Traps</span>
+        </div>
+        <p class="fc-desc">Grid-embedded hazards that activate every turn as parallel tasks, in perfect sync with the player and enemies.</p>
+        <ul class="fc-list">
+          <li>Pressure Plate: detects the player or any obstacle on its tile; fires OnActivated / OnDeactivated events</li>
+          <li>Appearing Spikes: cycles through a configurable array of safe and lethal stages each turn</li>
+          <li>Both register automatically — no manual wiring to the task scheduler</li>
+          <li>Connect plates to doors, bridges, or any UnityEvent receiver in the Inspector</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">🎒</span>
+          <span class="fc-title">Inventory & Equipment</span>
+        </div>
+        <p class="fc-desc">A complete item system with stackable slots, gear stats, and visual feedback.</p>
+        <ul class="fc-list">
+          <li>Fixed-slot inventory with item stacking</li>
+          <li>5 equipment slots: Weapon, Armor, Helmet, Shield, Boots</li>
+          <li>Stat modifier system — attack, defense, speed</li>
+          <li>Active effects controller with on-screen visual notifications</li>
+          <li>Fully serialized for automatic save and restore</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">🗺️</span>
+          <span class="fc-title">World Map & 5 Tutorial Levels</span>
+        </div>
+        <p class="fc-desc">A ready-to-play game flow — from the hub map through five hand-crafted teaching levels.</p>
+        <ul class="fc-list">
+          <li>GameMapScene hub with level markers and unlock states</li>
+          <li>5 tutorial levels covering movement, combat, items, and sequences</li>
+          <li>Level entry and exit managed by WorldMapManager</li>
+          <li>LevelInfo ScriptableObjects make adding new levels straightforward</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">🏆</span>
+          <span class="fc-title">Level Goals & Challenges</span>
+        </div>
+        <p class="fc-desc">Per-level constraints that add depth and replayability beyond simply reaching the exit.</p>
+        <ul class="fc-list">
+          <li>Instruction Count goal: complete the level using no more than N instructions on the sheet</li>
+          <li>Loop Count goal: limit how many times the sheet can loop before the run fails</li>
+          <li>Each goal has its own HUD indicator and pass/fail state</li>
+          <li>Goals are ScriptableObject assets assigned per level — no code needed to configure them</li>
+          <li>Extend the base LevelGoal class to add custom win/fail conditions</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">💾</span>
+          <span class="fc-title">Save / Load System</span>
+        </div>
+        <p class="fc-desc">Persistent progress that survives game restarts — zero setup required.</p>
+        <ul class="fc-list">
+          <li>JSON-based save file written to the platform's persistent data path</li>
+          <li>Saves level progress, inventory, discovered equipment, and audio settings</li>
+          <li>Data is written automatically on level completion and on game close</li>
+          <li>SoundSettings records each AudioMixer parameter the first time it is changed</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">🔊</span>
+          <span class="fc-title">Audio System</span>
+        </div>
+        <p class="fc-desc">Persistent volume settings and smooth music transitions — wired up and ready to go.</p>
+        <ul class="fc-list">
+          <li>SoundManager singleton restores all AudioMixer settings from the save file on startup</li>
+          <li>MusicManager crossfades between tracks across scene loads</li>
+          <li>GameOptionsMenu_SoundSlider: drop-in volume slider — reads the mixer on Start, delegates changes to SoundManager</li>
+          <li>Volume preferences survive game restarts; new parameters are recorded automatically</li>
+        </ul>
+      </div>
+
+      <div class="feature-card">
+        <div class="fc-header">
+          <span class="fc-icon">🛠️</span>
+          <span class="fc-title">Developer-Ready Codebase</span>
+        </div>
+        <p class="fc-desc">147 C# scripts written to professional standards — easy to read, extend, and maintain.</p>
+        <ul class="fc-list">
+          <li>Consistent LoopAdventure namespace across every script</li>
+          <li>Full XML documentation on every public class and method</li>
+          <li>Interface-driven design: IInteractable, ICarryObject, IPushable, ITaskReceiver</li>
+          <li>Custom inspector attributes: [ReadOnly], [ShowIf], [TypeName]</li>
+          <li>Zero TODO / FIXME markers — production-quality, not a demo</li>
+        </ul>
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- ── Package Contents ──────────────────────────────── -->
+  <div class="welcome-sections">
+
+    <div class="welcome-section-label">Package Contents</div>
+
+    <div class="contents-grid">
+      <div class="contents-item">
+        <div class="ci-folder">Assets/Prefabs/</div>
+        <div class="ci-desc">70+ ready-to-use prefabs — enemies, interactables, player instructions, and all UI panels.</div>
+      </div>
+      <div class="contents-item">
+        <div class="ci-folder">Assets/Scenes/</div>
+        <div class="ci-desc">GameMapScene hub and 5 tutorial levels covering every core mechanic.</div>
+      </div>
+      <div class="contents-item">
+        <div class="ci-folder">Assets/Scripts/</div>
+        <div class="ci-desc">147 C# scripts organized by system: Instructions, Managers, Player, Enemies, UI, and more.</div>
+      </div>
+      <div class="contents-item">
+        <div class="ci-folder">Assets/Scriptable Objects/</div>
+        <div class="ci-desc">Item, equipment, and level databases as ScriptableObject assets — no code needed to add entries.</div>
+      </div>
+      <div class="contents-item">
+        <div class="ci-folder">Assets/Sounds/</div>
+        <div class="ci-desc">Kenney RPG and UI audio packs (CC0 license) — free to use in commercial projects.</div>
+      </div>
+      <div class="contents-item">
+        <div class="ci-folder">Assets/Sprites/</div>
+        <div class="ci-desc">Character, tile, and UI art — everything visible in the tutorial levels.</div>
+      </div>
+      <div class="contents-item">
+        <div class="ci-folder">Assets/Animations/</div>
+        <div class="ci-desc">Animation controllers for the player character, enemies, and UI elements.</div>
+      </div>
+      <div class="contents-item">
+        <div class="ci-folder">Assets/Documentation/</div>
+        <div class="ci-desc">This documentation site — manual, scripting API reference, and how-to guides.</div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- ── Support ───────────────────────────────────────── -->
+  <div class="welcome-sections">
+    <div class="welcome-support-box">
+      <div class="wsb-text">
+        <h3>Questions or feedback?</h3>
+        <p>Bug reports, feature requests, and integration questions are all welcome.</p>
+      </div>
+      <a href="mailto:delambert1993@gmail.com" class="wsb-email">delambert1993@gmail.com</a>
+    </div>
+  </div>
+
+  <!-- ── Footer ────────────────────────────────────────── -->
+  <footer class="welcome-footer">
+    Built with Unity 6 (6000.3.6f1) &nbsp;·&nbsp; Universal Render Pipeline 17.3 &nbsp;·&nbsp; Loop Adventure
+  </footer>
+
+  <!-- ── Back to top ───────────────────────────────────── -->
+  <button class="back-to-top" id="backToTop" aria-label="Back to top" title="Back to top">
+    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="18 15 12 9 6 15"></polyline></svg>
+  </button>
+
+  <script>
+    const hero  = document.querySelector('.hero');
+    const btn   = document.getElementById('backToTop');
+    const obs   = new IntersectionObserver(([e]) => {
+      btn.classList.toggle('visible', !e.isIntersecting);
+    }, { threshold: 0 });
+    obs.observe(hero);
+    btn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
+  </script>
+
+</body>
+</html>

@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IExecutionSuscriber — Loop Adventure Docs</title>
+  <title>World Map — Loop Adventure Docs</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,7 +29,6 @@
   <a href="manual-ui-screens.html" class="nav-link">UI Screens</a>
   <a href="manual-projectile-setup.html" class="nav-link">Projectile</a>
   <a href="manual-visual-fx-setup.html" class="nav-link">Visual FX &amp; Utilities</a>
-  <a href="manual-ui.html" class="nav-link">UI Setup</a>
   <div class="nav-divider"></div>
   <div class="nav-section">Scripting</div>
   <div class="nav-sub-section">Instructions</div>
@@ -39,7 +38,7 @@
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
-  <a href="sc-execution-subscriber.html" class="nav-link sub active">IExecutionSuscriber</a>
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
   <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
   <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
   <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
@@ -83,7 +82,7 @@
   <a href="sc-item-dropper.html" class="nav-link sub">ItemDropper</a>
   <a href="sc-game-data-manager.html" class="nav-link sub">GameDataManager</a>
   <a href="sc-database-manager.html" class="nav-link sub">DatabaseManager</a>
-  <a href="sc-world-map.html" class="nav-link sub">World Map</a>
+  <a href="sc-world-map.html" class="nav-link sub active">World Map</a>
   <a href="sc-level-screens.html" class="nav-link sub">Level Screens</a>
   <a href="sc-equipment-browser.html" class="nav-link sub">Equipment Browser</a>
   <a href="sc-projectile.html" class="nav-link sub">Projectile</a>
@@ -92,78 +91,42 @@
 </nav>
 <main class="main">
   <div class="page-header">
-    <div class="page-tag">Scripting / Instructions</div>
-    <h1>IExecutionSuscriber</h1>
-    <p class="page-desc">Lightweight notification interface for enemies and interactables that need to react to each instruction step. Implement it on any component in the enemy's hierarchy — the <code>EnemyController</code> discovers and registers all subscribers automatically at initialization.</p>
+    <div class="page-tag">Scripting / Components</div>
+    <h1>World Map</h1>
+    <p class="page-desc">Two components that power the world map scene: <code>WorldMapManager</code> orchestrates map initialization and level info display, and <code>LevelMarker</code> represents an individual selectable level node with star rating and unlock chaining.</p>
   </div>
 
-  <h2>Interface</h2>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:44%"><col style="width:56%"></colgroup>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Execute(ExecutionContext context)</code></td><td>Called every time the owning enemy executes an instruction step. Use it to trigger animations, sounds, projectiles, or any side-effect that should accompany the enemy's action.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>WorldMapManager</h2>
+  <p>Placed once in the world map scene. On start it finds all <code>LevelMarker</code> instances in the scene, initializes them, and locks markers for levels that are not yet available.</p>
+  <h3>Methods</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>OpenLevelInfoScreen(LevelInfo level)</code></td><td>Opens the <code>LevelInfoScreen</code> panel and populates it with the data for <code>level</code>. Called automatically when the player clicks a <code>LevelMarker</code>.</td></tr>
+    </tbody>
+  </table></div>
 
-  <h2>How registration works</h2>
-  <p>You do not need to register subscribers manually. When a level starts, <code>EnemyController.Initialize()</code> calls <code>GetComponentsInChildren&lt;IExecutionSuscriber&gt;()</code> on the enemy's GameObject and wires every result into the internal <code>OnExecute</code> event:</p>
-  <pre><span class="cmt">// inside EnemyController.Initialize() — runs automatically</span>
-<span class="type">IExecutionSuscriber</span>[] suscribers = <span class="fn">GetComponentsInChildren</span>&lt;<span class="type">IExecutionSuscriber</span>&gt;();
-<span class="kw">foreach</span> (<span class="type">IExecutionSuscriber</span> s <span class="kw">in</span> suscribers)
-    OnExecute += s.<span class="fn">Execute</span>;</pre>
-  <p>Each time the enemy's current instruction executes, <code>EnemyController</code> invokes <code>OnExecute</code>, which calls <code>Execute()</code> on every registered subscriber in order.</p>
-  <p>To add a subscriber to an enemy: attach a MonoBehaviour that implements <code>IExecutionSuscriber</code> to the enemy's root GameObject or any of its children. No other wiring is required.</p>
-
-  <h2>IExecutionSuscriber vs ITaskReceiver</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th></th><th>IExecutionSuscriber</th><th>ITaskReceiver</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Ownership</strong></td><td>Reacts to the enemy's own action</td><td>Schedules an independent parallel task</td></tr>
-        <tr><td><strong>Timing</strong></td><td>Synchronous — fires inline during instruction execution</td><td>Asynchronous — runs concurrently alongside player instructions</td></tr>
-        <tr><td><strong>Use when</strong></td><td>You need a fire-and-forget side-effect (sound, VFX, projectile) tied to the enemy's action</td><td>The object needs its own coroutine that runs in parallel every turn</td></tr>
-        <tr><td><strong>Registration</strong></td><td>Auto-discovered via <code>GetComponentsInChildren</code></td><td>Must be registered with the runner explicitly</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>Example</h2>
-  <p>A subscriber that plays a sound clip each time the enemy executes an action:</p>
-  <pre><span class="kw">using</span> UnityEngine;
-
-<span class="kw">namespace</span> LoopAdventure
-{
-    <span class="kw">public class</span> <span class="type">ActionSoundSubscriber</span> : <span class="type">MonoBehaviour</span>, <span class="type">IExecutionSuscriber</span>
-    {
-        [<span class="type">SerializeField</span>] <span class="type">AudioClip</span> actionClip;
-        <span class="type">AudioSource</span> audioSource;
-
-        <span class="kw">void</span> <span class="fn">Start</span>()
-        {
-            audioSource = <span class="fn">GetComponentInParent</span>&lt;<span class="type">AudioSource</span>&gt;();
-        }
-
-        <span class="kw">public void</span> <span class="fn">Execute</span>(<span class="type">ExecutionContext</span> context)
-        {
-            <span class="kw">if</span> (actionClip != <span class="kw">null</span>)
-                audioSource.<span class="fn">PlayOneShot</span>(actionClip);
-        }
-    }
-}</pre>
-  <p>Attach this component to the enemy's root GameObject or any child. The <code>EnemyController</code> will pick it up automatically — no further wiring needed.</p>
-
-  <h2>Built-in implementations</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Class</th><th>Behaviour</th></tr></thead>
-      <tbody>
-        <tr><td><code>ShootSuscriber</code></td><td>Fires a <code>Projectile</code> prefab in the enemy's current direction from the subscriber's world position each time the enemy executes. Assign the projectile prefab in the Inspector.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>LevelMarker</h2>
+  <p>Attach to each level node in the world map scene. A marker can reference child markers that unlock when this level is completed, forming the unlock chain for the world map progression.</p>
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>active</code></td><td><code>bool</code></td><td>Whether this level is currently unlocked and selectable.</td></tr>
+      <tr><td><code>level</code></td><td><code>LevelInfo</code></td><td>The level asset this marker represents.</td></tr>
+      <tr><td><code>childs</code></td><td><code>LevelMarker[]</code></td><td>Markers that become active when this level is completed.</td></tr>
+      <tr><td><code>starRenderer</code></td><td><code>SpriteRenderer</code></td><td>Renderer used to display the star-rating sprite after the level is completed.</td></tr>
+      <tr><td><code>starsSprites</code></td><td><code>Sprite[]</code></td><td>Star sprites indexed by star count (index 0 = 1 star, 1 = 2 stars, 2 = 3 stars).</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Methods</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>Initialize()</code></td><td>Loads saved level data, updates the star sprite to reflect the player's best result, and activates child markers if this level has been completed. Called by <code>WorldMapManager</code> on start.</td></tr>
+      <tr><td><code>CheckCompleted()</code></td><td>Re-evaluates completion state and activates or deactivates child markers accordingly. Call this after a level result is saved to refresh the map without reloading the scene.</td></tr>
+    </tbody>
+  </table></div>
 
 </main>
 <script src="search-index.js"></script>

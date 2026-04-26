@@ -15,6 +15,8 @@
     <p class="page-desc">Step-by-step walkthroughs for the most common tasks. Start with the Overview if this is your first time, then follow the how-to guides to extend the game with your own content.</p>
   </div>
 
+  <h2>How-To Guides</h2>
+  <p>Workflow guides for adding and customising game content — new instructions, enemy AI, interactables, and level design.</p>
   <div class="index-grid">
 
     <a href="manual-overview.html" class="index-card">
@@ -153,6 +155,109 @@
           <span>InventoryWindow</span>
           <span>NotificationLayout</span>
           <span>Window</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
+  <h2>Setup Guides</h2>
+  <p>Reference guides for configuring the built-in components and systems — player stats, enemy prefabs, data persistence, world map, and scene utilities.</p>
+  <div class="index-grid">
+
+    <a href="manual-player-setup.html" class="index-card">
+      <div class="ic-icon">🧍</div>
+      <div class="ic-body">
+        <div class="ic-title">Player Setup</div>
+        <div class="ic-desc">Configure PlayerHealth, PlayerStamina, and ActiveEffectsController on the player GameObject. Wire health and stamina events to the HUD.</div>
+        <div class="ic-topics">
+          <span>PlayerHealth</span>
+          <span>PlayerStamina</span>
+          <span>ActiveEffectsController</span>
+          <span>HUD wiring</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-enemy-setup.html" class="index-card">
+      <div class="ic-icon">👾</div>
+      <div class="ic-body">
+        <div class="ic-title">Enemy Setup</div>
+        <div class="ic-desc">Configure EnemyHealth, optional ItemDropper loot, and the four Enemy HUD components on an enemy prefab.</div>
+        <div class="ic-topics">
+          <span>EnemyHealth</span>
+          <span>ItemDropper</span>
+          <span>EnemyHealthBar</span>
+          <span>EnemyActionSequencePanel</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-data-systems.html" class="index-card">
+      <div class="ic-icon">💾</div>
+      <div class="ic-body">
+        <div class="ic-title">Data Systems</div>
+        <div class="ic-desc">Set up DatabaseManager (item lookup) and GameDataManager (level progress, audio settings, discovered equipment). Both are persistent singletons.</div>
+        <div class="ic-topics">
+          <span>DatabaseManager</span>
+          <span>GameDataManager</span>
+          <span>SaveLevel()</span>
+          <span>DiscoveredEquipment</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-world-map-setup.html" class="index-card">
+      <div class="ic-icon">🗺️</div>
+      <div class="ic-body">
+        <div class="ic-title">World Map</div>
+        <div class="ic-desc">Build the world map scene with WorldMapManager and one LevelMarker per level. Chain markers to form the unlock progression and display star ratings.</div>
+        <div class="ic-topics">
+          <span>WorldMapManager</span>
+          <span>LevelMarker</span>
+          <span>LevelInfoScreen</span>
+          <span>Star ratings</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-ui-screens.html" class="index-card">
+      <div class="ic-icon">🖥️</div>
+      <div class="ic-body">
+        <div class="ic-title">UI Screens</div>
+        <div class="ic-desc">Configure the win screen, in-game options menu, and item list window. All extend Window and follow the same open/close pattern.</div>
+        <div class="ic-topics">
+          <span>WinScreenController</span>
+          <span>GameOptionsMenu</span>
+          <span>ItemsListWindow</span>
+          <span>Window base class</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-projectile-setup.html" class="index-card">
+      <div class="ic-icon">🏹</div>
+      <div class="ic-body">
+        <div class="ic-title">Projectile</div>
+        <div class="ic-desc">Create a projectile prefab and fire it from a ranged player instruction, or attach ShootSuscriber to an enemy for no-code ranged attacks.</div>
+        <div class="ic-topics">
+          <span>Projectile prefab</span>
+          <span>Shoot()</span>
+          <span>ShootSuscriber</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="manual-visual-fx-setup.html" class="index-card">
+      <div class="ic-icon">✨</div>
+      <div class="ic-body">
+        <div class="ic-title">Visual FX &amp; Utilities</div>
+        <div class="ic-desc">Drop-in components for breathing animations, hover effects, decorative clouds, UI locking during play, pixel snapping, and Y-based depth sorting.</div>
+        <div class="ic-topics">
+          <span>SpriteExpandAnimation</span>
+          <span>HoveringMouse</span>
+          <span>DisableOnRunning</span>
+          <span>DepthSortingOrder</span>
         </div>
       </div>
     </a>

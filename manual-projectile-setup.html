@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IExecutionSuscriber — Loop Adventure Docs</title>
+  <title>Projectile — Loop Adventure Docs</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -27,9 +27,8 @@
   <a href="manual-data-systems.html" class="nav-link">Data Systems</a>
   <a href="manual-world-map-setup.html" class="nav-link">World Map</a>
   <a href="manual-ui-screens.html" class="nav-link">UI Screens</a>
-  <a href="manual-projectile-setup.html" class="nav-link">Projectile</a>
+  <a href="manual-projectile-setup.html" class="nav-link active">Projectile</a>
   <a href="manual-visual-fx-setup.html" class="nav-link">Visual FX &amp; Utilities</a>
-  <a href="manual-ui.html" class="nav-link">UI Setup</a>
   <div class="nav-divider"></div>
   <div class="nav-section">Scripting</div>
   <div class="nav-sub-section">Instructions</div>
@@ -39,7 +38,7 @@
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
-  <a href="sc-execution-subscriber.html" class="nav-link sub active">IExecutionSuscriber</a>
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
   <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
   <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
   <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
@@ -92,77 +91,54 @@
 </nav>
 <main class="main">
   <div class="page-header">
-    <div class="page-tag">Scripting / Instructions</div>
-    <h1>IExecutionSuscriber</h1>
-    <p class="page-desc">Lightweight notification interface for enemies and interactables that need to react to each instruction step. Implement it on any component in the enemy's hierarchy — the <code>EnemyController</code> discovers and registers all subscribers automatically at initialization.</p>
+    <div class="page-tag">Manual / Setup Guides</div>
+    <h1>Projectile</h1>
+    <p class="page-desc">Set up a ranged projectile prefab and fire it from a player instruction or an enemy using <code>ShootSuscriber</code>. Both paths share the same prefab format.</p>
   </div>
 
-  <h2>Interface</h2>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:44%"><col style="width:56%"></colgroup>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Execute(ExecutionContext context)</code></td><td>Called every time the owning enemy executes an instruction step. Use it to trigger animations, sounds, projectiles, or any side-effect that should accompany the enemy's action.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>1. Create the projectile prefab</h2>
+  <ol>
+    <li>Create a new GameObject with a <code>SpriteRenderer</code> and assign a sprite.</li>
+    <li>Add a <code>Collider2D</code> (typically a small <code>CircleCollider2D</code>) set to <strong>Is Trigger</strong>.</li>
+    <li>Add an <code>AudioSource</code> component.</li>
+    <li>Add the <code>Projectile</code> component and configure it:
+      <ul>
+        <li><strong>Speed</strong> — world units per second the projectile travels.</li>
+        <li><strong>Damage</strong> — hit points removed on impact.</li>
+        <li><strong>Shoot Sound</strong> — clip played at launch.</li>
+        <li><strong>Hit Sound</strong> — clip played on impact.</li>
+      </ul>
+    </li>
+    <li>Save as a prefab.</li>
+  </ol>
 
-  <h2>How registration works</h2>
-  <p>You do not need to register subscribers manually. When a level starts, <code>EnemyController.Initialize()</code> calls <code>GetComponentsInChildren&lt;IExecutionSuscriber&gt;()</code> on the enemy's GameObject and wires every result into the internal <code>OnExecute</code> event:</p>
-  <pre><span class="cmt">// inside EnemyController.Initialize() — runs automatically</span>
-<span class="type">IExecutionSuscriber</span>[] suscribers = <span class="fn">GetComponentsInChildren</span>&lt;<span class="type">IExecutionSuscriber</span>&gt;();
-<span class="kw">foreach</span> (<span class="type">IExecutionSuscriber</span> s <span class="kw">in</span> suscribers)
-    OnExecute += s.<span class="fn">Execute</span>;</pre>
-  <p>Each time the enemy's current instruction executes, <code>EnemyController</code> invokes <code>OnExecute</code>, which calls <code>Execute()</code> on every registered subscriber in order.</p>
-  <p>To add a subscriber to an enemy: attach a MonoBehaviour that implements <code>IExecutionSuscriber</code> to the enemy's root GameObject or any of its children. No other wiring is required.</p>
-
-  <h2>IExecutionSuscriber vs ITaskReceiver</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th></th><th>IExecutionSuscriber</th><th>ITaskReceiver</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Ownership</strong></td><td>Reacts to the enemy's own action</td><td>Schedules an independent parallel task</td></tr>
-        <tr><td><strong>Timing</strong></td><td>Synchronous — fires inline during instruction execution</td><td>Asynchronous — runs concurrently alongside player instructions</td></tr>
-        <tr><td><strong>Use when</strong></td><td>You need a fire-and-forget side-effect (sound, VFX, projectile) tied to the enemy's action</td><td>The object needs its own coroutine that runs in parallel every turn</td></tr>
-        <tr><td><strong>Registration</strong></td><td>Auto-discovered via <code>GetComponentsInChildren</code></td><td>Must be registered with the runner explicitly</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>Example</h2>
-  <p>A subscriber that plays a sound clip each time the enemy executes an action:</p>
-  <pre><span class="kw">using</span> UnityEngine;
-
-<span class="kw">namespace</span> LoopAdventure
+  <h2>2a. Use in a player instruction</h2>
+  <p>Hold a reference to the projectile prefab in your instruction ScriptableObject, then call <code>Shoot</code> inside <code>Tick()</code>:</p>
+  <pre><span class="kw">protected override</span> IEnumerator <span class="fn">Tick</span>(<span class="type">ExecutionContext</span> ctx)
 {
-    <span class="kw">public class</span> <span class="type">ActionSoundSubscriber</span> : <span class="type">MonoBehaviour</span>, <span class="type">IExecutionSuscriber</span>
-    {
-        [<span class="type">SerializeField</span>] <span class="type">AudioClip</span> actionClip;
-        <span class="type">AudioSource</span> audioSource;
-
-        <span class="kw">void</span> <span class="fn">Start</span>()
-        {
-            audioSource = <span class="fn">GetComponentInParent</span>&lt;<span class="type">AudioSource</span>&gt;();
-        }
-
-        <span class="kw">public void</span> <span class="fn">Execute</span>(<span class="type">ExecutionContext</span> context)
-        {
-            <span class="kw">if</span> (actionClip != <span class="kw">null</span>)
-                audioSource.<span class="fn">PlayOneShot</span>(actionClip);
-        }
-    }
+    <span class="type">Projectile</span> p = projectilePrefab.<span class="fn">Shoot</span>(
+        ctx,
+        ctx.player.direction,
+        ctx.player.transform.position,
+        <span class="type">Quaternion</span>.identity
+    );
+    <span class="kw">yield return new</span> <span class="fn">WaitUntil</span>(() => p == <span class="kw">null</span>);
 }</pre>
-  <p>Attach this component to the enemy's root GameObject or any child. The <code>EnemyController</code> will pick it up automatically — no further wiring needed.</p>
+  <p>The coroutine waits until the projectile is destroyed (hit or left the map), then the instruction ends.</p>
 
-  <h2>Built-in implementations</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Class</th><th>Behaviour</th></tr></thead>
-      <tbody>
-        <tr><td><code>ShootSuscriber</code></td><td>Fires a <code>Projectile</code> prefab in the enemy's current direction from the subscriber's world position each time the enemy executes. Assign the projectile prefab in the Inspector.</td></tr>
-      </tbody>
-    </table>
+  <h2>2b. Use on an enemy with ShootSuscriber</h2>
+  <p>For enemies that shoot as part of their action loop, use the built-in <a href="sc-execution-subscriber.html">IExecutionSuscriber</a> <code>ShootSuscriber</code> instead of writing a custom instruction:</p>
+  <ol>
+    <li>Add <code>ShootSuscriber</code> to the enemy root (or any child).</li>
+    <li>Assign the <strong>Projectile</strong> prefab field.</li>
+  </ol>
+  <p><code>EnemyController.Initialize()</code> finds <code>ShootSuscriber</code> via <code>GetComponentsInChildren</code> and subscribes it to the action-execute event automatically. The enemy fires the projectile whenever the assigned action runs.</p>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      See <a href="sc-projectile.html">Projectile</a> for the full scripting reference.
+    </div>
   </div>
 
 </main>

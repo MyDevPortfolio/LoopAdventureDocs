@@ -544,6 +544,188 @@
 
   </div>
 
+  <!-- ── Components ── -->
+  <h2>Components</h2>
+  <p>MonoBehaviour components for character stats, enemy display, data persistence, world map, level screens, projectiles, visual effects, and scene utilities.</p>
+  <div class="index-grid">
+
+    <a href="sc-player-stamina.html" class="index-card index-card--teal">
+      <div class="ic-icon">⚡</div>
+      <div class="ic-body">
+        <div class="ic-title">PlayerStamina</div>
+        <div class="ic-desc">Tracks the player's stamina resource. Exposes events for HUD updates and methods to spend or restore points from inside instructions.</div>
+        <div class="ic-topics">
+          <span>Substract() / Add()</span>
+          <span>OnDepleted</span>
+          <span>OnReplenished</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-health.html" class="index-card index-card--teal">
+      <div class="ic-icon">❤️</div>
+      <div class="ic-body">
+        <div class="ic-title">Health</div>
+        <div class="ic-desc">Abstract base for health systems with damage, block, heal, and kill methods. PlayerHealth and EnemyHealth extend it with character-specific behaviour.</div>
+        <div class="ic-topics">
+          <span>ApplyDamage()</span>
+          <span>Heal() / Kill()</span>
+          <span>OnDie</span>
+          <span>PlayerHealth / EnemyHealth</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-active-effects-controller.html" class="index-card index-card--teal">
+      <div class="ic-icon">🔁</div>
+      <div class="ic-body">
+        <div class="ic-title">ActiveEffectsController</div>
+        <div class="ic-desc">Tracks all timed stat effects on the player, decrements their remaining turns, and reverts them automatically on expiry.</div>
+        <div class="ic-topics">
+          <span>Track()</span>
+          <span>Clear()</span>
+          <span>duration &gt; 0</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-enemy-hud.html" class="index-card index-card--teal">
+      <div class="ic-icon">👾</div>
+      <div class="ic-body">
+        <div class="ic-title">Enemy HUD</div>
+        <div class="ic-desc">Four components for the in-world enemy display: health counter, animated action indicator, full action-sequence panel, and per-action layout widget.</div>
+        <div class="ic-topics">
+          <span>EnemyHealthBar</span>
+          <span>EnemyInstructionIndicator</span>
+          <span>EnemyActionSequencePanel</span>
+          <span>EnemyAction_Layout</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-item-dropper.html" class="index-card index-card--teal">
+      <div class="ic-icon">💎</div>
+      <div class="ic-body">
+        <div class="ic-title">ItemDropper</div>
+        <div class="ic-desc">Spawns a pickup at the entity's tile when it dies. Also covers ItemUsedFX, which briefly flashes an item's sprite at the use position.</div>
+        <div class="ic-topics">
+          <span>Drop()</span>
+          <span>OnDie wiring</span>
+          <span>ItemUsedFX</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-game-data-manager.html" class="index-card index-card--teal">
+      <div class="ic-icon">💾</div>
+      <div class="ic-body">
+        <div class="ic-title">GameDataManager</div>
+        <div class="ic-desc">Singleton that persists level progress, audio settings, and discovered equipment. All public members are static — no instance reference needed.</div>
+        <div class="ic-topics">
+          <span>SaveLevel()</span>
+          <span>GetLevelData()</span>
+          <span>DiscoveredEquipment</span>
+          <span>SaveNow()</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-database-manager.html" class="index-card index-card--teal">
+      <div class="ic-icon">🗄️</div>
+      <div class="ic-body">
+        <div class="ic-title">DatabaseManager</div>
+        <div class="ic-desc">Singleton that indexes every item asset from an ItemsReferences ScriptableObject into fast type-specific lookup tables at startup.</div>
+        <div class="ic-topics">
+          <span>current (singleton)</span>
+          <span>ItemsReferences</span>
+          <span>Type lookup</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-world-map.html" class="index-card index-card--teal">
+      <div class="ic-icon">🗺️</div>
+      <div class="ic-body">
+        <div class="ic-title">World Map</div>
+        <div class="ic-desc">WorldMapManager orchestrates map initialization and the level info panel. LevelMarker represents each selectable level node with star ratings and unlock chaining.</div>
+        <div class="ic-topics">
+          <span>WorldMapManager</span>
+          <span>LevelMarker</span>
+          <span>Initialize()</span>
+          <span>childs unlock</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-level-screens.html" class="index-card index-card--teal">
+      <div class="ic-icon">🖥️</div>
+      <div class="ic-body">
+        <div class="ic-title">Level Screens</div>
+        <div class="ic-desc">Ready-made UI screens: LevelInfoScreen (world map panel), LevelGoalLayout, WinScreenController, GameOptionsMenu, and ItemsListWindow.</div>
+        <div class="ic-topics">
+          <span>LevelInfoScreen</span>
+          <span>WinScreenController</span>
+          <span>GameOptionsMenu</span>
+          <span>ItemsListWindow</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-equipment-browser.html" class="index-card index-card--teal">
+      <div class="ic-icon">⚔️</div>
+      <div class="ic-body">
+        <div class="ic-title">Equipment Browser</div>
+        <div class="ic-desc">Paginated discovered-equipment panel: DiscoveredEquipmentList, DiscoveredEquipment_Layout entry widget, and StatElement/EffectElement tooltip layouts.</div>
+        <div class="ic-topics">
+          <span>ShowType()</span>
+          <span>Next() / Previous()</span>
+          <span>CreateInstance()</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-projectile.html" class="index-card index-card--teal">
+      <div class="ic-icon">🏹</div>
+      <div class="ic-body">
+        <div class="ic-title">Projectile</div>
+        <div class="ic-desc">Self-propelled prefab that travels in a straight line and applies damage on the first collider it hits. Fire from a ranged instruction or via ShootSuscriber on enemies.</div>
+        <div class="ic-topics">
+          <span>Shoot()</span>
+          <span>speed / damage</span>
+          <span>ShootSuscriber</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-visual-fx.html" class="index-card index-card--teal">
+      <div class="ic-icon">✨</div>
+      <div class="ic-body">
+        <div class="ic-title">Visual FX</div>
+        <div class="ic-desc">SpriteExpandAnimation, SinExpandAnimation (UI breathing), HoveringMouse (scale on hover), and CloudsController (procedural drifting clouds).</div>
+        <div class="ic-topics">
+          <span>SpriteExpandAnimation</span>
+          <span>SinExpandAnimation</span>
+          <span>HoveringMouse</span>
+          <span>CloudsController</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-utility-components.html" class="index-card index-card--teal">
+      <div class="ic-icon">🔧</div>
+      <div class="ic-body">
+        <div class="ic-title">Utilities</div>
+        <div class="ic-desc">DisableOnRunning and DisableButtonOnRunning lock UI during play. PixelSnaper snaps to pixel/grid. DepthSortingOrder drives Y-based painter's depth.</div>
+        <div class="ic-topics">
+          <span>DisableOnRunning</span>
+          <span>PixelSnaper</span>
+          <span>DepthSortingOrder</span>
+        </div>
+      </div>
+    </a>
+
+  </div>
+
 </main>
 <script src="search-index.js"></script>
 <script src="docs.js"></script>

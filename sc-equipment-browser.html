@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IExecutionSuscriber — Loop Adventure Docs</title>
+  <title>Equipment Browser — Loop Adventure Docs</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,7 +29,6 @@
   <a href="manual-ui-screens.html" class="nav-link">UI Screens</a>
   <a href="manual-projectile-setup.html" class="nav-link">Projectile</a>
   <a href="manual-visual-fx-setup.html" class="nav-link">Visual FX &amp; Utilities</a>
-  <a href="manual-ui.html" class="nav-link">UI Setup</a>
   <div class="nav-divider"></div>
   <div class="nav-section">Scripting</div>
   <div class="nav-sub-section">Instructions</div>
@@ -39,7 +38,7 @@
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
-  <a href="sc-execution-subscriber.html" class="nav-link sub active">IExecutionSuscriber</a>
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
   <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
   <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
   <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
@@ -85,85 +84,93 @@
   <a href="sc-database-manager.html" class="nav-link sub">DatabaseManager</a>
   <a href="sc-world-map.html" class="nav-link sub">World Map</a>
   <a href="sc-level-screens.html" class="nav-link sub">Level Screens</a>
-  <a href="sc-equipment-browser.html" class="nav-link sub">Equipment Browser</a>
+  <a href="sc-equipment-browser.html" class="nav-link sub active">Equipment Browser</a>
   <a href="sc-projectile.html" class="nav-link sub">Projectile</a>
   <a href="sc-visual-fx.html" class="nav-link sub">Visual FX</a>
   <a href="sc-utility-components.html" class="nav-link sub">Utilities</a>
 </nav>
 <main class="main">
   <div class="page-header">
-    <div class="page-tag">Scripting / Instructions</div>
-    <h1>IExecutionSuscriber</h1>
-    <p class="page-desc">Lightweight notification interface for enemies and interactables that need to react to each instruction step. Implement it on any component in the enemy's hierarchy — the <code>EnemyController</code> discovers and registers all subscribers automatically at initialization.</p>
+    <div class="page-tag">Scripting / Components</div>
+    <h1>Equipment Browser</h1>
+    <p class="page-desc">Four components that make up the discovered-equipment panel in the inventory window: the paginated list container, the individual equipment entry layout, and two helper layouts for displaying stat and effect details.</p>
   </div>
 
-  <h2>Interface</h2>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:44%"><col style="width:56%"></colgroup>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Execute(ExecutionContext context)</code></td><td>Called every time the owning enemy executes an instruction step. Use it to trigger animations, sounds, projectiles, or any side-effect that should accompany the enemy's action.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>DiscoveredEquipmentList</h2>
+  <p>A paginated display of all equipment the player has discovered. Call <code>ShowType</code> to filter by equipment slot, then use <code>Next</code> and <code>Previous</code> to page through the results.</p>
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>graphic</code></td><td><code>GameObject</code></td><td>Root graphic shown while the list is active. Hidden when the list is empty.</td></tr>
+      <tr><td><code>equipmentLayout</code></td><td><code>DiscoveredEquipment_Layout</code></td><td>Prefab used to spawn one entry per equipment item.</td></tr>
+      <tr><td><code>container</code></td><td><code>Transform</code></td><td>Parent that receives the spawned layout entries.</td></tr>
+      <tr><td><code>maxPerLot</code></td><td><code>int</code></td><td>Maximum number of entries shown per page.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Methods</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>ShowType(Equipment equipment)</code></td><td>Filters the discovered equipment list to the same slot type as <code>equipment</code>, resets to the first page, and spawns the initial set of entries.</td></tr>
+      <tr><td><code>Next()</code></td><td>Advances to the next page if more entries remain.</td></tr>
+      <tr><td><code>Previous()</code></td><td>Goes back one page if past the first page.</td></tr>
+    </tbody>
+  </table></div>
 
-  <h2>How registration works</h2>
-  <p>You do not need to register subscribers manually. When a level starts, <code>EnemyController.Initialize()</code> calls <code>GetComponentsInChildren&lt;IExecutionSuscriber&gt;()</code> on the enemy's GameObject and wires every result into the internal <code>OnExecute</code> event:</p>
-  <pre><span class="cmt">// inside EnemyController.Initialize() — runs automatically</span>
-<span class="type">IExecutionSuscriber</span>[] suscribers = <span class="fn">GetComponentsInChildren</span>&lt;<span class="type">IExecutionSuscriber</span>&gt;();
-<span class="kw">foreach</span> (<span class="type">IExecutionSuscriber</span> s <span class="kw">in</span> suscribers)
-    OnExecute += s.<span class="fn">Execute</span>;</pre>
-  <p>Each time the enemy's current instruction executes, <code>EnemyController</code> invokes <code>OnExecute</code>, which calls <code>Execute()</code> on every registered subscriber in order.</p>
-  <p>To add a subscriber to an enemy: attach a MonoBehaviour that implements <code>IExecutionSuscriber</code> to the enemy's root GameObject or any of its children. No other wiring is required.</p>
+  <h2>DiscoveredEquipment_Layout</h2>
+  <p>Prefab-based toggle element representing a single piece of discovered equipment in <code>DiscoveredEquipmentList</code>. Use <code>CreateInstance</code> to spawn and configure it.</p>
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>icon</code></td><td><code>Image</code></td><td>Displays the equipment's icon sprite.</td></tr>
+      <tr><td><code>equippedFrame</code></td><td><code>GameObject</code></td><td>Highlight frame shown when this equipment is currently equipped.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Methods</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>CreateInstance(Equipment equipment, Transform container, bool equipped = false)</code> → <code>DiscoveredEquipment_Layout</code></td><td>Instantiates a copy of this prefab inside <code>container</code>, sets the icon, shows or hides the equipped frame, and returns the new instance.</td></tr>
+    </tbody>
+  </table></div>
 
-  <h2>IExecutionSuscriber vs ITaskReceiver</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th></th><th>IExecutionSuscriber</th><th>ITaskReceiver</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Ownership</strong></td><td>Reacts to the enemy's own action</td><td>Schedules an independent parallel task</td></tr>
-        <tr><td><strong>Timing</strong></td><td>Synchronous — fires inline during instruction execution</td><td>Asynchronous — runs concurrently alongside player instructions</td></tr>
-        <tr><td><strong>Use when</strong></td><td>You need a fire-and-forget side-effect (sound, VFX, projectile) tied to the enemy's action</td><td>The object needs its own coroutine that runs in parallel every turn</td></tr>
-        <tr><td><strong>Registration</strong></td><td>Auto-discovered via <code>GetComponentsInChildren</code></td><td>Must be registered with the runner explicitly</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>StatElement_Layout</h2>
+  <p>Prefab-based widget showing a single stat bonus from an equipment piece — icon and numeric value. Spawned by <code>EquipementSlot_TooltipLayout</code> when displaying equipment details.</p>
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>icon</code></td><td><code>Image</code></td><td>Displays the stat's icon sprite.</td></tr>
+      <tr><td><code>value</code></td><td><code>TMP_Text</code></td><td>Shows the numeric stat bonus amount.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Methods</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>CreateInstance(Equipment.StatValue stat, Transform parent)</code> → <code>StatElement_Layout</code></td><td>Instantiates a copy of this prefab inside <code>parent</code>, sets the icon and value label, and returns the new instance.</td></tr>
+    </tbody>
+  </table></div>
 
-  <h2>Example</h2>
-  <p>A subscriber that plays a sound clip each time the enemy executes an action:</p>
-  <pre><span class="kw">using</span> UnityEngine;
-
-<span class="kw">namespace</span> LoopAdventure
-{
-    <span class="kw">public class</span> <span class="type">ActionSoundSubscriber</span> : <span class="type">MonoBehaviour</span>, <span class="type">IExecutionSuscriber</span>
-    {
-        [<span class="type">SerializeField</span>] <span class="type">AudioClip</span> actionClip;
-        <span class="type">AudioSource</span> audioSource;
-
-        <span class="kw">void</span> <span class="fn">Start</span>()
-        {
-            audioSource = <span class="fn">GetComponentInParent</span>&lt;<span class="type">AudioSource</span>&gt;();
-        }
-
-        <span class="kw">public void</span> <span class="fn">Execute</span>(<span class="type">ExecutionContext</span> context)
-        {
-            <span class="kw">if</span> (actionClip != <span class="kw">null</span>)
-                audioSource.<span class="fn">PlayOneShot</span>(actionClip);
-        }
-    }
-}</pre>
-  <p>Attach this component to the enemy's root GameObject or any child. The <code>EnemyController</code> will pick it up automatically — no further wiring needed.</p>
-
-  <h2>Built-in implementations</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Class</th><th>Behaviour</th></tr></thead>
-      <tbody>
-        <tr><td><code>ShootSuscriber</code></td><td>Fires a <code>Projectile</code> prefab in the enemy's current direction from the subscriber's world position each time the enemy executes. Assign the projectile prefab in the Inspector.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>EffectElement_Layout</h2>
+  <p>Prefab-based widget showing a single <a href="sc-effect.html">Effect</a> granted by an equipment piece — icon, value, and optional duration. Spawned by <code>EquipementSlot_TooltipLayout</code>.</p>
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>icon</code></td><td><code>Image</code></td><td>Displays the effect's icon sprite.</td></tr>
+      <tr><td><code>value</code></td><td><code>TMP_Text</code></td><td>Shows the effect's numeric value and, if the effect has a duration, the turn count.</td></tr>
+    </tbody>
+  </table></div>
+  <h3>Methods</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Method</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>CreateInstance(Effect effect, Transform parent)</code> → <code>EffectElement_Layout</code></td><td>Instantiates a copy of this prefab inside <code>parent</code>, sets the icon and formatted value label, and returns the new instance.</td></tr>
+    </tbody>
+  </table></div>
 
 </main>
 <script src="search-index.js"></script>

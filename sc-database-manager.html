@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IExecutionSuscriber — Loop Adventure Docs</title>
+  <title>DatabaseManager — Loop Adventure Docs</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,7 +29,6 @@
   <a href="manual-ui-screens.html" class="nav-link">UI Screens</a>
   <a href="manual-projectile-setup.html" class="nav-link">Projectile</a>
   <a href="manual-visual-fx-setup.html" class="nav-link">Visual FX &amp; Utilities</a>
-  <a href="manual-ui.html" class="nav-link">UI Setup</a>
   <div class="nav-divider"></div>
   <div class="nav-section">Scripting</div>
   <div class="nav-sub-section">Instructions</div>
@@ -39,7 +38,7 @@
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
-  <a href="sc-execution-subscriber.html" class="nav-link sub active">IExecutionSuscriber</a>
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
   <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
   <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
   <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
@@ -82,7 +81,7 @@
   <a href="sc-enemy-hud.html" class="nav-link sub">Enemy HUD</a>
   <a href="sc-item-dropper.html" class="nav-link sub">ItemDropper</a>
   <a href="sc-game-data-manager.html" class="nav-link sub">GameDataManager</a>
-  <a href="sc-database-manager.html" class="nav-link sub">DatabaseManager</a>
+  <a href="sc-database-manager.html" class="nav-link sub active">DatabaseManager</a>
   <a href="sc-world-map.html" class="nav-link sub">World Map</a>
   <a href="sc-level-screens.html" class="nav-link sub">Level Screens</a>
   <a href="sc-equipment-browser.html" class="nav-link sub">Equipment Browser</a>
@@ -92,77 +91,32 @@
 </nav>
 <main class="main">
   <div class="page-header">
-    <div class="page-tag">Scripting / Instructions</div>
-    <h1>IExecutionSuscriber</h1>
-    <p class="page-desc">Lightweight notification interface for enemies and interactables that need to react to each instruction step. Implement it on any component in the enemy's hierarchy — the <code>EnemyController</code> discovers and registers all subscribers automatically at initialization.</p>
+    <div class="page-tag">Scripting / Components</div>
+    <h1>DatabaseManager</h1>
+    <p class="page-desc">Singleton MonoBehaviour that indexes every item in the game for fast runtime lookups. Attach it to a persistent manager GameObject and assign the <a href="sc-items-references.html">ItemsReferences</a> asset — no further setup is required.</p>
   </div>
 
-  <h2>Interface</h2>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:44%"><col style="width:56%"></colgroup>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Execute(ExecutionContext context)</code></td><td>Called every time the owning enemy executes an instruction step. Use it to trigger animations, sounds, projectiles, or any side-effect that should accompany the enemy's action.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Inspector Fields</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>items</code></td><td><code>ItemsReferences</code></td><td>The ScriptableObject containing every item in the game, grouped by type. See <a href="sc-items-references.html">ItemsReferences</a>.</td></tr>
+    </tbody>
+  </table></div>
 
-  <h2>How registration works</h2>
-  <p>You do not need to register subscribers manually. When a level starts, <code>EnemyController.Initialize()</code> calls <code>GetComponentsInChildren&lt;IExecutionSuscriber&gt;()</code> on the enemy's GameObject and wires every result into the internal <code>OnExecute</code> event:</p>
-  <pre><span class="cmt">// inside EnemyController.Initialize() — runs automatically</span>
-<span class="type">IExecutionSuscriber</span>[] suscribers = <span class="fn">GetComponentsInChildren</span>&lt;<span class="type">IExecutionSuscriber</span>&gt;();
-<span class="kw">foreach</span> (<span class="type">IExecutionSuscriber</span> s <span class="kw">in</span> suscribers)
-    OnExecute += s.<span class="fn">Execute</span>;</pre>
-  <p>Each time the enemy's current instruction executes, <code>EnemyController</code> invokes <code>OnExecute</code>, which calls <code>Execute()</code> on every registered subscriber in order.</p>
-  <p>To add a subscriber to an enemy: attach a MonoBehaviour that implements <code>IExecutionSuscriber</code> to the enemy's root GameObject or any of its children. No other wiring is required.</p>
+  <h2>Static Properties</h2>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>current</code></td><td><code>DatabaseManager</code></td><td>Singleton instance. Available after <code>Awake</code>.</td></tr>
+    </tbody>
+  </table></div>
 
-  <h2>IExecutionSuscriber vs ITaskReceiver</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th></th><th>IExecutionSuscriber</th><th>ITaskReceiver</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Ownership</strong></td><td>Reacts to the enemy's own action</td><td>Schedules an independent parallel task</td></tr>
-        <tr><td><strong>Timing</strong></td><td>Synchronous — fires inline during instruction execution</td><td>Asynchronous — runs concurrently alongside player instructions</td></tr>
-        <tr><td><strong>Use when</strong></td><td>You need a fire-and-forget side-effect (sound, VFX, projectile) tied to the enemy's action</td><td>The object needs its own coroutine that runs in parallel every turn</td></tr>
-        <tr><td><strong>Registration</strong></td><td>Auto-discovered via <code>GetComponentsInChildren</code></td><td>Must be registered with the runner explicitly</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>Example</h2>
-  <p>A subscriber that plays a sound clip each time the enemy executes an action:</p>
-  <pre><span class="kw">using</span> UnityEngine;
-
-<span class="kw">namespace</span> LoopAdventure
-{
-    <span class="kw">public class</span> <span class="type">ActionSoundSubscriber</span> : <span class="type">MonoBehaviour</span>, <span class="type">IExecutionSuscriber</span>
-    {
-        [<span class="type">SerializeField</span>] <span class="type">AudioClip</span> actionClip;
-        <span class="type">AudioSource</span> audioSource;
-
-        <span class="kw">void</span> <span class="fn">Start</span>()
-        {
-            audioSource = <span class="fn">GetComponentInParent</span>&lt;<span class="type">AudioSource</span>&gt;();
-        }
-
-        <span class="kw">public void</span> <span class="fn">Execute</span>(<span class="type">ExecutionContext</span> context)
-        {
-            <span class="kw">if</span> (actionClip != <span class="kw">null</span>)
-                audioSource.<span class="fn">PlayOneShot</span>(actionClip);
-        }
-    }
-}</pre>
-  <p>Attach this component to the enemy's root GameObject or any child. The <code>EnemyController</code> will pick it up automatically — no further wiring needed.</p>
-
-  <h2>Built-in implementations</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Class</th><th>Behaviour</th></tr></thead>
-      <tbody>
-        <tr><td><code>ShootSuscriber</code></td><td>Fires a <code>Projectile</code> prefab in the enemy's current direction from the subscriber's world position each time the enemy executes. Assign the projectile prefab in the Inspector.</td></tr>
-      </tbody>
-    </table>
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      On <code>Awake</code>, <code>DatabaseManager</code> uses reflection to group items from the assigned <code>ItemsReferences</code> by type and builds internal type-specific lookup tables. This makes item queries by type fast during gameplay. You do not need to call any initialization method — assigning the asset in the Inspector is sufficient.
+    </div>
   </div>
 
 </main>

@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IExecutionSuscriber — Loop Adventure Docs</title>
+  <title>Visual FX — Loop Adventure Docs</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -29,7 +29,6 @@
   <a href="manual-ui-screens.html" class="nav-link">UI Screens</a>
   <a href="manual-projectile-setup.html" class="nav-link">Projectile</a>
   <a href="manual-visual-fx-setup.html" class="nav-link">Visual FX &amp; Utilities</a>
-  <a href="manual-ui.html" class="nav-link">UI Setup</a>
   <div class="nav-divider"></div>
   <div class="nav-section">Scripting</div>
   <div class="nav-sub-section">Instructions</div>
@@ -39,7 +38,7 @@
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
-  <a href="sc-execution-subscriber.html" class="nav-link sub active">IExecutionSuscriber</a>
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
   <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
   <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
   <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
@@ -87,83 +86,71 @@
   <a href="sc-level-screens.html" class="nav-link sub">Level Screens</a>
   <a href="sc-equipment-browser.html" class="nav-link sub">Equipment Browser</a>
   <a href="sc-projectile.html" class="nav-link sub">Projectile</a>
-  <a href="sc-visual-fx.html" class="nav-link sub">Visual FX</a>
+  <a href="sc-visual-fx.html" class="nav-link sub active">Visual FX</a>
   <a href="sc-utility-components.html" class="nav-link sub">Utilities</a>
 </nav>
 <main class="main">
   <div class="page-header">
-    <div class="page-tag">Scripting / Instructions</div>
-    <h1>IExecutionSuscriber</h1>
-    <p class="page-desc">Lightweight notification interface for enemies and interactables that need to react to each instruction step. Implement it on any component in the enemy's hierarchy — the <code>EnemyController</code> discovers and registers all subscribers automatically at initialization.</p>
+    <div class="page-tag">Scripting / Components</div>
+    <h1>Visual FX</h1>
+    <p class="page-desc">Four drop-in visual effect components: two sine-wave breathing animations (one for sprites, one for UI rect transforms), a hover scale effect for UI buttons, and a procedural drifting-clouds generator.</p>
   </div>
 
-  <h2>Interface</h2>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:44%"><col style="width:56%"></colgroup>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Execute(ExecutionContext context)</code></td><td>Called every time the owning enemy executes an instruction step. Use it to trigger animations, sounds, projectiles, or any side-effect that should accompany the enemy's action.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>SpriteExpandAnimation</h2>
+  <p>Continuously animates a <code>SpriteRenderer</code>'s size using a sine wave, producing a breathing or pulsing effect. Attach to any world-space sprite.</p>
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>speed</code></td><td><code>float</code></td><td>Frequency of the oscillation in cycles per second.</td></tr>
+      <tr><td><code>amplitude</code></td><td><code>float</code></td><td>Maximum size change in world units. Default: 1.</td></tr>
+      <tr><td><code>horizontal</code></td><td><code>float</code> [0–1]</td><td>Horizontal contribution to the expansion. Set to 0 to animate only vertically.</td></tr>
+      <tr><td><code>vertical</code></td><td><code>float</code> [0–1]</td><td>Vertical contribution to the expansion. Set to 0 to animate only horizontally.</td></tr>
+    </tbody>
+  </table></div>
 
-  <h2>How registration works</h2>
-  <p>You do not need to register subscribers manually. When a level starts, <code>EnemyController.Initialize()</code> calls <code>GetComponentsInChildren&lt;IExecutionSuscriber&gt;()</code> on the enemy's GameObject and wires every result into the internal <code>OnExecute</code> event:</p>
-  <pre><span class="cmt">// inside EnemyController.Initialize() — runs automatically</span>
-<span class="type">IExecutionSuscriber</span>[] suscribers = <span class="fn">GetComponentsInChildren</span>&lt;<span class="type">IExecutionSuscriber</span>&gt;();
-<span class="kw">foreach</span> (<span class="type">IExecutionSuscriber</span> s <span class="kw">in</span> suscribers)
-    OnExecute += s.<span class="fn">Execute</span>;</pre>
-  <p>Each time the enemy's current instruction executes, <code>EnemyController</code> invokes <code>OnExecute</code>, which calls <code>Execute()</code> on every registered subscriber in order.</p>
-  <p>To add a subscriber to an enemy: attach a MonoBehaviour that implements <code>IExecutionSuscriber</code> to the enemy's root GameObject or any of its children. No other wiring is required.</p>
+  <h2>SinExpandAnimation</h2>
+  <p>Same sine-wave breathing effect as <code>SpriteExpandAnimation</code>, but targets a <code>RectTransform</code>'s <code>sizeDelta</code> for use in UI canvases. The animation timer resets each time the component is enabled, keeping synchronized groups in phase.</p>
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>speed</code></td><td><code>float</code></td><td>Frequency of the oscillation in cycles per second.</td></tr>
+      <tr><td><code>amplitude</code></td><td><code>float</code></td><td>Maximum size change in pixels. Default: 1.</td></tr>
+      <tr><td><code>horizontal</code></td><td><code>float</code> [0–1]</td><td>Horizontal contribution to the size change.</td></tr>
+      <tr><td><code>vertical</code></td><td><code>float</code> [0–1]</td><td>Vertical contribution to the size change.</td></tr>
+    </tbody>
+  </table></div>
 
-  <h2>IExecutionSuscriber vs ITaskReceiver</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th></th><th>IExecutionSuscriber</th><th>ITaskReceiver</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Ownership</strong></td><td>Reacts to the enemy's own action</td><td>Schedules an independent parallel task</td></tr>
-        <tr><td><strong>Timing</strong></td><td>Synchronous — fires inline during instruction execution</td><td>Asynchronous — runs concurrently alongside player instructions</td></tr>
-        <tr><td><strong>Use when</strong></td><td>You need a fire-and-forget side-effect (sound, VFX, projectile) tied to the enemy's action</td><td>The object needs its own coroutine that runs in parallel every turn</td></tr>
-        <tr><td><strong>Registration</strong></td><td>Auto-discovered via <code>GetComponentsInChildren</code></td><td>Must be registered with the runner explicitly</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>HoveringMouse</h2>
+  <p>Scales a UI element up when the pointer hovers over it and back down when it leaves, with optional audio feedback. Implements <code>IPointerEnterHandler</code> and <code>IPointerExitHandler</code>. Automatically suppresses the effect if a sibling <code>Button</code> is not interactable.</p>
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>maxSize</code></td><td><code>float</code></td><td>The local scale the element grows to when hovered. Default: 2.</td></tr>
+      <tr><td><code>speed</code></td><td><code>float</code></td><td>Lerp speed for the scale transition in and out. Default: 1.</td></tr>
+      <tr><td><code>audioSource</code></td><td><code>AudioSource</code></td><td>Audio source used to play hover sounds.</td></tr>
+      <tr><td><code>muteOnRunning</code></td><td><code>bool</code></td><td>When enabled, suppresses hover sounds while instructions are executing.</td></tr>
+      <tr><td><code>enterSound</code></td><td><code>AudioClip</code></td><td>Played when the pointer enters the element.</td></tr>
+      <tr><td><code>exitSound</code></td><td><code>AudioClip</code></td><td>Played when the pointer leaves the element.</td></tr>
+      <tr><td><code>volume</code></td><td><code>float</code> [0–1]</td><td>Volume multiplier for both hover sounds. Default: 1.</td></tr>
+    </tbody>
+  </table></div>
 
-  <h2>Example</h2>
-  <p>A subscriber that plays a sound clip each time the enemy executes an action:</p>
-  <pre><span class="kw">using</span> UnityEngine;
-
-<span class="kw">namespace</span> LoopAdventure
-{
-    <span class="kw">public class</span> <span class="type">ActionSoundSubscriber</span> : <span class="type">MonoBehaviour</span>, <span class="type">IExecutionSuscriber</span>
-    {
-        [<span class="type">SerializeField</span>] <span class="type">AudioClip</span> actionClip;
-        <span class="type">AudioSource</span> audioSource;
-
-        <span class="kw">void</span> <span class="fn">Start</span>()
-        {
-            audioSource = <span class="fn">GetComponentInParent</span>&lt;<span class="type">AudioSource</span>&gt;();
-        }
-
-        <span class="kw">public void</span> <span class="fn">Execute</span>(<span class="type">ExecutionContext</span> context)
-        {
-            <span class="kw">if</span> (actionClip != <span class="kw">null</span>)
-                audioSource.<span class="fn">PlayOneShot</span>(actionClip);
-        }
-    }
-}</pre>
-  <p>Attach this component to the enemy's root GameObject or any child. The <code>EnemyController</code> will pick it up automatically — no further wiring needed.</p>
-
-  <h2>Built-in implementations</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Class</th><th>Behaviour</th></tr></thead>
-      <tbody>
-        <tr><td><code>ShootSuscriber</code></td><td>Fires a <code>Projectile</code> prefab in the enemy's current direction from the subscriber's world position each time the enemy executes. Assign the projectile prefab in the Inspector.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>CloudsController</h2>
+  <p>Procedurally spawns and drifts a set of decorative cloud GameObjects within a rectangular area. Clouds that exit the right edge wrap back to the left at a random vertical position. Draws its bounding area as a cyan wire cube in the Scene view.</p>
+  <h3>Inspector Fields</h3>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>areaSize</code></td><td><code>Vector2</code></td><td>Width and height of the rectangular cloud spawn and drift area.</td></tr>
+      <tr><td><code>prefabs</code></td><td><code>GameObject[]</code></td><td>Pool of cloud prefabs chosen at random when a new cloud is spawned.</td></tr>
+      <tr><td><code>minSpeed</code></td><td><code>float</code></td><td>Minimum drift speed in world units per second.</td></tr>
+      <tr><td><code>maxSpeed</code></td><td><code>float</code></td><td>Maximum drift speed in world units per second.</td></tr>
+      <tr><td><code>amount</code></td><td><code>int</code></td><td>Total number of cloud instances to create and simulate.</td></tr>
+    </tbody>
+  </table></div>
 
 </main>
 <script src="search-index.js"></script>

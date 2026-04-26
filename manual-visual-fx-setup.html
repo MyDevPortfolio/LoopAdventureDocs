@@ -1,9 +1,9 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>IExecutionSuscriber — Loop Adventure Docs</title>
+  <title>Visual FX &amp; Utilities — Loop Adventure Docs</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -28,8 +28,7 @@
   <a href="manual-world-map-setup.html" class="nav-link">World Map</a>
   <a href="manual-ui-screens.html" class="nav-link">UI Screens</a>
   <a href="manual-projectile-setup.html" class="nav-link">Projectile</a>
-  <a href="manual-visual-fx-setup.html" class="nav-link">Visual FX &amp; Utilities</a>
-  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <a href="manual-visual-fx-setup.html" class="nav-link active">Visual FX &amp; Utilities</a>
   <div class="nav-divider"></div>
   <div class="nav-section">Scripting</div>
   <div class="nav-sub-section">Instructions</div>
@@ -39,7 +38,7 @@
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
-  <a href="sc-execution-subscriber.html" class="nav-link sub active">IExecutionSuscriber</a>
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
   <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
   <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
   <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
@@ -92,78 +91,61 @@
 </nav>
 <main class="main">
   <div class="page-header">
-    <div class="page-tag">Scripting / Instructions</div>
-    <h1>IExecutionSuscriber</h1>
-    <p class="page-desc">Lightweight notification interface for enemies and interactables that need to react to each instruction step. Implement it on any component in the enemy's hierarchy — the <code>EnemyController</code> discovers and registers all subscribers automatically at initialization.</p>
+    <div class="page-tag">Manual / Setup Guides</div>
+    <h1>Visual FX &amp; Utilities</h1>
+    <p class="page-desc">Drop-in components for breathing animations, hover effects, procedural backgrounds, UI state control during play, pixel snapping, and depth sorting. Each is self-contained — just add the component and set the Inspector fields.</p>
   </div>
 
-  <h2>Interface</h2>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:44%"><col style="width:56%"></colgroup>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Execute(ExecutionContext context)</code></td><td>Called every time the owning enemy executes an instruction step. Use it to trigger animations, sounds, projectiles, or any side-effect that should accompany the enemy's action.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Breathing / pulsing animations</h2>
+  <p>Two components produce a sine-wave breathing animation on different target types:</p>
+  <ul>
+    <li><strong>SpriteExpandAnimation</strong> — attach to any world-space sprite. Animates the <code>SpriteRenderer</code> size. Set <code>speed</code>, <code>amplitude</code>, and the <code>horizontal</code>/<code>vertical</code> contribution sliders (0–1).</li>
+    <li><strong>SinExpandAnimation</strong> — attach to any UI element. Animates the <code>RectTransform.sizeDelta</code>. Same fields as above. The timer resets on <code>OnEnable</code>, keeping groups in sync when you toggle panels.</li>
+  </ul>
+  <p>See <a href="sc-visual-fx.html">Visual FX</a>.</p>
 
-  <h2>How registration works</h2>
-  <p>You do not need to register subscribers manually. When a level starts, <code>EnemyController.Initialize()</code> calls <code>GetComponentsInChildren&lt;IExecutionSuscriber&gt;()</code> on the enemy's GameObject and wires every result into the internal <code>OnExecute</code> event:</p>
-  <pre><span class="cmt">// inside EnemyController.Initialize() — runs automatically</span>
-<span class="type">IExecutionSuscriber</span>[] suscribers = <span class="fn">GetComponentsInChildren</span>&lt;<span class="type">IExecutionSuscriber</span>&gt;();
-<span class="kw">foreach</span> (<span class="type">IExecutionSuscriber</span> s <span class="kw">in</span> suscribers)
-    OnExecute += s.<span class="fn">Execute</span>;</pre>
-  <p>Each time the enemy's current instruction executes, <code>EnemyController</code> invokes <code>OnExecute</code>, which calls <code>Execute()</code> on every registered subscriber in order.</p>
-  <p>To add a subscriber to an enemy: attach a MonoBehaviour that implements <code>IExecutionSuscriber</code> to the enemy's root GameObject or any of its children. No other wiring is required.</p>
+  <h2>Hover scale effect (HoveringMouse)</h2>
+  <p>Add <code>HoveringMouse</code> to any UI element to scale it up when hovered.</p>
+  <ul>
+    <li>Set <strong>Max Size</strong> (target scale) and <strong>Speed</strong> (lerp rate).</li>
+    <li>Optionally assign an <code>AudioSource</code> and <strong>Enter Sound</strong> / <strong>Exit Sound</strong> clips.</li>
+    <li>Enable <strong>Mute On Running</strong> to silence hover sounds while instructions execute.</li>
+    <li>If the same GameObject has a <code>Button</code>, the effect is suppressed automatically when the button is not interactable.</li>
+  </ul>
+  <p>See <a href="sc-visual-fx.html">Visual FX</a>.</p>
 
-  <h2>IExecutionSuscriber vs ITaskReceiver</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th></th><th>IExecutionSuscriber</th><th>ITaskReceiver</th></tr></thead>
-      <tbody>
-        <tr><td><strong>Ownership</strong></td><td>Reacts to the enemy's own action</td><td>Schedules an independent parallel task</td></tr>
-        <tr><td><strong>Timing</strong></td><td>Synchronous — fires inline during instruction execution</td><td>Asynchronous — runs concurrently alongside player instructions</td></tr>
-        <tr><td><strong>Use when</strong></td><td>You need a fire-and-forget side-effect (sound, VFX, projectile) tied to the enemy's action</td><td>The object needs its own coroutine that runs in parallel every turn</td></tr>
-        <tr><td><strong>Registration</strong></td><td>Auto-discovered via <code>GetComponentsInChildren</code></td><td>Must be registered with the runner explicitly</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Decorative clouds (CloudsController)</h2>
+  <p>Add <code>CloudsController</code> to a scene GameObject to fill a rectangular area with drifting cloud sprites.</p>
+  <ul>
+    <li>Set <strong>Area Size</strong> to the width and height of the drift zone.</li>
+    <li>Assign <strong>Prefabs</strong> — a list of cloud prefabs chosen at random.</li>
+    <li>Set <strong>Min Speed</strong> / <strong>Max Speed</strong> for random per-cloud drift rates.</li>
+    <li>Set <strong>Amount</strong> for the total number of clouds.</li>
+  </ul>
+  <p>The cloud area is shown as a cyan wire cube in the Scene view. See <a href="sc-visual-fx.html">Visual FX</a>.</p>
 
-  <h2>Example</h2>
-  <p>A subscriber that plays a sound clip each time the enemy executes an action:</p>
-  <pre><span class="kw">using</span> UnityEngine;
+  <h2>Disabling UI during play</h2>
+  <p>Two components automatically lock UI elements while the instruction runner is active:</p>
+  <ul>
+    <li><strong>DisableOnRunning</strong> — requires a <code>CanvasGroup</code>. Dims to 50% opacity and blocks interaction during play; restores on stop. Use for entire panels or groups of controls.</li>
+    <li><strong>DisableButtonOnRunning</strong> — requires a <code>Button</code>. Only disables interactability, no visual dimming. Use for individual buttons where you control the visual state separately.</li>
+  </ul>
+  <p>Both subscribe to <code>LevelManager.OnPlay</code> and <code>LevelManager.OnStop</code> automatically in <code>Start</code>. No wiring is needed. See <a href="sc-utility-components.html">Utilities</a>.</p>
 
-<span class="kw">namespace</span> LoopAdventure
-{
-    <span class="kw">public class</span> <span class="type">ActionSoundSubscriber</span> : <span class="type">MonoBehaviour</span>, <span class="type">IExecutionSuscriber</span>
-    {
-        [<span class="type">SerializeField</span>] <span class="type">AudioClip</span> actionClip;
-        <span class="type">AudioSource</span> audioSource;
+  <h2>Pixel snapping (PixelSnaper)</h2>
+  <p>Add <code>PixelSnaper</code> to any GameObject that drifts off pixel boundaries.</p>
+  <ul>
+    <li>Set <strong>Pixels Per Unit</strong> to match the sprite import setting (16 or 32 are common).</li>
+    <li>Enable <strong>Snap To Grid</strong> and set <strong>Cell Size</strong> if you want objects locked to tile centers instead of individual pixels.</li>
+  </ul>
+  <p>The component runs in Edit mode (<code>[ExecuteInEditMode]</code>) so you can verify snapping while placing objects in the Scene view. See <a href="sc-utility-components.html">Utilities</a>.</p>
 
-        <span class="kw">void</span> <span class="fn">Start</span>()
-        {
-            audioSource = <span class="fn">GetComponentInParent</span>&lt;<span class="type">AudioSource</span>&gt;();
-        }
-
-        <span class="kw">public void</span> <span class="fn">Execute</span>(<span class="type">ExecutionContext</span> context)
-        {
-            <span class="kw">if</span> (actionClip != <span class="kw">null</span>)
-                audioSource.<span class="fn">PlayOneShot</span>(actionClip);
-        }
-    }
-}</pre>
-  <p>Attach this component to the enemy's root GameObject or any child. The <code>EnemyController</code> will pick it up automatically — no further wiring needed.</p>
-
-  <h2>Built-in implementations</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Class</th><th>Behaviour</th></tr></thead>
-      <tbody>
-        <tr><td><code>ShootSuscriber</code></td><td>Fires a <code>Projectile</code> prefab in the enemy's current direction from the subscriber's world position each time the enemy executes. Assign the projectile prefab in the Inspector.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <h2>Y-based depth sorting (DepthSortingOrder)</h2>
+  <p>Add <code>DepthSortingOrder</code> to any sprite that needs painter's-algorithm depth in a top-down or isometric layout.</p>
+  <ul>
+    <li>Assign <strong>Top Limit</strong> — a Transform placed at the topmost row of the level. Objects near the top are drawn behind objects lower on screen.</li>
+  </ul>
+  <p>The component updates <code>SpriteRenderer.sortingOrder</code> every frame based on the object's Y position relative to the limit. See <a href="sc-utility-components.html">Utilities</a>.</p>
 
 </main>
 <script src="search-index.js"></script>
