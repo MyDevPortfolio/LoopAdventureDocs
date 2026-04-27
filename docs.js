@@ -1,3 +1,94 @@
+/* ══════════════════════════════════════════════════════════
+   CANONICAL SIDEBAR  — single source of truth.
+   The <nav> inside every .html file is a no-JS fallback;
+   this constant replaces it on every page load.
+   ══════════════════════════════════════════════════════════ */
+const SIDEBAR_HTML = `
+  <div class="sidebar-logo">
+    <div class="game-title">LOOP<br>ADVENTURE</div>
+    <span class="doc-label">Documentation</span>
+  </div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-sub-section">Setup Guides</div>
+  <a href="manual-player-setup.html" class="nav-link">Player Setup</a>
+  <a href="manual-enemy-setup.html" class="nav-link">Enemy Setup</a>
+  <a href="manual-data-systems.html" class="nav-link">Data Systems</a>
+  <a href="manual-world-map-setup.html" class="nav-link">World Map</a>
+  <a href="manual-ui-screens.html" class="nav-link">UI Screens</a>
+  <a href="manual-projectile-setup.html" class="nav-link">Projectile</a>
+  <a href="manual-visual-fx-setup.html" class="nav-link">Visual FX &amp; Utilities</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+  <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+  <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
+  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
+  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+  <div class="nav-sub-section">Components</div>
+  <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
+  <a href="sc-health.html" class="nav-link sub">Health</a>
+  <a href="sc-active-effects-controller.html" class="nav-link sub">ActiveEffectsController</a>
+  <a href="sc-enemy-hud.html" class="nav-link sub">Enemy HUD</a>
+  <a href="sc-item-dropper.html" class="nav-link sub">ItemDropper</a>
+  <a href="sc-game-data-manager.html" class="nav-link sub">GameDataManager</a>
+  <a href="sc-database-manager.html" class="nav-link sub">DatabaseManager</a>
+  <a href="sc-world-map.html" class="nav-link sub">World Map</a>
+  <a href="sc-level-screens.html" class="nav-link sub">Level Screens</a>
+  <a href="sc-equipment-browser.html" class="nav-link sub">Equipment Browser</a>
+  <a href="sc-projectile.html" class="nav-link sub">Projectile</a>
+  <a href="sc-visual-fx.html" class="nav-link sub">Visual FX</a>
+  <a href="sc-utility-components.html" class="nav-link sub">Utilities</a>
+`;
+
 /* ── Icons ───────────────────────────────────────────────── */
 const ICON_COPY = `<svg xmlns="http://www.w3.org/2000/svg" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
   <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
@@ -16,66 +107,67 @@ let _sidebarGroups     = null;
    ENTRY POINT
    ════════════════════════════════════════════════════════════ */
 document.addEventListener('DOMContentLoaded', () => {
-  initSearch();
-  initSidebarCollapse();
-  initRouter();        // sets up SPA if #page-frame exists, then loads first page
-  if (!isShell()) {   // standalone page — run features immediately
-    initPageFeatures();
-  }
+  injectSidebar();       // replace <nav> with canonical, restore scroll
+  initSearch();          // add search button to the new sidebar
+  initSidebarCollapse(); // wire click-to-collapse on section headers
+  initRouter();          // intercept clicks + popstate
+  initPageFeatures();    // TOC + copy buttons for initial page
 });
 
 /* ════════════════════════════════════════════════════════════
-   SHELL DETECTION
+   SIDEBAR INJECTION
+   Replaces the <nav class="sidebar"> in every page with the
+   canonical SIDEBAR_HTML string.  Restores the scroll position
+   from sessionStorage so it survives page-to-page navigation.
    ════════════════════════════════════════════════════════════ */
-function isShell() {
-  return !!document.getElementById('page-frame');
+function injectSidebar() {
+  let nav = document.querySelector('nav.sidebar');
+  if (!nav) {
+    nav = document.createElement('nav');
+    nav.className = 'sidebar';
+    document.body.insertBefore(nav, document.body.firstChild);
+  }
+  nav.innerHTML = SIDEBAR_HTML;
+
+  // no-sidebar pages were full-width; restore left padding now that we have a sidebar
+  document.body.classList.remove('no-sidebar');
+
+  // Restore sidebar scroll saved by the previous navigation
+  const saved = sessionStorage.getItem('sidebarScroll');
+  if (saved !== null) nav.scrollTop = +saved;
+
+  // Highlight the link that matches the current page
+  setActiveLink(location.pathname.split('/').pop() || '');
 }
 
 /* ════════════════════════════════════════════════════════════
-   ROUTER  (only active when running inside the SPA shell)
+   ROUTER  — intercepts local .html link clicks and does
+   fetch-based navigation (no full reload).
    ════════════════════════════════════════════════════════════ */
 function initRouter() {
-  if (!isShell()) return;
+  // On index.html (entry point with no real content) jump to the manual index
+  const page = location.pathname.split('/').pop();
+  if (page === 'index.html' || page === '') {
+    navigate('manual-index.html', false);
+  }
 
-  // Determine which page to show on first load
-  const initial = routeFromURL();
-  loadPage(initial, false);
-
-  // Intercept all internal link clicks (sidebar + loaded content)
   document.addEventListener('click', e => {
     if (e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
     const a = e.target.closest('a[href]');
     if (!a) return;
     const href = a.getAttribute('href') || '';
-
-    // Anchor-only links (#section) scroll within the current page
     if (href.startsWith('#')) return;
-
     if (!isInternalPage(href)) return;
-
-    // welcome.html is full-screen (no <main>) — let the browser navigate
-    const page = href.split('#')[0].split('/').pop();
-    if (page === 'welcome.html') return;
-
+    // welcome.html has no <main> — let the browser navigate normally
+    const target = href.split('#')[0].split('/').pop();
+    if (target === 'welcome.html') return;
     e.preventDefault();
-    loadPage(href, true);
+    navigate(href, true);
   });
 
-  // Back / Forward buttons
   window.addEventListener('popstate', e => {
-    loadPage((e.state && e.state.url) || 'manual-index.html', false);
+    navigate((e.state && e.state.url) || location.pathname, false);
   });
-}
-
-function routeFromURL() {
-  // Use the actual path if we got here via pushState (e.g. bookmark of sc-instruction.html)
-  const path = location.pathname.split('/').pop();
-  if (path && path.endsWith('.html') && path !== 'index.html') return path;
-  // Or a hash-based route (index.html#sc-instruction.html)
-  const hash = location.hash.slice(1);
-  if (hash && hash.endsWith('.html')) return hash;
-  // Default landing page inside the shell
-  return 'manual-index.html';
 }
 
 function isInternalPage(href) {
@@ -86,47 +178,51 @@ function isInternalPage(href) {
 }
 
 /* ─── Page loader ──────────────────────────────────────── */
-async function loadPage(url, push) {
+async function navigate(url, push) {
   const [pagePath, anchor] = url.split('#');
-  const frame = document.getElementById('page-frame');
-  if (!frame) return;
+  const nav = document.querySelector('.sidebar');
 
-  // Show loading indicator
-  frame.classList.add('page-loading');
+  // Save current sidebar scroll before anything changes
+  if (nav) sessionStorage.setItem('sidebarScroll', nav.scrollTop);
+
+  // Close search modal if open
+  const searchBackdrop = document.querySelector('.search-backdrop');
+  if (searchBackdrop) searchBackdrop.classList.remove('open');
 
   try {
     const resp = await fetch(pagePath);
     if (!resp.ok) throw new Error(resp.status);
-    const html  = await resp.text();
-    const doc   = new DOMParser().parseFromString(html, 'text/html');
-    const newMain = doc.querySelector('main');
+    const html    = await resp.text();
+    const parsed  = new DOMParser().parseFromString(html, 'text/html');
+    const newMain = parsed.querySelector('main');
 
-    // Pages without <main> (e.g. welcome.html) → hard navigate
-    if (!newMain) {
-      window.location.href = url;
-      return;
-    }
+    // Pages without <main> (e.g. welcome.html) — hard navigate
+    if (!newMain) { window.location.href = url; return; }
 
-    // Inject content
-    frame.innerHTML = newMain.innerHTML;
-    frame.classList.remove('page-loading');
+    // Swap main content
+    let main = document.querySelector('main');
+    if (!main) { main = document.createElement('main'); document.body.appendChild(main); }
+    main.className   = newMain.className;
+    main.innerHTML   = newMain.innerHTML;
 
     // Update browser title
-    const titleEl = doc.querySelector('title');
+    const titleEl = parsed.querySelector('title');
     if (titleEl) document.title = titleEl.textContent;
 
-    // Update URL (only when triggered by a user click)
+    // Update URL
     if (push) history.pushState({ url }, '', pagePath);
 
-    // Update sidebar active link and collapse state
+    // Update active link in sidebar
     setActiveLink(pagePath);
-    updateSidebarExpansion(pagePath);
 
-    // Rebuild per-page UI (TOC, copy buttons)
+    // Restore sidebar scroll (some browsers reset overflow-scroll on window.scrollTo)
+    if (nav) nav.scrollTop = +(sessionStorage.getItem('sidebarScroll') || 0);
+
+    // Rebuild per-page UI
     destroyPageFeatures();
     initPageFeatures();
 
-    // Scroll
+    // Scroll content area
     if (anchor) {
       requestAnimationFrame(() => {
         const target = document.getElementById(anchor);
@@ -137,23 +233,25 @@ async function loadPage(url, push) {
     }
 
   } catch (_) {
-    frame.classList.remove('page-loading');
     window.location.href = url; // graceful fallback
   }
 }
 
 /* ─── Active link ─────────────────────────────────────── */
 function setActiveLink(url) {
-  const filename = url.split('/').pop().split('?')[0];
+  const filename = (url || '').split('/').pop().split('?')[0];
   document.querySelectorAll('.sidebar a').forEach(a => {
     const href = (a.getAttribute('href') || '').split('#')[0];
-    a.classList.toggle('active', href === filename);
+    a.classList.toggle('active', !!filename && href === filename);
   });
 }
 
 /* ════════════════════════════════════════════════════════════
-   SIDEBAR — COLLAPSE / EXPAND
-   (Attached once on init; survives page navigation in shell mode)
+   SIDEBAR — COLLAPSE / EXPAND  (manual, click-driven only)
+   Both sections start fully open; users collapse them by
+   clicking the section header.  State is preserved within
+   the SPA session (sidebar DOM is never re-created after
+   the initial injectSidebar call).
    ════════════════════════════════════════════════════════════ */
 function initSidebarCollapse() {
   const sidebar = document.querySelector('.sidebar');
@@ -168,47 +266,23 @@ function initSidebarCollapse() {
       items.push(el);
       el = el.nextElementSibling;
     }
-    return { header, items, name: header.textContent.trim() };
+    return { header, items };
   });
 
-  // Click handlers — bound once, work for the lifetime of the sidebar
   _sidebarGroups.forEach(g => {
+    g.header.style.cursor = 'pointer';
     g.header.addEventListener('click', () => {
-      const collapsed = g.header.classList.contains('nav-section--collapsed');
-      _sidebarGroups.forEach(other => {
-        if (other === g) {
-          collapsed ? _sbExpand(other) : _sbCollapse(other);
-        } else if (collapsed) {
-          _sbCollapse(other);
-        }
-      });
+      const isCollapsed = g.header.classList.contains('nav-section--collapsed');
+      if (isCollapsed) {
+        _sbExpand(g);
+      } else {
+        // Only collapse if at least one other section stays open
+        const otherOpen = _sidebarGroups.some(
+          other => other !== g && !other.header.classList.contains('nav-section--collapsed')
+        );
+        if (otherOpen) _sbCollapse(g);
+      }
     });
-  });
-
-  // Initial state (standalone pages use location, shell uses loadPage callback)
-  if (!isShell()) {
-    const page = location.pathname.split('/').pop();
-    updateSidebarExpansion(page);
-  }
-}
-
-function updateSidebarExpansion(url) {
-  if (!_sidebarGroups) return;
-  const page = url.split('/').pop().split('?')[0];
-
-  // Landing pages: show only the relevant section, hide the other
-  if (page === 'manual-index.html' || page === 'scripting-index.html' ||
-      page === 'index.html'        || page === '') {
-    const show = page === 'scripting-index.html' ? 'Scripting' : 'Manual';
-    _sidebarGroups.forEach(g => g.name === show ? _sbExpand(g) : _sbHide(g));
-    return;
-  }
-
-  // Regular pages: expand the section that contains the active link
-  const activeLink = document.querySelector('.sidebar .nav-link.active, .sidebar .nav-home.active');
-  _sidebarGroups.forEach(g => {
-    const hasActive = activeLink && g.items.some(el => el === activeLink || el.contains(activeLink));
-    (hasActive || !activeLink) ? _sbExpand(g) : _sbCollapse(g);
   });
 }
 
@@ -217,20 +291,14 @@ function _sbCollapse(g) {
   g.header.classList.add('nav-section--collapsed');
 }
 function _sbExpand(g) {
-  g.header.style.display  = '';
   g.items.forEach(el => el.style.display = '');
   g.header.classList.remove('nav-section--collapsed');
-}
-function _sbHide(g) {
-  g.header.style.display = 'none';
-  g.items.forEach(el => el.style.display = 'none');
 }
 
 /* ════════════════════════════════════════════════════════════
    PER-PAGE FEATURES  (re-run after each navigation)
    ════════════════════════════════════════════════════════════ */
 function destroyPageFeatures() {
-  // Remove old TOC panel and its scroll listener
   const oldToc = document.querySelector('.toc-panel');
   if (oldToc) oldToc.remove();
   document.body.classList.remove('has-toc');
@@ -241,8 +309,7 @@ function destroyPageFeatures() {
 }
 
 function initPageFeatures() {
-  // In shell mode work on the frame; on standalone pages on <main class="main">
-  const root = document.getElementById('page-frame') || document.querySelector('main.main');
+  const root = document.querySelector('main');
   if (!root) return;
   initCopyButtons(root);
   buildTOC(root);
@@ -251,7 +318,7 @@ function initPageFeatures() {
 /* ─── Copy buttons ───────────────────────────────────── */
 function initCopyButtons(root) {
   root.querySelectorAll('pre').forEach(pre => {
-    if (pre.closest('.code-wrapper')) return; // already wrapped
+    if (pre.closest('.code-wrapper')) return;
     const wrapper = document.createElement('div');
     wrapper.className = 'code-wrapper';
     pre.parentNode.insertBefore(wrapper, pre);
@@ -284,7 +351,7 @@ function buildTOC(root) {
     }
   });
 
-  const toc  = document.createElement('aside');
+  const toc = document.createElement('aside');
   toc.className = 'toc-panel';
 
   const lbl = document.createElement('p');
@@ -330,7 +397,7 @@ function buildTOC(root) {
 }
 
 /* ════════════════════════════════════════════════════════════
-   SEARCH MODAL  (unchanged — works on the persistent sidebar)
+   SEARCH MODAL
    ════════════════════════════════════════════════════════════ */
 function initSearch() {
   const sidebar = document.querySelector('.sidebar');
