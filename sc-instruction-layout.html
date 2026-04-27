@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>InstructionLayout — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-sub-section">Setup Guides</div>
+  <a href="manual-player-setup.html" class="nav-link">Player Setup</a>
+  <a href="manual-enemy-setup.html" class="nav-link">Enemy Setup</a>
+  <a href="manual-data-systems.html" class="nav-link">Data Systems</a>
+  <a href="manual-world-map-setup.html" class="nav-link">World Map</a>
+  <a href="manual-ui-screens.html" class="nav-link">UI Screens</a>
+  <a href="manual-projectile-setup.html" class="nav-link">Projectile</a>
+  <a href="manual-visual-fx-setup.html" class="nav-link">Visual FX &amp; Utilities</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level &amp; Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+  <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+  <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub active">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
+  <div class="nav-sub-section">Components</div>
+  <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
+  <a href="sc-health.html" class="nav-link sub">Health</a>
+  <a href="sc-active-effects-controller.html" class="nav-link sub">ActiveEffectsController</a>
+  <a href="sc-enemy-hud.html" class="nav-link sub">Enemy HUD</a>
+  <a href="sc-item-dropper.html" class="nav-link sub">ItemDropper</a>
+  <a href="sc-game-data-manager.html" class="nav-link sub">GameDataManager</a>
+  <a href="sc-database-manager.html" class="nav-link sub">DatabaseManager</a>
+  <a href="sc-world-map.html" class="nav-link sub">World Map</a>
+  <a href="sc-level-screens.html" class="nav-link sub">Level Screens</a>
+  <a href="sc-equipment-browser.html" class="nav-link sub">Equipment Browser</a>
+  <a href="sc-projectile.html" class="nav-link sub">Projectile</a>
+  <a href="sc-visual-fx.html" class="nav-link sub">Visual FX</a>
+  <a href="sc-utility-components.html" class="nav-link sub">Utilities</a>
+</nav>
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / UI</div>
+    <h1>InstructionLayout</h1>
+    <p class="page-desc">Base class for all instruction widgets. Renders a <a href="sc-player-instruction.html">PlayerInstruction</a> on the instruction sheet, handling direction cycling, loop counter adjustments, and reordering via drag-drop.</p>
+  </div>
+
+  <h2>Properties</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>instruction</code></td><td><code><a href="sc-player-instruction.html">PlayerInstruction</a></code></td><td>The data object this widget is bound to.</td></tr>
+        <tr><td><code>container</code></td><td><code>IInstructionSequenceLayout</code></td><td>The parent sequence layout, if this instruction is nested inside a Combo or similar. <code>null</code> for top-level instructions.</td></tr>
+        <tr><td><code>rectTransform</code></td><td><code>RectTransform</code></td><td>The widget's root RectTransform.</td></tr>
+        <tr><td><code>anchor</code></td><td><code>RectTransform</code></td><td>Y-position anchor used by the insert indicator to decide whether a drop targets the slot above or below this widget.</td></tr>
+        <tr><td><code>anchoredPosition</code></td><td><code>Vector2</code></td><td>Shorthand for <code>anchor.anchoredPosition</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Inspector Fields</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>lineNumber</code></td><td><code>TMP_Text</code></td><td>Label showing the instruction's position in the sheet (1-based).</td></tr>
+        <tr><td><code>instructionName</code></td><td><code>TMP_Text</code></td><td>Label showing the instruction's <code>displayName</code>.</td></tr>
+        <tr><td><code>loopText</code></td><td><code>TMP_Text</code></td><td>Label showing the current loop count.</td></tr>
+        <tr><td><code>backgrounds</code></td><td><code>Image[]</code></td><td>Background sprites synced to the instruction's action tint color.</td></tr>
+        <tr><td><code>directions</code></td><td><code>Sprite[]</code></td><td>Direction arrow sprites in order: Up, Right, Down, Left.</td></tr>
+        <tr><td><code>directionButton</code></td><td><code>GameObject</code></td><td>Direction cycle button — hidden for instructions that do not use a direction (e.g. Wait).</td></tr>
+        <tr><td><code>loops</code></td><td><code>GameObject</code></td><td>Loop counter section container.</td></tr>
+        <tr><td><code>arrowsContainer</code></td><td><code>GameObject</code></td><td>Container for the directional arrow indicators.</td></tr>
+        <tr><td><code>increaseLoopButton</code></td><td><code>Button</code></td><td>Increments the loop count (max 12).</td></tr>
+        <tr><td><code>decreaseLoopButton</code></td><td><code>Button</code></td><td>Decrements the loop count (min 1).</td></tr>
+        <tr><td><code>removeButton</code></td><td><code>Button</code></td><td>Removes the instruction from the sheet.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Key Methods</h2>
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:52%"><col style="width:48%"></colgroup>
+      <thead><tr><th>Method</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>CreateInstance(<a href="sc-player-instruction.html">PlayerInstruction</a>, <a href="sc-action.html">Action</a>, Transform)</code></td><td>Factory — instantiates the prefab, binds the instruction and action, sets backgrounds and labels. Returns the new layout.</td></tr>
+        <tr><td><code>Load(<a href="sc-player-instruction.html">PlayerInstruction</a>, <a href="sc-action.html">Action</a>, Transform)</code></td><td>Restores a widget from saved data — same as <code>CreateInstance</code> but skips sounds and undo snapshots.</td></tr>
+        <tr><td><code>Remove()</code></td><td>Removes this instruction from the sheet and destroys the GameObject.</td></tr>
+        <tr><td><code>IncreaseLoop()</code></td><td>Increments the instruction's loop counter, capped at 12.</td></tr>
+        <tr><td><code>DecreaseLoop()</code></td><td>Decrements the instruction's loop counter, floored at 1.</td></tr>
+        <tr><td><code>SetDirection(Direction)</code></td><td>Sets the instruction's direction and updates the arrow sprite.</td></tr>
+        <tr><td><code>CycleDirection()</code></td><td>Advances the direction Up → Right → Down → Left → Up. Wired to the direction button.</td></tr>
+        <tr><td><code>UpdateLineNumber()</code></td><td>Refreshes the line number label from the widget's current sibling index.</td></tr>
+        <tr><td><code>SyncVirtualInstruction(Instruction)</code></td><td>Called by the runner during execution to mirror the runtime clone's direction and loop count back to the UI.</td></tr>
+        <tr><td><code>ResetLayout()</code></td><td>Restores the visual state from the instruction data after execution ends.</td></tr>
+        <tr><td><code>Validate()</code></td><td>Delegates to <code>instruction.Validate()</code> and returns the result.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      See also: <a href="sc-instruction-modifier-layout.html">InstructionModifierLayout</a>, <a href="sc-instruction-sequence-layout.html">InstructionSequenceLayout</a>, <a href="sc-instruction-use-layout.html">InstructionUseLayout</a>
+    </div>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

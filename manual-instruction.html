@@ -40,6 +40,7 @@
   <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
   <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
   
@@ -56,7 +57,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level & Utility</div>
@@ -76,9 +81,14 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
-  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
-  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
@@ -106,7 +116,7 @@
   <ol class="steps">
     <li>
       <strong>Create the C# class</strong> in <code>Assets/Scripts/Instructions/</code><br>
-      Extend <code>PlayerInstruction</code> and add the <code>[TypeName("YourName")]</code> attribute. The TypeName is how the instruction is stored in save files — never change it after shipping.
+      Extend <code><a href="sc-player-instruction.html">PlayerInstruction</a></code> and add the <code>[TypeName("YourName")]</code> attribute. The TypeName is how the instruction is stored in save files — never change it after shipping.
     </li>
     <li>
       <strong>Override <code>displayName</code></strong><br>
@@ -117,7 +127,7 @@
       Apply instant, synchronous effects here — dealing damage, spawning a prefab, modifying a state flag. This runs before any animation. Leave it empty if your instruction is purely animated.
     </li>
     <li>
-      <strong>Override <code>Tick(ExecutionContext ctx)</code></strong><br>
+      <strong>Override <code>Tick(<a href="sc-execution-context.html">ExecutionContext</a> ctx)</code></strong><br>
       This is the coroutine. Use <code>yield return new WaitForSeconds(t)</code> to wait for animations. To cancel execution and signal a failure, set <code>resolution = false</code> then <code>yield break</code>. Always show a notification first so the player understands why it failed.
     </li>
     <li>
@@ -155,8 +165,8 @@
 
             <span class="kw">if</span> (!ctx.player.<span class="fn">ValidatePosition</span>(target))
             {
-                <span class="type">NotificationCenter</span>.<span class="fn">Notify</span>(
-                    <span class="type">NotificationCenter</span>.MessageType.Warning,
+                <a href="sc-notification.html"><span class="type">NotificationCenter</span></a>.<span class="fn">Notify</span>(
+                    <a href="sc-notification.html"><span class="type">NotificationCenter</span></a>.MessageType.Warning,
                     <span class="str">"Can't teleport there!"</span>);
                 resolution = <span class="kw">false</span>;
                 <span class="kw">yield break</span>;
@@ -169,10 +179,10 @@
 }</pre>
 
   <h2>Creating a Modifier Instruction</h2>
-  <p>A modifier wraps one child instruction and alters its behaviour every loop. Extend <code>InstructionModifier</code> and implement <code>ModifyInstruction()</code> — called automatically after the child executes each iteration.</p>
+  <p>A modifier wraps one child instruction and alters its behaviour every loop. Extend <code><a href="sc-modifier.html">InstructionModifier</a></code> and implement <code>ModifyInstruction()</code> — called automatically after the child executes each iteration.</p>
 
   <ol class="steps">
-    <li>Extend <code>InstructionModifier</code> instead of <code>PlayerInstruction</code></li>
+    <li>Extend <code><a href="sc-modifier.html">InstructionModifier</a></code> instead of <code><a href="sc-player-instruction.html">PlayerInstruction</a></code></li>
     <li>Implement <code>ModifyInstruction()</code> — change <code>instruction.direction</code>, state, or any property of the child</li>
     <li>The prefab needs an <code>InstructionModifier_Layout</code> (not a plain <code>InstructionLayout</code>) so the UI renders the child slot — see <a href="manual-instruction-layout.html">Create an Instruction Layout</a></li>
   </ol>
@@ -195,10 +205,10 @@
 }</pre>
 
   <h2>Creating a Sequence Instruction</h2>
-  <p>A sequence holds multiple child instructions and executes them in order within a single turn. Extend <code>InstructionSequence</code> and define <code>maxCapacity</code>.</p>
+  <p>A sequence holds multiple child instructions and executes them in order within a single turn. Extend <code><a href="sc-sequence.html">InstructionSequence</a></code> and define <code>maxCapacity</code>.</p>
 
   <ol class="steps">
-    <li>Extend <code>InstructionSequence</code></li>
+    <li>Extend <code><a href="sc-sequence.html">InstructionSequence</a></code></li>
     <li>Override <code>maxCapacity</code> to set the maximum number of children (e.g. <code>4</code>)</li>
     <li>The prefab needs an <code>InstructionSequence_Layout</code> component for the child slot UI — see <a href="manual-instruction-layout.html">Create an Instruction Layout</a></li>
     <li><code>Execute()</code> and <code>Tick()</code> can be left empty — the sequence parent calls each child automatically</li>

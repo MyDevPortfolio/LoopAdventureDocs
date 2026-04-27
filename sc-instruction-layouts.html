@@ -14,7 +14,7 @@
   <a href="manual-overview.html" class="nav-link">Overview</a>
   <a href="manual-levels.html" class="nav-link">Create a Level</a>
   <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
-  
+
   <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
   <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
   <a href="manual-inventory.html" class="nav-link">Inventory System</a>
@@ -37,9 +37,10 @@
   <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
   <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
-  
+
   <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
   <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
   <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
@@ -53,7 +54,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level &amp; Utility</div>
@@ -73,9 +78,14 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
-  <a href="sc-instruction-layouts.html" class="nav-link sub active">Instruction Layouts</a>
-  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
@@ -95,156 +105,25 @@
   <div class="page-header">
     <div class="page-tag">Scripting / UI</div>
     <h1>Instruction Layouts</h1>
-    <p class="page-desc">MonoBehaviour widget classes that render instructions on the instruction sheet. <code>InstructionLayout</code> is the base; three subclasses handle modifier, sequence, and item-use instructions. Each widget is paired with a <a href="sc-player-instruction.html">PlayerInstruction</a> data object and a parent <a href="sc-action.html">Action</a>.</p>
+    <p class="page-desc">MonoBehaviour widgets that render instructions on the instruction sheet. Select a layout class below to view its API and inspector fields.</p>
   </div>
 
-  <h2>InstructionLayout</h2>
-  <p>Base class for all instruction widgets. Implements <code>IDropHandler</code> so instructions can be reordered by dragging. Instantiated via <code>Action.CreateLayout()</code> — do not instantiate directly.</p>
+  <h2>Layout Classes</h2>
+  <p>Each instruction type is paired with a dedicated layout widget:</p>
 
-  <h3>Properties</h3>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <thead><tr><th>Instruction Type</th><th>Layout Class</th></tr></thead>
       <tbody>
-        <tr><td><code>instruction</code></td><td><code>PlayerInstruction</code></td><td>The data object this widget is bound to.</td></tr>
-        <tr><td><code>container</code></td><td><code>IInstructionSequenceLayout</code></td><td>The parent sequence layout, if this instruction is nested inside a Combo or similar. <code>null</code> for top-level instructions.</td></tr>
-        <tr><td><code>rectTransform</code></td><td><code>RectTransform</code></td><td>The widget's root RectTransform.</td></tr>
-        <tr><td><code>anchor</code></td><td><code>RectTransform</code></td><td>Y-position anchor used by the insert indicator to decide whether a drop targets the slot above or below this widget.</td></tr>
-        <tr><td><code>anchoredPosition</code></td><td><code>Vector2</code></td><td>Shorthand for <code>anchor.anchoredPosition</code>.</td></tr>
+        <tr><td>Standard player instructions</td><td><a href="sc-instruction-layout.html">InstructionLayout</a></td></tr>
+        <tr><td>Modifier instructions</td><td><a href="sc-instruction-modifier-layout.html">InstructionModifierLayout</a></td></tr>
+        <tr><td>Sequence instructions (Combo)</td><td><a href="sc-instruction-sequence-layout.html">InstructionSequenceLayout</a></td></tr>
+        <tr><td>Use instruction specifically</td><td><a href="sc-instruction-use-layout.html">InstructionUseLayout</a></td></tr>
       </tbody>
     </table>
   </div>
 
-  <h3>Inspector Fields</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>lineNumber</code></td><td><code>TMP_Text</code></td><td>Label showing the instruction's position in the sheet (1-based).</td></tr>
-        <tr><td><code>instructionName</code></td><td><code>TMP_Text</code></td><td>Label showing the instruction's <code>displayName</code>.</td></tr>
-        <tr><td><code>loopText</code></td><td><code>TMP_Text</code></td><td>Label showing the current loop count.</td></tr>
-        <tr><td><code>backgrounds</code></td><td><code>Image[]</code></td><td>Background sprites synced to the instruction's action tint color.</td></tr>
-        <tr><td><code>directions</code></td><td><code>Sprite[]</code></td><td>Direction arrow sprites in order: Up, Right, Down, Left.</td></tr>
-        <tr><td><code>directionButton</code></td><td><code>GameObject</code></td><td>Direction cycle button — hidden for instructions that do not use a direction (e.g. Wait).</td></tr>
-        <tr><td><code>loops</code></td><td><code>GameObject</code></td><td>Loop counter section container.</td></tr>
-        <tr><td><code>arrowsContainer</code></td><td><code>GameObject</code></td><td>Container for the directional arrow indicators.</td></tr>
-        <tr><td><code>increaseLoopButton</code></td><td><code>Button</code></td><td>Increments the loop count (max 12).</td></tr>
-        <tr><td><code>decreaseLoopButton</code></td><td><code>Button</code></td><td>Decrements the loop count (min 1).</td></tr>
-        <tr><td><code>removeButton</code></td><td><code>Button</code></td><td>Removes the instruction from the sheet.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Key Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:52%"><col style="width:48%"></colgroup>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>CreateInstance(PlayerInstruction, Action, Transform)</code></td><td>Factory — instantiates the prefab, binds the instruction and action, sets backgrounds and labels. Returns the new layout.</td></tr>
-        <tr><td><code>Load(PlayerInstruction, Action, Transform)</code></td><td>Restores a widget from saved data — same as <code>CreateInstance</code> but skips sounds and undo snapshots.</td></tr>
-        <tr><td><code>Remove()</code></td><td>Removes this instruction from the sheet and destroys the GameObject.</td></tr>
-        <tr><td><code>IncreaseLoop()</code></td><td>Increments the instruction's loop counter, capped at 12.</td></tr>
-        <tr><td><code>DecreaseLoop()</code></td><td>Decrements the instruction's loop counter, floored at 1.</td></tr>
-        <tr><td><code>SetDirection(Direction)</code></td><td>Sets the instruction's direction and updates the arrow sprite.</td></tr>
-        <tr><td><code>CycleDirection()</code></td><td>Advances the direction Up → Right → Down → Left → Up. Wired to the direction button.</td></tr>
-        <tr><td><code>UpdateLineNumber()</code></td><td>Refreshes the line number label from the widget's current sibling index.</td></tr>
-        <tr><td><code>SyncVirtualInstruction(Instruction)</code></td><td>Called by the runner during execution to mirror the runtime clone's direction and loop count back to the UI.</td></tr>
-        <tr><td><code>ResetLayout()</code></td><td>Restores the visual state from the instruction data after execution ends.</td></tr>
-        <tr><td><code>Validate()</code></td><td>Delegates to <code>instruction.Validate()</code> and returns the result.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>InstructionModifierLayout</h2>
-  <p>Extends <code>InstructionLayout</code>. Adds a child instruction drop zone rendered below the modifier header. The child slot accepts any standard instruction dragged from the palette — sequences are rejected.</p>
-
-  <h3>Additional Inspector Fields</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>OnActionDropEventCaller</code></td><td><code>DropActionEventCaller</code></td><td>Drop zone that listens for an instruction being dragged into the child slot. Calls <code>SetInstruction()</code> when triggered.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>SetInstruction(Action action)</code></td><td>Creates the child instruction from <code>action</code>, attaches it to the modifier, and updates the widget visuals. Rejects sequence actions.</td></tr>
-        <tr><td><code>SetDirection(Direction)</code></td><td>Override — propagates the direction change to the child instruction as well.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>InstructionSequenceLayout</h2>
-  <p>Extends <code>InstructionLayout</code> and implements <code>IInstructionSequenceLayout</code>. Manages a list of nested child layouts and dynamically resizes the widget to fit them.</p>
-
-  <h3>Additional Inspector Fields</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>childContainer</code></td><td><code>RectTransform</code></td><td>Parent transform that receives child <code>InstructionLayout</code> instances.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Properties &amp; Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:52%"><col style="width:48%"></colgroup>
-      <thead><tr><th>Member</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Childrens</code> (<code>IReadOnlyList&lt;INestedInstructionLayout&gt;</code>)</td><td>All child layout widgets currently in the sequence.</td></tr>
-        <tr><td><code>AddInstruction(Action action)</code></td><td>Drops a new child instruction into the sequence. Falls back to inserting after the sequence if it is full or if the action is a sequence type.</td></tr>
-        <tr><td><code>RemoveInstruction(INestedInstructionLayout)</code></td><td>Removes the child layout and instruction, then recalculates the widget's height.</td></tr>
-        <tr><td><code>Insert(int index, Action action)</code></td><td>Inserts a new child at the given index. Recalculates height and plays the add sound.</td></tr>
-        <tr><td><code>ResetLayout()</code></td><td>Override — resets this widget and all children recursively.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>InstructionUseLayout</h2>
-  <p>Extends <code>InstructionLayout</code>. Adds an item picker button that opens the inventory window so the player can choose which item the <strong>Use</strong> instruction will consume.</p>
-
-  <h3>Additional Inspector Fields</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>openInventoryButton</code></td><td><code>Button</code></td><td>Button that opens the item selection window. Displays the currently selected item's icon when an item is chosen.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>OpenInventory()</code></td><td>Opens <code>ItemsListWindow</code> with a callback that calls <code>SetItem()</code> when the player selects an item.</td></tr>
-        <tr><td><code>SetItem(Item item)</code></td><td>Binds the item to the underlying <code>Instruction_Use</code> and updates the button icon.</td></tr>
-        <tr><td><code>LoadItem(Item item)</code></td><td>Updates the button icon without modifying the instruction — used when loading a saved sheet.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>Which Layout to Use</h2>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Instruction type</th><th>Layout prefab component</th></tr></thead>
-      <tbody>
-        <tr><td>Standard player instructions (<code>PlayerInstruction</code>)</td><td><code>InstructionLayout</code></td></tr>
-        <tr><td>Modifier instructions (<code>InstructionModifier</code>)</td><td><code>InstructionModifierLayout</code></td></tr>
-        <tr><td>Sequence instructions (<code>InstructionSequence</code>)</td><td><code>InstructionSequenceLayout</code></td></tr>
-        <tr><td><code>Instruction_Use</code> specifically</td><td><code>InstructionUseLayout</code></td></tr>
-      </tbody>
-    </table>
-  </div>
+  <p>Each layout is paired with a <a href="sc-player-instruction.html">PlayerInstruction</a> data object and a parent <a href="sc-action.html">Action</a>. All layouts implement <code>IDropHandler</code> so instructions can be reordered by dragging.</p>
 
 </main>
 <script src="search-index.js"></script>

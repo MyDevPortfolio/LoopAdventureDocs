@@ -41,6 +41,7 @@
   <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
   <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
   
@@ -57,7 +58,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level &amp; Utility</div>
@@ -77,9 +82,14 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
-  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
-  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
@@ -100,12 +110,12 @@
   <div class="page-header">
     <div class="page-tag">Scripting</div>
     <h1>CustomInstruction</h1>
-    <p class="page-desc">An <code>Instruction</code> subclass that lets you define execution behaviour entirely through delegates, without creating a new class. Useful for one-off or procedurally generated instructions at runtime.</p>
+    <p class="page-desc">An <code><a href="sc-instruction.html">Instruction</a></code> subclass that lets you define execution behaviour entirely through delegates, without creating a new class. Useful for one-off or procedurally generated instructions at runtime.</p>
   </div>
 
   <!-- ── CustomInstruction ── -->
   <h2>CustomInstruction</h2>
-  <p>Extends <code>Instruction</code> directly. Instead of overriding <code>Tick()</code> in a subclass, you assign a coroutine delegate to <code>tick</code>. The runner treats it identically to any other instruction.</p>
+  <p>Extends <code><a href="sc-instruction.html">Instruction</a></code> directly. Instead of overriding <code>Tick()</code> in a subclass, you assign a coroutine delegate to <code>tick</code>. The runner treats it identically to any other instruction.</p>
 
   <h3>Properties</h3>
   <div class="table-wrap">
@@ -125,7 +135,7 @@
       <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td><code>execute</code></td><td><code>event Action</code></td><td>Invoked by <code>Execute()</code> before <code>Tick()</code> runs. Subscribe to perform any non-coroutine setup or side-effects when the instruction starts.</td></tr>
-        <tr><td><code>tick</code></td><td><code>Func&lt;ExecutionContext,<br>&nbsp;&nbsp;IEnumerator&gt;</code></td><td>The coroutine that drives the instruction's behaviour. Receives the current <code>ExecutionContext</code> and must yield at least once. If <code>null</code>, the instruction yields once and returns immediately.</td></tr>
+        <tr><td><code>tick</code></td><td><code>Func&lt;<a href="sc-execution-context.html">ExecutionContext</a>,<br>&nbsp;&nbsp;IEnumerator&gt;</code></td><td>The coroutine that drives the instruction's behaviour. Receives the current <code><a href="sc-execution-context.html">ExecutionContext</a></code> and must yield at least once. If <code>null</code>, the instruction yields once and returns immediately.</td></tr>
       </tbody>
     </table>
   </div>
@@ -138,7 +148,7 @@
       <tbody>
         <tr><td><code>Execute()</code></td><td>Invokes the <code>execute</code> event. Called by the runner before <code>Tick()</code>.</td></tr>
         <tr>
-          <td><code>Tick(ExecutionContext context)</code><br><span class="badge badge-override">override</span></td>
+          <td><code>Tick(<a href="sc-execution-context.html">ExecutionContext</a> context)</code><br><span class="badge badge-override">override</span></td>
           <td>Delegates to the <code>tick</code> function. If <code>tick</code> is <code>null</code>, yields once and returns.</td>
         </tr>
       </tbody>
@@ -151,7 +161,7 @@
   <h2>Usage</h2>
   <p>Create a <code>CustomInstruction</code>, assign its coroutine to <code>tick</code>, and optionally subscribe to <code>execute</code> for any synchronous setup that should run before the coroutine starts.</p>
 
-<pre><span class="type">IEnumerator</span> <span class="fn">HealRoutine</span>(<span class="type">ExecutionContext</span> context)
+<pre><span class="type">IEnumerator</span> <span class="fn">HealRoutine</span>(<span class="type"><a href="sc-execution-context.html">ExecutionContext</a></span> context)
 {
     context.inventory.<span class="fn">TryUseItem</span>(healthPotion);
     context.player.<span class="fn">UseItem</span>(healthPotion);
@@ -167,7 +177,7 @@ instruction.execute += () => <span class="type">Debug</span>.<span class="fn">Lo
     <div class="callout-icon">💡</div>
     <div class="callout-body">
       <strong>CustomInstruction vs subclass</strong>
-      Use <code>CustomInstruction</code> for transient, runtime-generated behaviour — scripted events, tutorial prompts, or instructions assembled from data. For reusable player actions that appear in the palette, extend <code>PlayerInstruction</code> instead.
+      Use <code>CustomInstruction</code> for transient, runtime-generated behaviour — scripted events, tutorial prompts, or instructions assembled from data. For reusable player actions that appear in the palette, extend <code><a href="sc-player-instruction.html">PlayerInstruction</a></code> instead.
     </div>
   </div>
 

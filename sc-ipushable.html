@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>IPushable — Loop Adventure Docs</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
+  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
+  <div class="nav-section">Manual</div>
+  <a href="manual-overview.html" class="nav-link">Overview</a>
+  <a href="manual-levels.html" class="nav-link">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
+  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-sub-section">Setup Guides</div>
+  <a href="manual-player-setup.html" class="nav-link">Player Setup</a>
+  <a href="manual-enemy-setup.html" class="nav-link">Enemy Setup</a>
+  <a href="manual-data-systems.html" class="nav-link">Data Systems</a>
+  <a href="manual-world-map-setup.html" class="nav-link">World Map</a>
+  <a href="manual-ui-screens.html" class="nav-link">UI Screens</a>
+  <a href="manual-projectile-setup.html" class="nav-link">Projectile</a>
+  <a href="manual-visual-fx-setup.html" class="nav-link">Visual FX &amp; Utilities</a>
+  <div class="nav-divider"></div>
+  <div class="nav-section">Scripting</div>
+  <div class="nav-sub-section">Instructions</div>
+  <a href="sc-instruction.html" class="nav-link sub">Instruction</a>
+  <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
+  <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
+  <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
+  <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
+  <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
+  <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
+  <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
+  <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
+  <a href="sc-tasks.html" class="nav-link sub">Tasks</a>
+  <a href="sc-action.html" class="nav-link sub">Action</a>
+  <a href="sc-instruction-sheet.html" class="nav-link sub">InstructionSheet</a>
+  <a href="sc-instruction-runner.html" class="nav-link sub">InstructionRunner</a>
+  <div class="nav-sub-section">Inventory</div>
+  <a href="sc-inventory.html" class="nav-link sub">PlayerInventory</a>
+  <a href="sc-items.html" class="nav-link sub">Item</a>
+  <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
+  <a href="sc-effect.html" class="nav-link sub">Effect</a>
+  <div class="nav-sub-section">Interactables</div>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub active">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
+  <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
+  <a href="sc-traps.html" class="nav-link sub">Traps</a>
+  <div class="nav-sub-section">Level & Utility</div>
+  <a href="sc-level-manager.html" class="nav-link sub">LevelManager</a>
+  <a href="sc-level-goals.html" class="nav-link sub">LevelGoal</a>
+  <a href="sc-map-manager.html" class="nav-link sub">MapManager</a>
+  <a href="sc-notification.html" class="nav-link sub">NotificationCenter</a>
+  <div class="nav-sub-section">Scriptable Objects</div>
+  <a href="sc-items-references.html" class="nav-link sub">ItemsReferences</a>
+  <a href="sc-scriptable-objects.html" class="nav-link sub">IdentifiableSO</a>
+  <a href="sc-stat.html" class="nav-link sub">Stat</a>
+  <div class="nav-sub-section">Audio</div>
+  <a href="sc-sound-manager.html" class="nav-link sub">SoundManager</a>
+  <a href="sc-music-manager.html" class="nav-link sub">MusicManager</a>
+  <a href="sc-sound-slider.html" class="nav-link sub">SoundSlider</a>
+  <div class="nav-sub-section">UI</div>
+  <a href="sc-window.html" class="nav-link sub">Window</a>
+  <a href="sc-hud.html" class="nav-link sub">HUD</a>
+  <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
+  <div class="nav-sub-section">Components</div>
+  <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
+  <a href="sc-health.html" class="nav-link sub">Health</a>
+  <a href="sc-active-effects-controller.html" class="nav-link sub">ActiveEffectsController</a>
+  <a href="sc-enemy-hud.html" class="nav-link sub">Enemy HUD</a>
+  <a href="sc-item-dropper.html" class="nav-link sub">ItemDropper</a>
+  <a href="sc-game-data-manager.html" class="nav-link sub">GameDataManager</a>
+  <a href="sc-database-manager.html" class="nav-link sub">DatabaseManager</a>
+  <a href="sc-world-map.html" class="nav-link sub">World Map</a>
+  <a href="sc-level-screens.html" class="nav-link sub">Level Screens</a>
+  <a href="sc-equipment-browser.html" class="nav-link sub">Equipment Browser</a>
+  <a href="sc-projectile.html" class="nav-link sub">Projectile</a>
+  <a href="sc-visual-fx.html" class="nav-link sub">Visual FX</a>
+  <a href="sc-utility-components.html" class="nav-link sub">Utilities</a>
+</nav>
+
+<main class="main">
+  <div class="page-header">
+    <div class="page-tag">Scripting / Interactables</div>
+    <h1>IPushable</h1>
+    <p class="page-desc">Marks an object as pushable. <code>Instruction_Push</code> searches for this interface one tile ahead of the player, validates the push with <code>Validate(direction)</code>, and then calls <code>Push(context, direction)</code> while animating the movement. <code>Stop()</code> is called when the push animation ends.</p>
+  </div>
+
+  <h2>Properties</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>transform</code></td><td><code>Transform</code></td><td>The transform of the pushable object. Same explicit implementation pattern as <code>ICarryObject</code>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Methods</h2>
+  <div class="table-wrap">
+    <table>
+      <colgroup><col style="width:38%"><col style="width:14%"><col style="width:48%"></colgroup>
+      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
+      <tbody>
+        <tr><td><code>Validate(Direction direction)</code></td><td><code>bool</code></td><td>Default implementation provided — performs a <code>Physics2D.OverlapBoxAll</code> at the target cell and returns <code>false</code> if any <code>IObstacle</code> is found. Override only if you need custom validation logic.</td></tr>
+        <tr><td><code>Push(<br>&nbsp;&nbsp;ExecutionContext context,<br>&nbsp;&nbsp;Direction direction)</code></td><td><code>void</code></td><td>Moves the object one tile in the given direction. Use <code>MapManager.cellSize</code> for the offset. The engine calls this during the push animation frame.</td></tr>
+        <tr><td><code>Stop()</code></td><td><code>void</code></td><td>Called when the push animation finishes. Stop any looping push sounds or effects here.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h2>Default Validate Implementation</h2>
+<pre><span class="cmt">// Default Validate() — no override needed for most objects</span>
+<span class="kw">public bool</span> <span class="fn">Validate</span>(<span class="type">Direction</span> direction)
+{
+    <span class="type">Collider2D</span>[] obs = <span class="type">Physics2D</span>.<span class="fn">OverlapBoxAll</span>(
+        transform.position.<span class="fn">ToVector2</span>() + direction.<span class="fn">AsVector2</span>() * <span class="type">MapManager</span>.cellSize,
+        <span class="type">Vector2</span>.one, <span class="num">0</span>);
+    <span class="kw">foreach</span> (<span class="type">Collider2D</span> o <span class="kw">in</span> obs)
+        <span class="kw">if</span> (o.<span class="fn">GetComponent</span>&lt;<span class="type">IObstacle</span>&gt;() != <span class="kw">null</span>) <span class="kw">return false</span>;
+    <span class="kw">return true</span>;
+}</pre>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      See also: <a href="sc-iinteractable.html">IInteractable</a>, <a href="sc-icarryobject.html">ICarryObject</a>, <a href="sc-iobstacle.html">IObstacle</a>, <a href="sc-execution-context-element.html">ExecutionContextElement</a>
+    </div>
+  </div>
+
+</main>
+<script src="search-index.js"></script>
+<script src="docs.js"></script>
+</body>
+</html>

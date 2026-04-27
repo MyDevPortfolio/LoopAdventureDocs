@@ -41,6 +41,7 @@
   <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
   <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
   
@@ -57,7 +58,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level & Utility</div>
@@ -77,9 +82,14 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
-  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
-  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
@@ -118,7 +128,7 @@
   <ol class="steps">
     <li>
       <strong>Create the C# class</strong> in <code>Assets/Scripts/Enemies/Instructions/</code><br>
-      Extend <code>EnemyInstruction</code>.
+      Extend <code><a href="sc-enemy-instruction.html">EnemyInstruction</a></code>.
     </li>
     <li>
       <strong>Override <code>displayName</code></strong><br>
@@ -129,7 +139,7 @@
       Instant effects (damage, state changes). Can be empty.
     </li>
     <li>
-      <strong>Override <code>Tick(ExecutionContext ctx)</code></strong><br>
+      <strong>Override <code>Tick(<a href="sc-execution-context.html">ExecutionContext</a> ctx)</code></strong><br>
       Coroutine logic. Use <code>controller</code> to access the enemy's position, animation, and health. Use <code>ctx.player</code> to read player state.
     </li>
     <li>
@@ -204,11 +214,11 @@
     <table>
       <thead><tr><th></th><th>Player Instruction</th><th>Enemy Instruction</th></tr></thead>
       <tbody>
-        <tr><td>Base class</td><td><code>PlayerInstruction</code></td><td><code>EnemyInstruction</code></td></tr>
+        <tr><td>Base class</td><td><code><a href="sc-player-instruction.html">PlayerInstruction</a></code></td><td><code><a href="sc-enemy-instruction.html">EnemyInstruction</a></code></td></tr>
         <tr><td>Runs</td><td>One per turn, in sheet order</td><td>In parallel with the player's turn</td></tr>
         <tr><td>Character ref</td><td><code>ctx.player</code></td><td><code>controller</code> field</td></tr>
         <tr><td>Direction source</td><td>Set by the player in the UI</td><td>Set in the EnemyAction ScriptableObject</td></tr>
-        <tr><td>Registered in</td><td>InstructionSheet palette</td><td>EnemyController action list</td></tr>
+        <tr><td>Registered in</td><td><a href="sc-instruction-sheet.html">InstructionSheet</a> palette</td><td>EnemyController action list</td></tr>
       </tbody>
     </table>
   </div>

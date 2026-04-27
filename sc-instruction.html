@@ -37,6 +37,7 @@
   <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
   <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
   
@@ -53,7 +54,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level & Utility</div>
@@ -73,9 +78,14 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
-  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
-  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
@@ -100,8 +110,8 @@
 
   <div class="tree">
 <span class="cls">Instruction</span>  <span class="dim">← you are here</span>
-  <span class="arrow">├──</span> <span class="cls">PlayerInstruction</span>
-  <span class="arrow">└──</span> <span class="cls">EnemyInstruction</span>
+  <span class="arrow">├──</span> <span class="cls"><a href="sc-player-instruction.html">PlayerInstruction</a></span>
+  <span class="arrow">└──</span> <span class="cls"><a href="sc-enemy-instruction.html">EnemyInstruction</a></span>
   </div>
 
   <h2>Serialized Fields</h2>
@@ -120,7 +130,7 @@
       <tr><td><code>displayName</code> <span class="badge badge-abstract">abstract</span></td><td><code>string</code></td><td>Label shown in the instruction sheet UI. Must be overridden in every subclass.</td></tr>
       <tr><td><code>direction</code></td><td><code>Direction</code></td><td>Current direction. Set via <code>SetDirection()</code>.</td></tr>
       <tr><td><code>loop</code></td><td><code>int</code></td><td>Current repetition count (1–12).</td></tr>
-      <tr><td><code>context</code></td><td><code>ExecutionContext</code></td><td>Injected by <code>Run()</code> before <code>Tick()</code> is called. Read only.</td></tr>
+      <tr><td><code>context</code></td><td><code><a href="sc-execution-context.html">ExecutionContext</a></code></td><td>Injected by <code>Run()</code> before <code>Tick()</code> is called. Read only.</td></tr>
       <tr><td><code>resolution</code> <span class="badge badge-virtual">virtual</span></td><td><code>bool</code></td><td>True by default. Set to <code>false</code> inside <code>Tick()</code> then <code>yield break</code> to stop the runner.</td></tr>
     </tbody>
   </table></div>
@@ -139,7 +149,7 @@
     <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
     <tbody>
       <tr><td><code>Execute()</code></td><td><code>void</code></td><td>Instant synchronous side-effects before animation — deal damage, spawn a prefab, change state. Called by the runner via animation events. Can be left empty.</td></tr>
-      <tr><td><code>Tick(ExecutionContext ctx)</code></td><td><code>IEnumerator</code></td><td>The coroutine driving animation and logic. Yield to wait. To fail: set <code>resolution = false</code> then <code>yield break</code>.</td></tr>
+      <tr><td><code>Tick(<a href="sc-execution-context.html">ExecutionContext</a> ctx)</code></td><td><code>IEnumerator</code></td><td>The coroutine driving animation and logic. Yield to wait. To fail: set <code>resolution = false</code> then <code>yield break</code>.</td></tr>
     </tbody>
   </table></div>
 

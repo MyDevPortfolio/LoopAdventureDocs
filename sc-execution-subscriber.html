@@ -36,6 +36,7 @@
   <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
   <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
   <a href="sc-execution-subscriber.html" class="nav-link sub active">IExecutionSuscriber</a>
@@ -51,7 +52,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level &amp; Utility</div>
@@ -71,9 +76,14 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
-  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
-  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
@@ -93,7 +103,7 @@
   <div class="page-header">
     <div class="page-tag">Scripting / Instructions</div>
     <h1>IExecutionSuscriber</h1>
-    <p class="page-desc">Lightweight notification interface for enemies and interactables that need to react to each instruction step. Implement it on any component in the enemy's hierarchy — the <code>EnemyController</code> discovers and registers all subscribers automatically at initialization.</p>
+    <p class="page-desc">Lightweight notification interface for components that need to react to each instruction step. Both <code>PlayerController</code> and <code>EnemyController</code> auto-discover all subscribers in their child hierarchy at initialization — no manual wiring required.</p>
   </div>
 
   <h2>Interface</h2>
@@ -102,35 +112,35 @@
       <colgroup><col style="width:44%"><col style="width:56%"></colgroup>
       <thead><tr><th>Method</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>Execute(ExecutionContext context)</code></td><td>Called every time the owning enemy executes an instruction step. Use it to trigger animations, sounds, projectiles, or any side-effect that should accompany the enemy's action.</td></tr>
+        <tr><td><code>Execute(<a href="sc-execution-context.html">ExecutionContext</a> context)</code></td><td>Called every time the owning character executes an instruction step. Use it to trigger animations, sounds, projectiles, or any side-effect that should accompany the action.</td></tr>
       </tbody>
     </table>
   </div>
 
   <h2>How registration works</h2>
-  <p>You do not need to register subscribers manually. When a level starts, <code>EnemyController.Initialize()</code> calls <code>GetComponentsInChildren&lt;IExecutionSuscriber&gt;()</code> on the enemy's GameObject and wires every result into the internal <code>OnExecute</code> event:</p>
-  <pre><span class="cmt">// inside EnemyController.Initialize() — runs automatically</span>
+  <p>You do not need to register subscribers manually. Both <code>PlayerController</code> and <code>EnemyController</code> call <code>GetComponentsInChildren&lt;IExecutionSuscriber&gt;()</code> during <code>Initialize()</code> and wire every result into their internal <code>OnExecute</code> event:</p>
+  <pre><span class="cmt">// same pattern in both PlayerController.Initialize() and EnemyController.Initialize()</span>
 <span class="type">IExecutionSuscriber</span>[] suscribers = <span class="fn">GetComponentsInChildren</span>&lt;<span class="type">IExecutionSuscriber</span>&gt;();
 <span class="kw">foreach</span> (<span class="type">IExecutionSuscriber</span> s <span class="kw">in</span> suscribers)
     OnExecute += s.<span class="fn">Execute</span>;</pre>
-  <p>Each time the enemy's current instruction executes, <code>EnemyController</code> invokes <code>OnExecute</code>, which calls <code>Execute()</code> on every registered subscriber in order.</p>
-  <p>To add a subscriber to an enemy: attach a MonoBehaviour that implements <code>IExecutionSuscriber</code> to the enemy's root GameObject or any of its children. No other wiring is required.</p>
+  <p>Each time the character executes an instruction, the controller invokes <code>OnExecute</code>, which calls <code>Execute()</code> on every registered subscriber in order.</p>
+  <p>To add a subscriber: attach a MonoBehaviour that implements <code>IExecutionSuscriber</code> to the <strong>player's or enemy's</strong> root GameObject or any of its children. No other wiring is required.</p>
 
   <h2>IExecutionSuscriber vs ITaskReceiver</h2>
   <div class="table-wrap">
     <table>
       <thead><tr><th></th><th>IExecutionSuscriber</th><th>ITaskReceiver</th></tr></thead>
       <tbody>
-        <tr><td><strong>Ownership</strong></td><td>Reacts to the enemy's own action</td><td>Schedules an independent parallel task</td></tr>
+        <tr><td><strong>Ownership</strong></td><td>Reacts to the player's or enemy's own instruction execution</td><td>Schedules an independent parallel task</td></tr>
         <tr><td><strong>Timing</strong></td><td>Synchronous — fires inline during instruction execution</td><td>Asynchronous — runs concurrently alongside player instructions</td></tr>
-        <tr><td><strong>Use when</strong></td><td>You need a fire-and-forget side-effect (sound, VFX, projectile) tied to the enemy's action</td><td>The object needs its own coroutine that runs in parallel every turn</td></tr>
-        <tr><td><strong>Registration</strong></td><td>Auto-discovered via <code>GetComponentsInChildren</code></td><td>Must be registered with the runner explicitly</td></tr>
+        <tr><td><strong>Use when</strong></td><td>You need a fire-and-forget side-effect (sound, VFX, projectile) tied to the character's action</td><td>The object needs its own coroutine that runs in parallel every turn</td></tr>
+        <tr><td><strong>Registration</strong></td><td>Auto-discovered via <code>GetComponentsInChildren</code> on both player and enemy</td><td>Must be registered with the runner explicitly</td></tr>
       </tbody>
     </table>
   </div>
 
   <h2>Example</h2>
-  <p>A subscriber that plays a sound clip each time the enemy executes an action:</p>
+  <p>A subscriber that plays a sound clip each time the character executes an action — works on both the player and enemies:</p>
   <pre><span class="kw">using</span> UnityEngine;
 
 <span class="kw">namespace</span> LoopAdventure
@@ -152,14 +162,14 @@
         }
     }
 }</pre>
-  <p>Attach this component to the enemy's root GameObject or any child. The <code>EnemyController</code> will pick it up automatically — no further wiring needed.</p>
+  <p>Attach this to the player's or enemy's root GameObject or any child. Both controllers will pick it up automatically — no further wiring needed.</p>
 
   <h2>Built-in implementations</h2>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Class</th><th>Behaviour</th></tr></thead>
       <tbody>
-        <tr><td><code>ShootSuscriber</code></td><td>Fires a <code>Projectile</code> prefab in the enemy's current direction from the subscriber's world position each time the enemy executes. Assign the projectile prefab in the Inspector.</td></tr>
+        <tr><td><code>ShootSuscriber</code></td><td>Fires a <code><a href="sc-projectile.html">Projectile</a></code> prefab in the character's current direction from the subscriber's world position each time an instruction executes. Assign the projectile prefab in the Inspector. Can be placed on the player or an enemy.</td></tr>
       </tbody>
     </table>
   </div>

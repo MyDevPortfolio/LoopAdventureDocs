@@ -3,22 +3,18 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Interactable Interfaces — Loop Adventure Docs</title>
+  <title>Interactable System — Loop Adventure Docs</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
 
 <nav class="sidebar">
-  <div class="sidebar-logo">
-    <div class="game-title">LOOP<br>ADVENTURE</div>
-    <span class="doc-label">Documentation</span>
-  </div>
+  <div class="sidebar-logo"><div class="game-title">LOOP<br>ADVENTURE</div><span class="doc-label">Documentation</span></div>
   <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
   <div class="nav-section">Manual</div>
   <a href="manual-overview.html" class="nav-link">Overview</a>
   <a href="manual-levels.html" class="nav-link">Create a Level</a>
   <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
-  
   <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
   <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
   <a href="manual-inventory.html" class="nav-link">Inventory System</a>
@@ -41,9 +37,9 @@
   <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
   <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
-  
   <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
   <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
   <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
@@ -57,7 +53,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub active">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level & Utility</div>
@@ -77,9 +77,14 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
-  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
-  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
@@ -99,210 +104,26 @@
 <main class="main">
   <div class="page-header">
     <div class="page-tag">Scripting</div>
-    <h1>Interactable Interfaces</h1>
-    <p class="page-desc">The four interfaces that define how world objects participate in player interactions, and the base class that hooks them into the execution lifecycle.</p>
+    <h1>Interactable System</h1>
+    <p class="page-desc">The foundation for all world objects that players can interact with, push, carry, or collide with. Five core interfaces and one base class define the complete interaction API.</p>
   </div>
 
-  <!-- ── IInteractable ── -->
-  <h2>IInteractable</h2>
-  <p>Marks a world object as interactable. The <code>Instruction_Interact</code> searches for this interface on the player's current tile and calls <code>Interact()</code> if <code>Validate()</code> returns <code>true</code>. Objects with <code>automatic = true</code> are triggered automatically at the end of any turn the player lands on their tile.</p>
-
-  <h3>Properties</h3>
+  <h2>Core Interfaces</h2>
   <div class="table-wrap">
     <table>
-      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
+      <thead><tr><th>Type</th><th>Purpose</th><th>Used by</th></tr></thead>
       <tbody>
-        <tr><td><code>automatic</code></td><td><code>bool</code></td><td>If <code>true</code>, the object is collected at turn end without requiring an Interact instruction. Use for floor pickups. If <code>false</code>, the player must use Interact explicitly.</td></tr>
-        <tr><td><code>OnInteract</code></td><td><code>UnityEvent</code></td><td>Raised every time this object is successfully interacted with. Declare with <code>[field: SerializeField]</code> to expose it in the Inspector.</td></tr>
+        <tr><td><a href="sc-iinteractable.html"><code>IInteractable</code></a></td><td>Mark objects for player interaction (doors, chests, pickups).</td><td><code>Instruction_Interact</code></td></tr>
+        <tr><td><a href="sc-icarryobject.html"><code>ICarryObject</code></a></td><td>Allow the player to pick up and carry an object.</td><td><code>Instruction_Carry</code>, <code>Instruction_Drop</code></td></tr>
+        <tr><td><a href="sc-ipushable.html"><code>IPushable</code></a></td><td>Allow the player to push an object one cell at a time.</td><td><code>Instruction_Push</code></td></tr>
+        <tr><td><a href="sc-iobstacle.html"><code>IObstacle</code></a></td><td>Tag an object as a physical blocker (walls, closed doors).</td><td>Movement validation, push validation</td></tr>
+        <tr><td><a href="sc-execution-context-element.html"><code>ExecutionContextElement</code></a></td><td>Base class for all interactive objects. Handles cloning and lifecycle.</td><td>All interactable objects</td></tr>
       </tbody>
     </table>
   </div>
 
-  <h3>Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Validate()</code></td><td><code>bool</code></td><td>Called before <code>Interact()</code>. Return <code>true</code> if interaction is currently legal. Return <code>false</code> to block — call <code>NotificationCenter.Notify()</code> before returning to give the player feedback.</td></tr>
-        <tr><td><code>Interact()</code></td><td><code>void</code></td><td>Executes the interaction behaviour. Add inventory items, play animations, fire events, or destroy the object here.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-<pre><span class="kw">public class</span> <span class="type">InteractableObject_Chest</span> : <span class="type">ExecutionContextElement</span>, <span class="type">IInteractable</span>
-{
-    [<span class="type">SerializeField</span>] <span class="type">Item</span> item;
-    [field: <span class="type">SerializeField</span>] <span class="kw">public</span> <span class="type">UnityEvent</span> OnInteract { <span class="kw">get</span>; <span class="kw">set</span>; }
-
-    <span class="kw">public bool</span> automatic => <span class="kw">false</span>;
-
-    <span class="kw">public bool</span> <span class="fn">Validate</span>() => item != <span class="kw">null</span>;
-
-    <span class="kw">public void</span> <span class="fn">Interact</span>()
-    {
-        context.inventory.<span class="fn">Add</span>(item);
-        OnInteract?.<span class="fn">Invoke</span>();
-    }
-}</pre>
-
-  <hr>
-
-  <!-- ── ICarryObject ── -->
-  <h2>ICarryObject</h2>
-  <p>Marks an object as carryable by the player. <code>Instruction_Carry</code> searches for this interface in front of the player and calls <code>Take()</code>. The engine then parents the object to the player and stores it in <code>ExecutionContext.carryTarget</code>. <code>Instruction_Drop</code> calls <code>Drop()</code> and unparents it.</p>
-
-  <h3>Properties</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>transform</code></td><td><code>Transform</code></td><td>The transform of the carryable object. Since your class extends <code>MonoBehaviour</code> (via <code>ExecutionContextElement</code>), implement this as an explicit interface property: <code>Transform ICarryObject.transform => transform;</code></td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Take()</code></td><td>Called when the player picks up the object. Disable the collider to prevent movement collisions while carried. Play a pickup sound or start a carry animation here.</td></tr>
-        <tr><td><code>Drop()</code></td><td>Called when the player drops the object. Re-enable the collider and restore the object to its normal visual state. Play a drop sound here.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <div class="callout tip">
-    <div class="callout-icon">💡</div>
-    <div class="callout-body">
-      <strong>Parenting is automatic</strong>
-      You do not need to call <code>transform.SetParent()</code> in <code>Take()</code> or <code>Drop()</code>. The engine handles parenting the object to the player during carry and detaching it on drop.
-    </div>
-  </div>
-
-  <hr>
-
-  <!-- ── IPushable ── -->
-  <h2>IPushable</h2>
-  <p>Marks an object as pushable. <code>Instruction_Push</code> searches for this interface one tile ahead of the player, validates the push with <code>Validate(direction)</code>, and then calls <code>Push(context, direction)</code> while animating the movement. <code>Stop()</code> is called when the push animation ends.</p>
-
-  <h3>Properties</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>transform</code></td><td><code>Transform</code></td><td>The transform of the pushable object. Same explicit implementation pattern as <code>ICarryObject</code>.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:38%"><col style="width:14%"><col style="width:48%"></colgroup>
-      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Validate(Direction direction)</code></td><td><code>bool</code></td><td>Default implementation provided — performs a <code>Physics2D.OverlapBoxAll</code> at the target cell and returns <code>false</code> if any <code>IObstacle</code> is found. Override only if you need custom validation logic.</td></tr>
-        <tr><td><code>Push(<br>&nbsp;&nbsp;ExecutionContext context,<br>&nbsp;&nbsp;Direction direction)</code></td><td><code>void</code></td><td>Moves the object one tile in the given direction. Use <code>MapManager.cellSize</code> for the offset. The engine calls this during the push animation frame.</td></tr>
-        <tr><td><code>Stop()</code></td><td><code>void</code></td><td>Called when the push animation finishes. Stop any looping push sounds or effects here.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-<pre><span class="cmt">// Default Validate() — no override needed for most objects</span>
-<span class="kw">public bool</span> <span class="fn">Validate</span>(<span class="type">Direction</span> direction)
-{
-    <span class="type">Collider2D</span>[] obs = <span class="type">Physics2D</span>.<span class="fn">OverlapBoxAll</span>(
-        transform.position.<span class="fn">ToVector2</span>() + direction.<span class="fn">AsVector2</span>() * <span class="type">MapManager</span>.cellSize,
-        <span class="type">Vector2</span>.one, <span class="num">0</span>);
-    <span class="kw">foreach</span> (<span class="type">Collider2D</span> o <span class="kw">in</span> obs)
-        <span class="kw">if</span> (o.<span class="fn">GetComponent</span>&lt;<span class="type">IObstacle</span>&gt;() != <span class="kw">null</span>) <span class="kw">return false</span>;
-    <span class="kw">return true</span>;
-}</pre>
-
-  <hr>
-
-  <!-- ── IObstacle ── -->
-  <h2>IObstacle</h2>
-  <p>Tags an object as a physical blocker. <code>IPushable.Validate()</code> uses this to detect blockers in the target cell, and movement instructions use it to determine valid player positions. A closed door returns <code>true</code>; once opened it returns <code>false</code>.</p>
-
-  <h3>Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Validate()</code></td><td><code>bool</code></td><td>Return <code>true</code> if the obstacle is currently active and blocking. Return <code>false</code> if passable (e.g. an open door). Static solid objects always return <code>true</code>.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <hr>
-
-  <!-- ── ExecutionContextElement ── -->
-  <h2>ExecutionContextElement</h2>
-  <p>Abstract base class for all world objects that participate in level execution. Extend this instead of <code>MonoBehaviour</code> when creating interactables. At execution start, the engine clones every root-level <code>ExecutionContextElement</code> in the scene, disables the originals, and runs gameplay on the clones — making execution fully reversible with Reset.</p>
-
-  <h3>Protected Properties</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>context</code></td><td><code>ExecutionContext</code></td><td>The execution context this element belongs to. Available after <code>Initialize()</code> is called. Use it to access <code>context.inventory</code>, <code>context.player</code>, and <code>context.carryTarget</code>.</td></tr>
-        <tr><td><code>parent</code></td><td><code>ExecutionContextElement</code></td><td>The original scene element this clone was created from. <code>null</code> on the scene original itself.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Public Properties</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>IsRoot</code></td><td><code>bool</code></td><td>True if this element has no parent <code>ExecutionContextElement</code> in the hierarchy. Only root elements are cloned at execution start.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Virtual Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:44%"><col style="width:56%"></colgroup>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>Initialize(<br>&nbsp;&nbsp;ExecutionContext context,<br>&nbsp;&nbsp;ExecutionContextElement parent)</code></td><td>Called when the execution clone is created. Sets <code>context</code> and <code>parent</code>. Override to add element-specific initialization — always call <code>base.Initialize()</code> first.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Protected Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Method</th><th>Returns</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>ExecutionReference&lt;T&gt;()</code></td><td><code>T</code></td><td>Returns the execution-context clone of this element cast to <code>T</code>. Use this inside methods called from scene originals when you need to operate on the runtime clone instead.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <hr>
-
-  <!-- ── Built-in implementations ── -->
   <h2>Built-in Implementations</h2>
-  <p>Ready-made interactable classes you can use directly by adding them to a prefab, or reference as starting points for your own objects.</p>
-
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:30%"><col style="width:28%"><col style="width:42%"></colgroup>
-      <thead><tr><th>Class</th><th>Interfaces</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>InteractableObject_Pickup</code></td><td><code>IInteractable</code> (auto)</td><td>Automatically collected when the player steps on it. Adds a configurable <code>Item</code> to inventory and destroys itself.</td></tr>
-        <tr><td><code>InteractableObject_Chest</code></td><td><code>IInteractable</code> (manual)</td><td>Requires an explicit Interact instruction. Gives a configurable item and quantity, plays an open animation, and shows the item icon above the chest.</td></tr>
-        <tr><td><code>InteractableObject_Carry</code></td><td><code>ICarryObject</code> · <code>IPushable</code> · <code>IObstacle</code></td><td>A physical object (barrel, crate) the player can carry or push. Disables its collider while carried so it doesn't block movement.</td></tr>
-        <tr><td><code>InteractableObject_PushableObject</code></td><td><code>IPushable</code> · <code>IObstacle</code></td><td>A static pushable obstacle (stone block). Cannot be carried — push only.</td></tr>
-        <tr><td><code>InteractableObject_Door</code></td><td><code>IObstacle</code> (togglable)</td><td>Blocks passage when closed. Can optionally require a key item to open. Controls an Animator and disables its collider when open.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <p>Ready-made classes that implement these interfaces: <a href="sc-builtin-interactables.html">see Built-in Interactables</a></p>
 
 </main>
 <script src="search-index.js"></script>

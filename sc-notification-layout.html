@@ -14,7 +14,7 @@
   <a href="manual-overview.html" class="nav-link">Overview</a>
   <a href="manual-levels.html" class="nav-link">Create a Level</a>
   <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
-  
+
   <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
   <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
   <a href="manual-inventory.html" class="nav-link">Inventory System</a>
@@ -37,9 +37,10 @@
   <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
   <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
-  
+
   <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
   <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
   <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
@@ -53,7 +54,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level &amp; Utility</div>
@@ -73,89 +78,43 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub active">Notifications</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
+  <div class="nav-sub-section">Components</div>
+  <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
+  <a href="sc-health.html" class="nav-link sub">Health</a>
+  <a href="sc-active-effects-controller.html" class="nav-link sub">ActiveEffectsController</a>
+  <a href="sc-enemy-hud.html" class="nav-link sub">Enemy HUD</a>
+  <a href="sc-item-dropper.html" class="nav-link sub">ItemDropper</a>
+  <a href="sc-game-data-manager.html" class="nav-link sub">GameDataManager</a>
+  <a href="sc-database-manager.html" class="nav-link sub">DatabaseManager</a>
+  <a href="sc-world-map.html" class="nav-link sub">World Map</a>
+  <a href="sc-level-screens.html" class="nav-link sub">Level Screens</a>
+  <a href="sc-equipment-browser.html" class="nav-link sub">Equipment Browser</a>
+  <a href="sc-projectile.html" class="nav-link sub">Projectile</a>
+  <a href="sc-visual-fx.html" class="nav-link sub">Visual FX</a>
+  <a href="sc-utility-components.html" class="nav-link sub">Utilities</a>
 </nav>
 <main class="main">
   <div class="page-header">
     <div class="page-tag">Scripting / UI</div>
     <h1>Notifications</h1>
-    <p class="page-desc">Two UI notification components: <code>NotificationLayout</code> for generic icon-and-message toasts, and <code>EquipmentNotification</code> for a persistent queue that announces newly received equipment.</p>
+    <p class="page-desc">Two UI notification components for different use cases. View detailed documentation for each below.</p>
   </div>
 
-  <h2>NotificationLayout</h2>
-  <p>Prefab-based toast pop-up that slides in, displays an icon and a message for 7 seconds, then auto-dismisses. The timer runs unscaled so the notification is visible even when the game is paused.</p>
+  <h2>Notification Types</h2>
+  <p>The notification system provides two complementary components:</p>
 
-  <h3>Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:55%"><col style="width:45%"></colgroup>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>CreateInstance(<br>&nbsp;&nbsp;Sprite icon,<br>&nbsp;&nbsp;string message,<br>&nbsp;&nbsp;Transform parent = null)</code></td><td>Instantiates the prefab, configures it with the given icon and message, then plays the slide-in animation. Returns the new <code>NotificationLayout</code> instance. Pass <code>null</code> for <code>parent</code> to use the prefab's default parent.</td></tr>
-        <tr><td><code>Close()</code></td><td>Plays the slide-out animation and destroys the instance when it finishes. Call this to dismiss before the 7-second timer expires.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Inspector Fields</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>icon</code></td><td><code>Image</code></td><td>Image component that receives the sprite passed to <code>CreateInstance</code>.</td></tr>
-        <tr><td><code>message</code></td><td><code>TMP_Text</code></td><td>Text label that receives the message string.</td></tr>
-        <tr><td><code>content</code></td><td><code>RectTransform</code></td><td>The animated container driven by the slide-in/out animation.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Usage example</h3>
-  <pre><code>[SerializeField] NotificationLayout notificationPrefab;
-
-// show a toast with an item icon
-notificationPrefab.CreateInstance(item.image, $"{item.displayName} collected!", transform);</code></pre>
-
-  <h2>EquipmentNotification</h2>
-  <p>Persistent notification panel that queues equipment announcements. When a new piece of equipment is received, calling <code>AddEquipment</code> either shows the panel immediately if it is idle, or appends to the queue if one is already on screen. The queue survives scene loads because it is stored in a static field.</p>
-
-  <h3>Static Members</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Member</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>AddEquipment(Equipment equipment)</code></td><td>Adds the equipment to the notification queue. If the panel is idle the notification appears immediately; otherwise it waits until the current one is dismissed.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Instance Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>ActivateGlobe()</code></td><td>Shows the globe indicator and displays the next equipment in the queue.</td></tr>
-        <tr><td><code>DeactivateGlobe()</code></td><td>Hides the globe indicator and marks the panel as ready for the next entry in the queue.</td></tr>
-        <tr><td><code>Close()</code></td><td>Plays the hide animation to dismiss the current notification. Wire this to a close button's <code>OnClick</code> in the Inspector.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Inspector Fields</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>NotificationGlobe</code></td><td><code>GameObject</code></td><td>Globe icon activated while a notification is pending or on screen.</td></tr>
-        <tr><td><code>equipmentIcon</code></td><td><code>Image</code></td><td>Displays the equipment's sprite.</td></tr>
-        <tr><td><code>equipmentNameText</code></td><td><code>TMP_Text</code></td><td>Displays the equipment's <code>displayName</code>.</td></tr>
-        <tr><td><code>equimentDescText</code></td><td><code>TMP_Text</code></td><td>Displays the equipment's <code>description</code>.</td></tr>
-        <tr><td><code>statElement</code></td><td><code>StatElement_Layout</code></td><td>Prefab used to spawn one row per stat bonus.</td></tr>
-        <tr><td><code>statContainer</code></td><td><code>Transform</code></td><td>Parent that receives the spawned stat rows.</td></tr>
-        <tr><td><code>effectElement</code></td><td><code>EffectElement_Layout</code></td><td>Prefab used to spawn one row per effect.</td></tr>
-        <tr><td><code>effectContainer</code></td><td><code>Transform</code></td><td>Parent that receives the spawned effect rows.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <ul>
+    <li><a href="sc-notification-layout-ui.html"><strong>NotificationLayout</strong></a> — Generic toast pop-up that displays an icon and message for 7 seconds, then auto-dismisses. Perfect for item pickups, achievements, and general UI feedback.</li>
+    <li><a href="sc-equipment-notification.html"><strong>EquipmentNotification</strong></a> — Persistent notification panel that queues equipment announcements with stats and effects. The queue survives scene loads so players never miss equipment notifications.</li>
+  </ul>
 
 </main>
 <script src="search-index.js"></script>

@@ -53,7 +53,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level & Utility</div>
@@ -73,9 +77,14 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
-  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
-  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
@@ -99,7 +108,7 @@
   </div>
 
   <div class="tree">
-<span class="cls">Instruction</span> → <span class="cls">PlayerInstruction</span>
+<span class="cls"><a href="sc-instruction.html">Instruction</a></span> → <span class="cls"><a href="sc-player-instruction.html">PlayerInstruction</a></span>
   <span class="arrow">└──</span> <span class="cls">InstructionSequence</span>  <span class="dim">← you are here</span>
       <span class="arrow">├──</span> <span class="cls">Instruction_Combo</span>
       <span class="arrow">└──</span> <span class="cls">Instruction_PingPong</span>
@@ -109,8 +118,8 @@
   <div class="table-wrap"><table>
     <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>childs</code></td><td><code>List&lt;PlayerInstruction&gt;</code></td><td>Internal serialized list of children. Access read-only via <code>Childrens</code>.</td></tr>
-      <tr><td><code>Childrens</code></td><td><code>IReadOnlyList&lt;PlayerInstruction&gt;</code></td><td>Read-only view of the child instruction list.</td></tr>
+      <tr><td><code>childs</code></td><td><code>List&lt;<a href="sc-player-instruction.html">PlayerInstruction</a>&gt;</code></td><td>Internal serialized list of children. Access read-only via <code>Childrens</code>.</td></tr>
+      <tr><td><code>Childrens</code></td><td><code>IReadOnlyList&lt;<a href="sc-player-instruction.html">PlayerInstruction</a>&gt;</code></td><td>Read-only view of the child instruction list.</td></tr>
       <tr><td><code>maxCapacity</code> <span class="badge badge-abstract">abstract</span></td><td><code>int</code></td><td>Maximum number of children this sequence accepts. The UI enforces this limit.</td></tr>
     </tbody>
   </table></div>
@@ -120,7 +129,7 @@
     <thead><tr><th>Method</th><th>Description</th></tr></thead>
     <tbody>
       <tr><td><code>Execute()</code></td><td>Instant side-effects before animation. Usually empty for sequences.</td></tr>
-      <tr><td><code>Tick(ExecutionContext ctx)</code></td><td>Coroutine. For a pure sequence, leave the body empty and call <code>yield break</code> — children are automatically executed by <code>GetExecutionList()</code>.</td></tr>
+      <tr><td><code>Tick(<a href="sc-execution-context.html">ExecutionContext</a> ctx)</code></td><td>Coroutine. For a pure sequence, leave the body empty and call <code>yield break</code> — children are automatically executed by <code>GetExecutionList()</code>.</td></tr>
     </tbody>
   </table></div>
 
@@ -128,55 +137,13 @@
   <div class="table-wrap"><table>
     <thead><tr><th>Method</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>AddInstruction(PlayerInstruction i)</code></td><td>Appends a child to the sequence.</td></tr>
-      <tr><td><code>RemoveInstruction(PlayerInstruction i)</code></td><td>Removes a child from the sequence.</td></tr>
-      <tr><td><code>Insert(int index, PlayerInstruction i)</code></td><td>Inserts a child at a specific index.</td></tr>
+      <tr><td><code>AddInstruction(<a href="sc-player-instruction.html">PlayerInstruction</a> i)</code></td><td>Appends a child to the sequence.</td></tr>
+      <tr><td><code>RemoveInstruction(<a href="sc-player-instruction.html">PlayerInstruction</a> i)</code></td><td>Removes a child from the sequence.</td></tr>
+      <tr><td><code>Insert(int index, <a href="sc-player-instruction.html">PlayerInstruction</a> i)</code></td><td>Inserts a child at a specific index.</td></tr>
       <tr><td><code>Validate()</code> <span class="badge badge-override">override</span></td><td>Returns <code>false</code> if the child list is empty or any child is invalid.</td></tr>
       <tr><td><code>GetExecutionList(int loop)</code> <span class="badge badge-override">override</span></td><td>Iterates all children and yields their execution lists in order. This is what makes children run sequentially.</td></tr>
     </tbody>
   </table></div>
-
-  <h2>IInstructionSequenceLayout</h2>
-  <p>UI-side counterpart to <code>InstructionSequence</code>. Implemented by layout components that render a nested instruction list in the player's editor panel. Keeps the visual widget tree in sync with the underlying instruction model.</p>
-
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:46%"><col style="width:16%"><col style="width:38%"></colgroup>
-      <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>gameObject</code></td><td><code>GameObject</code></td><td>Root GameObject of this sequence layout widget.</td></tr>
-        <tr><td><code>Childrens</code></td><td><code>IReadOnlyList&lt;INestedInstructionLayout&gt;</code></td><td>All child instruction widgets currently in the sequence.</td></tr>
-        <tr><td><code>Count</code></td><td><code>int</code></td><td>Number of child widgets.</td></tr>
-        <tr><td><code>lastSibling</code></td><td><code>INestedInstructionLayout</code></td><td>The last child widget, or <code>null</code> if the sequence is empty.</td></tr>
-        <tr><td><code>AddInstruction(Action action)</code></td><td><code>void</code></td><td>Creates and appends a new instruction widget from an action callback.</td></tr>
-        <tr><td><code>AddInstruction(<br>&nbsp;&nbsp;PlayerInstruction instruction,<br>&nbsp;&nbsp;Action action)</code></td><td><code>void</code></td><td>Appends a widget for an already-created instruction.</td></tr>
-        <tr><td><code>Insert(int index, Action action)</code></td><td><code>void</code></td><td>Inserts a new instruction widget at the given index.</td></tr>
-        <tr><td><code>RemoveInstruction(<br>&nbsp;&nbsp;INestedInstructionLayout instruction)</code></td><td><code>void</code></td><td>Removes a child widget and its associated instruction.</td></tr>
-        <tr><td><code>GetChild(int index)</code></td><td><code>INestedInstructionLayout</code></td><td>Returns the child widget at the given index.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <hr>
-
-  <!-- ── INestedInstructionLayout ── -->
-  <h2>INestedInstructionLayout</h2>
-  <p>Represents a single instruction card nested inside an <code>IInstructionSequenceLayout</code>. Bridges the visual widget and the underlying <code>PlayerInstruction</code> it displays.</p>
-
-  <div class="table-wrap">
-    <table>
-      <colgroup><col style="width:28%"><col style="width:28%"><col style="width:44%"></colgroup>
-      <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>gameObject</code></td><td><code>GameObject</code></td><td>Root GameObject of this instruction widget.</td></tr>
-        <tr><td><code>instruction</code></td><td><code>PlayerInstruction</code></td><td>The instruction this widget represents.</td></tr>
-        <tr><td><code>container</code></td><td><code>IInstructionSequenceLayout</code></td><td>The parent sequence layout that owns this widget.</td></tr>
-        <tr><td><code>ResetLayout()</code></td><td><code>void</code></td><td>Resyncs the visual state to match the current instruction data.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <hr>
 
   <h2>Example</h2>
 <pre><span class="kw">namespace</span> LoopAdventure

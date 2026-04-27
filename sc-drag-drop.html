@@ -14,7 +14,7 @@
   <a href="manual-overview.html" class="nav-link">Overview</a>
   <a href="manual-levels.html" class="nav-link">Create a Level</a>
   <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
-  
+
   <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
   <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
   <a href="manual-inventory.html" class="nav-link">Inventory System</a>
@@ -37,9 +37,10 @@
   <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
   <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
-  
+
   <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
   <a href="sc-builtin.html" class="nav-link sub">Built-in Instructions</a>
   <a href="sc-custom-instruction.html" class="nav-link sub">Custom Instructions</a>
@@ -53,7 +54,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level &amp; Utility</div>
@@ -73,85 +78,45 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
-  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
-  <a href="sc-drag-drop.html" class="nav-link sub active">Drag &amp; Drop</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
+  <div class="nav-sub-section">Components</div>
+  <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
+  <a href="sc-health.html" class="nav-link sub">Health</a>
+  <a href="sc-active-effects-controller.html" class="nav-link sub">ActiveEffectsController</a>
+  <a href="sc-enemy-hud.html" class="nav-link sub">Enemy HUD</a>
+  <a href="sc-item-dropper.html" class="nav-link sub">ItemDropper</a>
+  <a href="sc-game-data-manager.html" class="nav-link sub">GameDataManager</a>
+  <a href="sc-database-manager.html" class="nav-link sub">DatabaseManager</a>
+  <a href="sc-world-map.html" class="nav-link sub">World Map</a>
+  <a href="sc-level-screens.html" class="nav-link sub">Level Screens</a>
+  <a href="sc-equipment-browser.html" class="nav-link sub">Equipment Browser</a>
+  <a href="sc-projectile.html" class="nav-link sub">Projectile</a>
+  <a href="sc-visual-fx.html" class="nav-link sub">Visual FX</a>
+  <a href="sc-utility-components.html" class="nav-link sub">Utilities</a>
 </nav>
 <main class="main">
   <div class="page-header">
     <div class="page-tag">Scripting / UI</div>
     <h1>Drag &amp; Drop</h1>
-    <p class="page-desc">Two components that power instruction dragging. <code>DragAndDrop</code> lives on each <a href="sc-action.html">Action</a> GameObject in the palette and handles the visual drag. <code>DropActionEventCaller</code> is a lightweight drop zone used by <a href="sc-instruction-layouts.html">InstructionModifierLayout</a> to receive a dropped child instruction.</p>
+    <p class="page-desc">Two components that handle instruction dragging on the instruction sheet. View detailed documentation for each below.</p>
   </div>
 
-  <h2>DragAndDrop</h2>
-  <p>Implements Unity's <code>IBeginDragHandler</code>, <code>IDragHandler</code>, and <code>IEndDragHandler</code> interfaces. During a drag it reparents itself to the canvas root so it floats above all other UI, then either lands on a valid drop target or destroys its ghost copy when the drag ends. All drag operations are disabled while <a href="sc-instruction-runner.html">InstructionRunner</a> is running.</p>
+  <h2>Drag &amp; Drop Components</h2>
+  <p>The drag-and-drop system consists of two core components:</p>
 
-  <h3>Static State</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>currentDragging</code></td><td><code>DragAndDrop</code></td><td>The component currently being dragged, or <code>null</code> if no drag is in progress. Read by drop handlers to retrieve the associated <code>Action</code>.</td></tr>
-        <tr><td><code>dragCaptured</code></td><td><code>bool</code></td><td>Set to <code>true</code> by a drop handler when it accepts the drag. If <code>false</code> when the drag ends, the ghost copy is destroyed.</td></tr>
-        <tr><td><code>dragging</code></td><td><code>bool</code></td><td><code>true</code> while a drag is in progress. Other systems check this flag to suppress hover effects.</td></tr>
-      </tbody>
-    </table>
-  </div>
+  <ul>
+    <li><a href="sc-drag-and-drop.html"><strong>DragAndDrop</strong></a> — Lives on each <a href="sc-action.html">Action</a> GameObject in the palette. Implements drag handlers and manages the visual ghost copy during drag operations.</li>
+    <li><a href="sc-drop-action-event-caller.html"><strong>DropActionEventCaller</strong></a> — A lightweight drop zone used by <a href="sc-instruction-modifier-layout.html">InstructionModifierLayout</a> to receive a dropped child instruction and forward it to registered callbacks.</li>
+  </ul>
 
-  <h3>Inspector Fields</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>leaveInstance</code></td><td><code>bool</code></td><td>When <code>true</code>, a copy of the original stays in the palette while the ghost follows the cursor. When <code>false</code>, the original itself is dragged and returns if the drop is cancelled.</td></tr>
-        <tr><td><code>audioSource</code></td><td><code>AudioSource</code></td><td>AudioSource for drag SFX.</td></tr>
-        <tr><td><code>dragStartSound</code></td><td><code>AudioClip</code></td><td>Clip played when the drag begins.</td></tr>
-        <tr><td><code>dragEndSound</code></td><td><code>AudioClip</code></td><td>Clip played when the drag ends (captured or not).</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Drag lifecycle</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Phase</th><th>What happens</th></tr></thead>
-      <tbody>
-        <tr><td><code>OnBeginDrag</code></td><td>If <code>leaveInstance</code> is <code>true</code> a copy is created at the original position. The dragged object is reparented to the canvas root, its alpha is set to 0.7, and raycasts are disabled so the pointer can reach drop zones beneath it. <code>currentDragging</code>, <code>dragging</code>, and <code>dragCaptured</code> are set.</td></tr>
-        <tr><td><code>OnDrag</code></td><td>The ghost follows the cursor. <a href="sc-instruction-sheet.html">InstructionSheet</a> updates its insert indicator based on which <code>InstructionLayout</code> the pointer is over.</td></tr>
-        <tr><td><code>OnEndDrag</code></td><td>Alpha and raycasts are restored. If <code>dragCaptured</code> is <code>false</code> the ghost is destroyed (the instruction was not dropped on a valid target). Static state is reset.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h2>DropActionEventCaller</h2>
-  <p>Minimal <code>IDropHandler</code> that extracts the dragged <a href="sc-action.html">Action</a> from <code>DragAndDrop.currentDragging</code> and forwards it to all registered callbacks. Used by <code>InstructionModifierLayout</code> as the drop zone for its child instruction slot.</p>
-
-  <h3>Methods</h3>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>Method</th><th>Description</th></tr></thead>
-      <tbody>
-        <tr><td><code>AddDropEvent(System.Action&lt;Action&gt; callback)</code></td><td>Registers a callback to be invoked with the dropped <code>Action</code> when a drag lands on this drop zone. Multiple callbacks can be registered; all are called in registration order.</td></tr>
-        <tr><td><code>OnDrop(PointerEventData)</code></td><td><code>IDropHandler</code> implementation — sets <code>DragAndDrop.dragCaptured = true</code> and invokes all registered callbacks with the dragged <code>Action</code>.</td></tr>
-      </tbody>
-    </table>
-  </div>
-
-  <h3>Adding a custom drop zone</h3>
-  <pre><code>// On a GameObject with a DropActionEventCaller component:
-[SerializeField] DropActionEventCaller dropZone;
-
-void Start()
-{
-    dropZone.AddDropEvent(OnInstructionDropped);
-}
-
-void OnInstructionDropped(Action action)
-{
-    PlayerInstruction instruction = action.CreateInstruction();
-    // do something with the instruction
-}</code></pre>
+  <p>Together they enable players to reorder instructions on the sheet and slot child instructions into modifier widgets — all disabled during execution to prevent accidental changes.</p>
 
 </main>
 <script src="search-index.js"></script>

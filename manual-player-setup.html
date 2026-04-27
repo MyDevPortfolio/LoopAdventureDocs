@@ -36,6 +36,7 @@
   <a href="sc-player-instruction.html" class="nav-link sub">PlayerInstruction</a>
   <a href="sc-modifier.html" class="nav-link sub">InstructionModifier</a>
   <a href="sc-sequence.html" class="nav-link sub">InstructionSequence</a>
+  <a href="sc-sequence-layouts.html" class="nav-link sub">Sequence Layouts</a>
   <a href="sc-enemy-instruction.html" class="nav-link sub">EnemyInstruction</a>
   <a href="sc-execution-context.html" class="nav-link sub">ExecutionContext</a>
   <a href="sc-execution-subscriber.html" class="nav-link sub">IExecutionSuscriber</a>
@@ -51,7 +52,11 @@
   <a href="sc-equipment.html" class="nav-link sub">Equipment</a>
   <a href="sc-effect.html" class="nav-link sub">Effect</a>
   <div class="nav-sub-section">Interactables</div>
-  <a href="sc-interactable.html" class="nav-link sub">Interactable Interfaces</a>
+  <a href="sc-iinteractable.html" class="nav-link sub">IInteractable</a>
+  <a href="sc-icarryobject.html" class="nav-link sub">ICarryObject</a>
+  <a href="sc-ipushable.html" class="nav-link sub">IPushable</a>
+  <a href="sc-iobstacle.html" class="nav-link sub">IObstacle</a>
+  <a href="sc-execution-context-element.html" class="nav-link sub">ExecutionContextElement</a>
   <a href="sc-builtin-interactables.html" class="nav-link sub">Built-in Interactables</a>
   <a href="sc-traps.html" class="nav-link sub">Traps</a>
   <div class="nav-sub-section">Level &amp; Utility</div>
@@ -71,9 +76,14 @@
   <a href="sc-window.html" class="nav-link sub">Window</a>
   <a href="sc-hud.html" class="nav-link sub">HUD</a>
   <a href="sc-inventory-ui.html" class="nav-link sub">Inventory UI</a>
-  <a href="sc-notification-layout.html" class="nav-link sub">Notifications</a>
-  <a href="sc-instruction-layouts.html" class="nav-link sub">Instruction Layouts</a>
-  <a href="sc-drag-drop.html" class="nav-link sub">Drag &amp; Drop</a>
+  <a href="sc-instruction-layout.html" class="nav-link sub">InstructionLayout</a>
+  <a href="sc-instruction-modifier-layout.html" class="nav-link sub">InstructionModifierLayout</a>
+  <a href="sc-instruction-sequence-layout.html" class="nav-link sub">InstructionSequenceLayout</a>
+  <a href="sc-instruction-use-layout.html" class="nav-link sub">InstructionUseLayout</a>
+  <a href="sc-notification-layout-ui.html" class="nav-link sub">NotificationLayout</a>
+  <a href="sc-equipment-notification.html" class="nav-link sub">EquipmentNotification</a>
+  <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
+  <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
@@ -126,6 +136,19 @@
   <h2>3. Add ActiveEffectsController</h2>
   <p>Add <code>ActiveEffectsController</code> to the same GameObject. No Inspector fields need to be filled — the controller wires itself to the other player components at runtime and tracks timed stat effects automatically.</p>
   <p>See <a href="sc-active-effects-controller.html">ActiveEffectsController</a> for details on how timed effects are tracked and reverted.</p>
+
+  <h2>4. Add execution subscribers (optional)</h2>
+  <p><a href="sc-execution-subscriber.html">IExecutionSuscriber</a> components placed on the player's root GameObject or any of its children are auto-discovered by <code>PlayerController</code> during initialization. Their <code>Execute()</code> method is called every time the player executes an instruction step — no manual wiring needed.</p>
+  <p>Common uses on the player:</p>
+  <ul>
+    <li>Playing an action sound or VFX on every instruction.</li>
+    <li>Firing a projectile via <code>ShootSuscriber</code> — identical setup to enemies, just attach it to the player hierarchy instead.</li>
+    <li>Any custom side-effect that should happen on every player instruction without modifying the <code>Instruction</code> class itself.</li>
+  </ul>
+  <pre><span class="cmt">// PlayerController.Initialize() — runs automatically at level start</span>
+<span class="type">IExecutionSuscriber</span>[] suscribers = <span class="fn">GetComponentsInChildren</span>&lt;<span class="type">IExecutionSuscriber</span>&gt;();
+<span class="kw">foreach</span> (<span class="type">IExecutionSuscriber</span> s <span class="kw">in</span> suscribers)
+    OnExecute += s.<span class="fn">Execute</span>;</pre>
 
   <div class="callout info">
     <div class="callout-icon">ℹ️</div>
