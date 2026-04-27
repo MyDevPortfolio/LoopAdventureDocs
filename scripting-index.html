@@ -546,8 +546,36 @@
 
   <!-- ── Components ── -->
   <h2>Components</h2>
-  <p>MonoBehaviour components for character stats, enemy display, data persistence, world map, level screens, projectiles, visual effects, and scene utilities.</p>
+  <p>MonoBehaviour components for character control, stats, enemy display, data persistence, world map, level screens, projectiles, visual effects, and scene utilities.</p>
   <div class="index-grid">
+
+    <a href="sc-player-controller.html" class="index-card index-card--teal">
+      <div class="ic-icon">🧑</div>
+      <div class="ic-body">
+        <div class="ic-title">PlayerController</div>
+        <div class="ic-desc">Root MonoBehaviour for the player prefab. Manages inventory-driven damage and defense stats, stamina, item usage visual effects, audio, and tile position validation.</div>
+        <div class="ic-topics">
+          <span>damage / defense</span>
+          <span>UseItem()</span>
+          <span>ValidatePosition()</span>
+          <span>OnExecute</span>
+        </div>
+      </div>
+    </a>
+
+    <a href="sc-enemy-controller.html" class="index-card index-card--teal">
+      <div class="ic-icon">👹</div>
+      <div class="ic-body">
+        <div class="ic-title">EnemyController</div>
+        <div class="ic-desc">Root MonoBehaviour for enemy prefabs. Controls patrol routing, player detection, attack-sequence cycling, hover highlighting of attack range tiles, and IObstacle blocking.</div>
+        <div class="ic-topics">
+          <span>GetTask()</span>
+          <span>moveSequence</span>
+          <span>attackSequence</span>
+          <span>OnActionChange</span>
+        </div>
+      </div>
+    </a>
 
     <a href="sc-player-stamina.html" class="index-card index-card--teal">
       <div class="ic-icon">⚡</div>

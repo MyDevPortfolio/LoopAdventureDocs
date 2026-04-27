@@ -85,6 +85,8 @@
   <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
   <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
+  <a href="sc-player-controller.html" class="nav-link sub">PlayerController</a>
+  <a href="sc-enemy-controller.html" class="nav-link sub">EnemyController</a>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
   <a href="sc-active-effects-controller.html" class="nav-link sub">ActiveEffectsController</a>
@@ -123,26 +125,28 @@
   </ol>
 
   <h2>2a. Use in a player instruction</h2>
-  <p>Hold a reference to the projectile prefab in your instruction class, then call <code>Shoot</code> inside <code>Tick()</code>:</p>
-  <pre><span class="kw">protected override</span> IEnumerator <span class="fn">Tick</span>(<span class="type"><a href="sc-execution-context.html">ExecutionContext</a></span> ctx)
+  <p>Both <code>PlayerController</code> and <code>EnemyController</code> use the same execution pattern: the instruction's <code>Execute()</code> runs first, then <code>OnExecute</code> fires all <a href="sc-execution-subscriber.html">IExecutionSuscriber</a> components. The projectile is fired by <code>ShootSuscriber</code> via that event — the instruction itself does <em>not</em> call <code>Shoot()</code>.</p>
+  <p>Create a <a href="sc-player-instruction.html">PlayerInstruction</a> subclass with an empty <code>Execute()</code> and the shoot animation in <code>Tick()</code>:</p>
+  <pre>[<span class="type">System.Serializable</span>]
+[<span class="type">TypeName</span>(<span class="str">"Shoot"</span>)]
+<span class="kw">public class</span> <span class="type">Instruction_Shoot</span> : <span class="type"><a href="sc-player-instruction.html">PlayerInstruction</a></span>
 {
-    <span class="type"><a href="sc-projectile.html">Projectile</a></span> p = projectilePrefab.<span class="fn">Shoot</span>(
-        ctx,
-        ctx.player.direction,
-        ctx.player.transform.position,
-        <span class="type">Quaternion</span>.identity
-    );
-    <span class="kw">yield return new</span> <span class="fn">WaitUntil</span>(() => p == <span class="kw">null</span>);
+    <span class="kw">public override string</span> displayName => <span class="str">"Shoot"</span>;
+
+    <span class="kw">public override void</span> <span class="fn">Execute</span>() { }
+
+    <span class="kw">protected override</span> IEnumerator <span class="fn">Tick</span>(<span class="type"><a href="sc-execution-context.html">ExecutionContext</a></span> context)
+    {
+        context.player.<span class="fn">SetDirection</span>(direction);
+        context.player.<span class="fn">PlayAnimation</span>(<span class="str">"Shoot"</span>);
+        <span class="kw">yield return new</span> <span class="type">WaitForSeconds</span>(1.5f);
+    }
 }</pre>
-  <p>The coroutine waits until the projectile is destroyed (hit or left the map), then the instruction ends.</p>
+  <p>Then add <code>ShootSuscriber</code> to the player root (or any child) and assign the prefab. <code>PlayerController.Initialize()</code> auto-discovers it via <code>GetComponentsInChildren&lt;IExecutionSuscriber&gt;()</code> and wires it to <code>OnExecute</code> — no manual wiring needed.</p>
 
   <h2>2b. Use on an enemy with ShootSuscriber</h2>
-  <p>For enemies that shoot as part of their action loop, use the built-in <a href="sc-execution-subscriber.html">IExecutionSuscriber</a> <code>ShootSuscriber</code> instead of writing a custom instruction:</p>
-  <ol>
-    <li>Add <code>ShootSuscriber</code> to the enemy root (or any child).</li>
-    <li>Assign the <strong>Projectile</strong> prefab field.</li>
-  </ol>
-  <p><code>EnemyController.Initialize()</code> finds <code>ShootSuscriber</code> via <code>GetComponentsInChildren</code> and subscribes it to the action-execute event automatically. The enemy fires the projectile whenever the assigned action runs.</p>
+  <p>The setup for enemies is identical: create an <code>EnemyInstruction</code> with an empty <code>Execute()</code> and the animation in <code>Tick()</code>, then add <code>ShootSuscriber</code> to the enemy root (or any child) and assign the prefab.</p>
+  <p><code>EnemyController.Initialize()</code> auto-discovers it the same way and wires it to <code>OnExecute</code> automatically.</p>
 
   <div class="callout info">
     <div class="callout-icon">ℹ️</div>

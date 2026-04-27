@@ -85,6 +85,8 @@
   <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
   <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
+  <a href="sc-player-controller.html" class="nav-link sub">PlayerController</a>
+  <a href="sc-enemy-controller.html" class="nav-link sub">EnemyController</a>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
   <a href="sc-active-effects-controller.html" class="nav-link sub">ActiveEffectsController</a>
@@ -103,7 +105,7 @@
   <div class="page-header">
     <div class="page-tag">Scripting / Components</div>
     <h1>Projectile</h1>
-    <p class="page-desc">A self-propelled prefab that travels in a straight line and applies damage on impact. Spawn and fire it with <code>Shoot()</code> from inside a ranged instruction's <code>Tick()</code> coroutine.</p>
+    <p class="page-desc">A self-propelled prefab that travels in a straight line and applies damage on impact. Spawn and fire it with <code>Shoot()</code> from inside a ranged instruction's <code>Execute()</code>, or attach <code>ShootSuscriber</code> to a player or enemy to fire automatically on each instruction.</p>
   </div>
 
   <h2>Inspector Fields</h2>
@@ -119,31 +121,34 @@
 
   <h2>Methods</h2>
   <div class="table-wrap"><table>
-    <colgroup><col style="width:55%"><col style="width:45%"></colgroup>
+    <colgroup><col style="width:45%"><col style="width:55%"></colgroup>
     <thead><tr><th>Method</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>Initialize(ExecutionContext context, ExecutionContextElement parent)</code></td><td>Calls <code>base.Initialize()</code> and registers this projectile with <code>context.AddRuntimeElement(this)</code> so it is cleaned up when the level resets. Called automatically by <code>Shoot</code> — do not call directly.</td></tr>
-      <tr><td><code>Shoot(ExecutionContext context, Direction direction, Vector3 position, Quaternion rotation, Transform parent = null)</code> → <code>Projectile</code></td><td>Instantiates a copy of the projectile prefab at <code>position</code> with <code>rotation</code>, mirrors the sprite scale to face the direction, and begins movement. Returns the new instance. Call this from your instruction's <code>Tick()</code> coroutine.</td></tr>
+      <tr><td><code>Shoot(ExecutionContext context, Direction direction,<br>Vector3 position, Quaternion rotation,<br>Transform parent = null) → Projectile</code></td><td>Instantiates a copy of the projectile prefab at <code>position</code> with <code>rotation</code>, mirrors the sprite scale to face the direction, and begins movement. Returns the new instance.</td></tr>
     </tbody>
   </table></div>
 
   <h2>Usage example</h2>
-  <pre><span class="kw">protected override</span> IEnumerator <span class="fn">Tick</span>(<span class="type">ExecutionContext</span> ctx)
+  <p><code>Shoot()</code> is called by <code>ShootSuscriber</code> — the built-in <a href="sc-execution-subscriber.html">IExecutionSuscriber</a> that fires the projectile each time a character executes an instruction. The instruction itself keeps <code>Execute()</code> empty and handles only the animation in <code>Tick()</code>:</p>
+  <pre><span class="cmt">// ShootSuscriber.Execute — called automatically via OnExecute</span>
+<span class="kw">public void</span> <span class="fn">Execute</span>(<span class="type">ExecutionContext</span> context)
 {
-    <span class="type">Projectile</span> p = projectilePrefab.<span class="fn">Shoot</span>(
-        ctx,
-        ctx.player.direction,
-        ctx.player.transform.position,
-        <span class="type">Quaternion</span>.identity
-    );
-    <span class="kw">yield return new</span> <span class="fn">WaitUntil</span>(() => p == <span class="kw">null</span>);
+    projectile.<span class="fn">Shoot</span>(context, controller.direction, transform.position, transform.rotation);
+}
+
+<span class="cmt">// The instruction plays the animation — Execute() is empty</span>
+<span class="kw">protected override</span> IEnumerator <span class="fn">Tick</span>(<span class="type">ExecutionContext</span> context)
+{
+    context.player.<span class="fn">SetDirection</span>(direction);
+    context.player.<span class="fn">PlayAnimation</span>(<span class="str">"Shoot"</span>);
+    <span class="kw">yield return new</span> <span class="type">WaitForSeconds</span>(1.5f);
 }</pre>
-  <p>The returned instance becomes <code>null</code> when it hits something or leaves the map, so yielding until it is destroyed gives the instruction a clean end condition.</p>
+  <p>Attach <code>ShootSuscriber</code> to the player or enemy root and assign the prefab. Both <code>PlayerController</code> and <code>EnemyController</code> auto-discover it during <code>Initialize()</code> — no manual wiring needed.</p>
 
   <div class="callout info">
     <div class="callout-icon">ℹ️</div>
     <div class="callout-body">
-      The built-in <code>ShootSuscriber</code> <a href="sc-execution-subscriber.html">IExecutionSuscriber</a> wraps <code>Shoot</code> for use on enemies. If you only need enemy ranged attacks, you do not need to call <code>Shoot</code> directly — just attach <code>ShootSuscriber</code> to the enemy and assign the projectile prefab.
+      The built-in <code>ShootSuscriber</code> <a href="sc-execution-subscriber.html">IExecutionSuscriber</a> wraps <code>Shoot</code> for use on players or enemies. Attach it to the character's root (or any child) and assign the prefab — both <code>PlayerController</code> and <code>EnemyController</code> auto-discover it. Use it when the character should fire a projectile on <em>every</em> instruction execution; for a specific shoot instruction call <code>Shoot</code> directly in <code>Execute()</code>.
     </div>
   </div>
 

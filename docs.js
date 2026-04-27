@@ -84,6 +84,9 @@ const SIDEBAR_HTML = `
   <a href="sc-drag-and-drop.html" class="nav-link sub">DragAndDrop</a>
   <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
+  <a href="sc-character-instance-controller.html" class="nav-link sub">CharacterInstanceController</a>
+  <a href="sc-player-controller.html" class="nav-link sub">PlayerController</a>
+  <a href="sc-enemy-controller.html" class="nav-link sub">EnemyController</a>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
   <a href="sc-active-effects-controller.html" class="nav-link sub">ActiveEffectsController</a>

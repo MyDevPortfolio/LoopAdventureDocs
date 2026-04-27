@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>GameDataManager — Loop Adventure Docs</title>
+  <title>EnemyController — Loop Adventure Docs</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
@@ -86,13 +86,13 @@
   <a href="sc-drop-action-event-caller.html" class="nav-link sub">DropActionEventCaller</a>
   <div class="nav-sub-section">Components</div>
   <a href="sc-player-controller.html" class="nav-link sub">PlayerController</a>
-  <a href="sc-enemy-controller.html" class="nav-link sub">EnemyController</a>
+  <a href="sc-enemy-controller.html" class="nav-link sub active">EnemyController</a>
   <a href="sc-player-stamina.html" class="nav-link sub">PlayerStamina</a>
   <a href="sc-health.html" class="nav-link sub">Health</a>
   <a href="sc-active-effects-controller.html" class="nav-link sub">ActiveEffectsController</a>
   <a href="sc-enemy-hud.html" class="nav-link sub">Enemy HUD</a>
   <a href="sc-item-dropper.html" class="nav-link sub">ItemDropper</a>
-  <a href="sc-game-data-manager.html" class="nav-link sub active">GameDataManager</a>
+  <a href="sc-game-data-manager.html" class="nav-link sub">GameDataManager</a>
   <a href="sc-database-manager.html" class="nav-link sub">DatabaseManager</a>
   <a href="sc-world-map.html" class="nav-link sub">World Map</a>
   <a href="sc-level-screens.html" class="nav-link sub">Level Screens</a>
@@ -104,44 +104,89 @@
 <main class="main">
   <div class="page-header">
     <div class="page-tag">Scripting / Components</div>
-    <h1>GameDataManager</h1>
-    <p class="page-desc">Singleton MonoBehaviour that handles all persistent game data — level progress, audio settings, and discovered equipment. All members accessed from game code are static; no reference to the instance is required.</p>
+    <h1>EnemyController</h1>
+    <p class="page-desc">Root <code>MonoBehaviour</code> for enemy prefabs. Extends <a href="sc-character-instance-controller.html">CharacterInstanceController</a> with patrol routing, player detection, attack-sequence cycling, and hover-highlight of attack range tiles. Implements <a href="sc-iobstacle.html">IObstacle</a> to block player movement and <a href="sc-tasks.html">ITaskReceiver</a> so the <a href="sc-instruction-runner.html">InstructionRunner</a> can schedule its turn each loop iteration.</p>
   </div>
+
+  <h2>EnemyActionInstance</h2>
+  <p>Serializable nested class used to populate the <code>attackSequence</code> array in the Inspector. Each slot pairs an <code>EnemyAction</code> with the number of loop iterations it runs for before the sequence advances.</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>action</code></td><td><code>EnemyAction</code></td><td>The <a href="sc-action.html">EnemyAction</a> ScriptableObject to execute in this slot.</td></tr>
+      <tr><td><code>loop</code></td><td><code>int</code></td><td>Number of loop iterations this action runs before the sequence moves to the next slot.</td></tr>
+    </tbody>
+  </table></div>
 
   <h2>Inspector Fields</h2>
   <div class="table-wrap"><table>
     <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>startingInventory</code></td><td><code>InventoryPreset</code></td><td>The default starting loadout applied when no save file exists for the player.</td></tr>
+      <tr><td><code>_damage</code></td><td><code>int</code></td><td>Base damage dealt per attack hit.</td></tr>
+      <tr><td><code>_defense</code></td><td><code>int</code></td><td>Base defense value subtracted from incoming damage.</td></tr>
+      <tr><td><code>defaultDirection</code></td><td><code>Direction</code></td><td>Facing direction applied when the level starts.</td></tr>
+      <tr><td><code>loop</code></td><td><code>bool</code></td><td>When enabled the patrol sequence repeats from the beginning after reaching the last waypoint.</td></tr>
+      <tr><td><code>moveSequence</code></td><td><code>Direction[]</code></td><td>Ordered patrol directions the enemy follows when no player is detected within range.</td></tr>
+      <tr><td><code>directions</code></td><td><code>Direction[]</code></td><td>Directions to scan for the player each turn.</td></tr>
+      <tr><td><code>range</code></td><td><code>int</code></td><td>Cell distance used when scanning for the player.</td></tr>
+      <tr><td><code>attackSequence</code></td><td><code>EnemyActionInstance[]</code></td><td>Ordered attack actions with per-slot loop counts. Played in order when the player is detected.</td></tr>
     </tbody>
   </table></div>
 
-  <h2>Static Properties</h2>
+  <h2>Properties</h2>
   <div class="table-wrap"><table>
     <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>DiscoveredEquipment</code></td><td><code>IReadOnlyList&lt;Equipment&gt;</code></td><td>Read-only list of all equipment the player has unlocked across all runs. Backed by save data.</td></tr>
+      <tr><td><code>damage</code></td><td><code>int</code> (get/set)</td><td>Base damage dealt per attack. Overrides the base class virtual property.</td></tr>
+      <tr><td><code>defense</code></td><td><code>int</code> (get/set)</td><td>Defense value subtracted from incoming damage. Overrides the base class virtual property.</td></tr>
+      <tr><td><code>currentInstruction</code></td><td><code>Instruction</code></td><td>The instruction currently being executed by this enemy.</td></tr>
     </tbody>
   </table></div>
 
-  <h2>Static Methods</h2>
+  <h2>Events</h2>
   <div class="table-wrap"><table>
+    <thead><tr><th>Event</th><th>Signature</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>OnMouseHover</code></td><td><code>Action&lt;bool&gt;</code></td><td>Fired on pointer enter (<code>true</code>) and pointer exit (<code>false</code>). Used by the <a href="sc-enemy-hud.html">Enemy HUD</a> to show or hide the action panel.</td></tr>
+      <tr><td><code>OnStart</code></td><td><code>Action</code></td><td>Fired when the attack sequence begins for the first time.</td></tr>
+      <tr><td><code>OnActionChange</code></td><td><code>Action&lt;EnemyAction&gt;</code></td><td>Fired each time the active action changes within the attack sequence, passing the new action.</td></tr>
+      <tr><td><code>OnEnd</code></td><td><code>Action</code></td><td>Fired when the full attack sequence has finished all of its iterations.</td></tr>
+      <tr><td><code>OnExecute</code></td><td><code>Action&lt;ExecutionContext&gt;</code></td><td>Fired each time an instruction step executes. <a href="sc-execution-subscriber.html">IExecutionSuscriber</a> components are subscribed automatically during <code>Initialize()</code>.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Methods</h2>
+  <div class="table-wrap"><table>
+    <colgroup><col style="width:48%"><col style="width:52%"></colgroup>
     <thead><tr><th>Method</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>SaveLevel(LevelData data)</code></td><td>Updates the save record for the level referenced by <code>data</code>. Adds a new record if none exists yet.</td></tr>
-      <tr><td><code>GetLevelData(LevelInfo level)</code> → <code>LevelData</code></td><td>Returns the saved progress for the given level, or a default empty record if the level has never been played.</td></tr>
-      <tr><td><code>SaveSoundSetting(string parameterName, float value)</code></td><td>Persists an audio mixer parameter value by name so it survives between sessions.</td></tr>
-      <tr><td><code>GetSoundSetting(string parameterName, float defaultValue = 0f)</code> → <code>float</code></td><td>Returns the last saved value for an audio mixer parameter, or <code>defaultValue</code> if no value has been saved.</td></tr>
-      <tr><td><code>GetAllSoundSettings()</code> → <code>IEnumerable&lt;SoundParameter&gt;</code></td><td>Returns all saved audio mixer parameters. Used by the audio system to restore settings on startup.</td></tr>
-      <tr><td><code>SaveNow()</code></td><td>Forces an immediate write of the current game data to disk. Normally the manager saves automatically on level exit and on destroy.</td></tr>
-      <tr><td><code>AddDiscoveredEquipment(Equipment equipment)</code></td><td>Records a piece of equipment as discovered. Persisted to the save file and reflected in <code>DiscoveredEquipment</code>.</td></tr>
+      <tr><td><code>Initialize(ExecutionContext context,<br>ExecutionContextElement parent)</code></td><td>Flattens the <code>attackSequence</code> into a per-instruction list, subscribes all <a href="sc-execution-subscriber.html">IExecutionSuscriber</a> children to <code>OnExecute</code>, and registers an <code>OnDie</code> callback to interrupt the current task when the enemy dies.</td></tr>
+      <tr><td><code>GetTask() → Task</code></td><td><a href="sc-tasks.html">ITaskReceiver</a> implementation. Scans the configured directions for the player — returns an attack <a href="sc-tasks.html">Task</a> if detected, a patrol <code>Task</code> otherwise. Called by the <a href="sc-instruction-runner.html">InstructionRunner</a> each turn.</td></tr>
+      <tr><td><code>Execute()</code></td><td>Runs the current instruction and fires <code>OnExecute</code>. Called by the active task once per turn step.</td></tr>
+      <tr><td><code>PlaySound(AudioResource resource)</code></td><td>Stops any currently playing sound and plays the given <code>AudioResource</code> on the character's <code>AudioSource</code>.</td></tr>
+      <tr><td><code>Validate() → bool</code></td><td><a href="sc-iobstacle.html">IObstacle</a> implementation — always returns <code>false</code>, making the enemy an impassable obstacle that blocks player movement.</td></tr>
+    </tbody>
+  </table></div>
+
+  <h2>Inherited from CharacterInstanceController</h2>
+  <p>The following members are defined on the base class and available on every <code>EnemyController</code> instance:</p>
+  <div class="table-wrap"><table>
+    <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
+    <tbody>
+      <tr><td><code>position</code></td><td><code>Vector2</code> (get/set)</td><td>World-space position of the character.</td></tr>
+      <tr><td><code>direction</code></td><td><code>Direction</code></td><td>Current facing direction.</td></tr>
+      <tr><td><code>health</code></td><td><code>Health</code></td><td>The <a href="sc-health.html">Health</a> component managing hit points and death.</td></tr>
+      <tr><td><code>blocking</code></td><td><code>bool</code></td><td>Whether the enemy is in a blocking pose. Checked by <a href="sc-health.html">EnemyHealth</a> before applying damage.</td></tr>
+      <tr><td><code>HUD</code></td><td><code>Transform</code></td><td>Root of the in-world HUD elements. Flipped alongside the sprite on direction changes.</td></tr>
+      <tr><td><code>SetDirection(Direction direction)</code></td><td>—</td><td>Faces the character and flips the sprite and HUD for left/right directions.</td></tr>
+      <tr><td><code>PlayAnimation(string stageName)</code></td><td>—</td><td>Plays an animator state by name. Does nothing if the character is dead.</td></tr>
     </tbody>
   </table></div>
 
   <div class="callout info">
     <div class="callout-icon">ℹ️</div>
     <div class="callout-body">
-      <code>GameDataManager</code> listens to <code>LevelManager.OnAnySuccessfulExit</code> and saves automatically when the player exits a level. You rarely need to call <code>SaveNow()</code> directly — it is mainly useful when changing critical data outside a level context (for example, after unlocking equipment from the main menu).
+      Enemies are fully autonomous. Place the prefab in the scene, configure <code>moveSequence</code> and <code>attackSequence</code> in the Inspector, and the <a href="sc-instruction-runner.html">InstructionRunner</a> schedules their tasks automatically each loop iteration — no scripting required for basic enemies.
     </div>
   </div>
 
