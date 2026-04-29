@@ -263,7 +263,7 @@
   <ol class="steps">
     <li>Create a new script. Extend <code>ExecutionContextElement</code> and add <code>ITaskReceiver</code> to the class declaration.</li>
     <li>Implement <code>Initialize()</code>. Call <code>base.Initialize(context, parent)</code> first, then cache any component references (Animator, AudioSource, Collider, etc.).</li>
-    <li>Implement <code>GetTask()</code>. Write an <code>async Task</code> method that performs your trap's per-turn logic — waits, checks positions, applies effects — and return it.</li>
+    <li>Implement <code>GetTask()</code>. In <code>Initialize()</code>, assign a coroutine method (<code>IEnumerator</code>) to <code>_instruction.tick</code>. In <code>GetTask()</code>, return <code>Task.GetTask(this, _instruction, context)</code> — this wraps the coroutine for the runner. The coroutine uses <code>yield return</code> to wait and <code>yield return null</code> to hand control back.</li>
     <li>Implement the <code>currentInstruction</code> property. Return <code>null</code> if your trap does not use the instruction system.</li>
     <li>Implement the four <code>ITaskReceiver</code> events (<code>OnStart</code>, <code>OnActionChange</code>, <code>OnEnd</code>, <code>OnExecute</code>). If you do not need them, declare them with empty setters.</li>
     <li>Add the script to a GameObject with a <strong>BoxCollider2D</strong> (one tile, trigger or solid depending on your logic).</li>

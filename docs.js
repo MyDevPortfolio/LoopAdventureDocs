@@ -10,24 +10,25 @@ const SIDEBAR_HTML = `
   </div>
   <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
   <div class="nav-section">Manual</div>
-  <a href="manual-overview.html" class="nav-link">Overview</a>
-  <a href="manual-levels.html" class="nav-link">Create a Level</a>
-  <a href="manual-instruction.html" class="nav-link">Create an Instruction</a>
-  <a href="manual-instruction-layout.html" class="nav-link">Create an Instruction Layout</a>
-  <a href="manual-enemy.html" class="nav-link">Create an Enemy Instruction</a>
-  <a href="manual-inventory.html" class="nav-link">Inventory System</a>
-  <a href="manual-interactable.html" class="nav-link">Create an Interactable</a>
-  <a href="manual-traps.html" class="nav-link">Tile Traps</a>
-  <a href="manual-audio.html" class="nav-link">Audio Setup</a>
-  <a href="manual-ui.html" class="nav-link">UI Setup</a>
+  <div class="nav-sub-section">How-To Guides</div>
+  <a href="manual-overview.html" class="nav-link sub">Overview</a>
+  <a href="manual-levels.html" class="nav-link sub">Create a Level</a>
+  <a href="manual-instruction.html" class="nav-link sub">Create an Instruction</a>
+  <a href="manual-instruction-layout.html" class="nav-link sub">Create an Instruction Layout</a>
+  <a href="manual-enemy.html" class="nav-link sub">Create an Enemy Instruction</a>
+  <a href="manual-inventory.html" class="nav-link sub">Inventory System</a>
+  <a href="manual-interactable.html" class="nav-link sub">Create an Interactable</a>
+  <a href="manual-traps.html" class="nav-link sub">Tile Traps</a>
+  <a href="manual-audio.html" class="nav-link sub">Audio Setup</a>
+  <a href="manual-ui.html" class="nav-link sub">UI Setup</a>
   <div class="nav-sub-section">Setup Guides</div>
-  <a href="manual-player-setup.html" class="nav-link">Player Setup</a>
-  <a href="manual-enemy-setup.html" class="nav-link">Enemy Setup</a>
-  <a href="manual-data-systems.html" class="nav-link">Data Systems</a>
-  <a href="manual-world-map-setup.html" class="nav-link">World Map</a>
-  <a href="manual-ui-screens.html" class="nav-link">UI Screens</a>
-  <a href="manual-projectile-setup.html" class="nav-link">Projectile</a>
-  <a href="manual-visual-fx-setup.html" class="nav-link">Visual FX &amp; Utilities</a>
+  <a href="manual-player-setup.html" class="nav-link sub">Player Setup</a>
+  <a href="manual-enemy-setup.html" class="nav-link sub">Enemy Setup</a>
+  <a href="manual-data-systems.html" class="nav-link sub">Data Systems</a>
+  <a href="manual-world-map-setup.html" class="nav-link sub">World Map</a>
+  <a href="manual-ui-screens.html" class="nav-link sub">UI Screens</a>
+  <a href="manual-projectile-setup.html" class="nav-link sub">Projectile</a>
+  <a href="manual-visual-fx-setup.html" class="nav-link sub">Visual FX &amp; Utilities</a>
   <div class="nav-divider"></div>
   <div class="nav-section">Scripting</div>
   <div class="nav-sub-section">Instructions</div>
@@ -161,7 +162,7 @@ function initRouter() {
   // On index.html (entry point with no real content) jump to the manual index
   const page = location.pathname.split('/').pop();
   if (page === 'index.html' || page === '') {
-    navigate('manual-index.html', false);
+    navigate('welcome.html', false);
   }
 
   document.addEventListener('click', e => {

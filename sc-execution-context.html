@@ -121,7 +121,7 @@
   <div class="table-wrap"><table>
     <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>ctx.player</code></td><td><code>PlayerController</code></td><td>The player character instance for this run.</td></tr>
+      <tr><td><code>ctx.player</code></td><td><a href="sc-player-controller.html"><code>PlayerController</code></a></td><td>The player character instance for this run.</td></tr>
       <tr><td><code>ctx.player.position</code></td><td><code>Vector2</code></td><td>Current world position. Assign directly to move the player instantly (no animation).</td></tr>
       <tr><td><code>ctx.player.SetDirection(Direction)</code></td><td><code>void</code></td><td>Flips the player sprite to face a direction.</td></tr>
       <tr><td><code>ctx.player.PlayAnimation(string)</code></td><td><code>void</code></td><td>Plays a named Animator state on the player.</td></tr>
@@ -135,8 +135,8 @@
   <div class="table-wrap"><table>
     <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>ctx.player.stamina</code></td><td><code>PlayerStamina</code></td><td>Access <code>.currentValue</code> to check available stamina. Call <code>.Substract(n)</code> to spend it.</td></tr>
-      <tr><td><code>ctx.player.health</code></td><td><code>Health</code></td><td>Check <code>.isDead</code>. Call <code>.ApplyDamage(n)</code> to deal damage.</td></tr>
+      <tr><td><code>ctx.player.stamina</code></td><td><a href="sc-player-stamina.html"><code>PlayerStamina</code></a></td><td>Access <code>.currentValue</code> to check available stamina. Call <code>.Substract(n)</code> to spend it.</td></tr>
+      <tr><td><code>ctx.player.health</code></td><td><a href="sc-health.html"><code>Health</code></a></td><td>Check <code>.isDead</code>. Call <code>.ApplyDamage(n)</code> to deal damage.</td></tr>
       <tr><td><code>ctx.player.damage</code></td><td><code>int</code></td><td>Player's current damage value (derived from equipped weapon stat).</td></tr>
       <tr><td><code>ctx.player.defense</code></td><td><code>int</code></td><td>Player's current defense value (derived from equipped armor stat).</td></tr>
     </tbody>
@@ -146,9 +146,9 @@
   <div class="table-wrap"><table>
     <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>ctx.carryingObject</code></td><td><code>bool</code></td><td>True if the player is currently carrying an <code>ICarryObject</code>. Many instructions are blocked while carrying.</td></tr>
-      <tr><td><code>ctx.inventory</code></td><td><code>PlayerInventory</code></td><td>The inventory snapshot for this run. Read items and equipment slots.</td></tr>
-      <tr><td><code>ctx.currentPlayerInstruction</code></td><td><code>PlayerInstruction</code></td><td>The instruction currently executing (set to <code>this</code> by the runner).</td></tr>
+      <tr><td><code>ctx.carryingObject</code></td><td><code>bool</code></td><td>True if the player is currently carrying an <a href="sc-icarryobject.html"><code>ICarryObject</code></a>. Many instructions are blocked while carrying.</td></tr>
+      <tr><td><code>ctx.inventory</code></td><td><a href="sc-inventory.html"><code>PlayerInventory</code></a></td><td>The inventory snapshot for this run. Read items and equipment slots.</td></tr>
+      <tr><td><code>ctx.currentPlayerInstruction</code></td><td><a href="sc-player-instruction.html"><code>PlayerInstruction</code></a></td><td>The instruction currently executing (set to <code>this</code> by the runner).</td></tr>
     </tbody>
   </table></div>
 

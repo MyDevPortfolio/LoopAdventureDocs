@@ -122,10 +122,10 @@
     <table>
       <thead><tr><th>Interface</th><th>What it enables</th><th>Triggered by</th></tr></thead>
       <tbody>
-        <tr><td><code>IInteractable</code></td><td>Custom interaction — open chests, collect items, trigger doors</td><td><code>Instruction_Interact</code> or automatic collection on turn end</td></tr>
-        <tr><td><code>ICarryObject</code></td><td>Player can pick up and drop the object</td><td><code>Instruction_Carry</code> and <code>Instruction_Drop</code></td></tr>
-        <tr><td><code>IPushable</code></td><td>Player can push the object one tile in a direction</td><td><code>Instruction_Push</code></td></tr>
-        <tr><td><code>IObstacle</code></td><td>Object blocks player movement and push validation</td><td>Checked by <code>IPushable.Validate()</code> and movement instructions</td></tr>
+        <tr><td><a href="sc-iinteractable.html"><code>IInteractable</code></a></td><td>Custom interaction — open chests, collect items, trigger doors</td><td><a href="sc-builtin.html"><code>Instruction_Interact</code></a> or automatic collection on turn end</td></tr>
+        <tr><td><a href="sc-icarryobject.html"><code>ICarryObject</code></a></td><td>Player can pick up and drop the object</td><td><a href="sc-builtin.html"><code>Instruction_Carry</code></a> and <a href="sc-builtin.html"><code>Instruction_Drop</code></a></td></tr>
+        <tr><td><a href="sc-ipushable.html"><code>IPushable</code></a></td><td>Player can push the object one tile in a direction</td><td><a href="sc-builtin.html"><code>Instruction_Push</code></a></td></tr>
+        <tr><td><a href="sc-iobstacle.html"><code>IObstacle</code></a></td><td>Object blocks player movement and push validation</td><td>Checked by <a href="sc-ipushable.html"><code>IPushable.Validate()</code></a> and movement instructions</td></tr>
       </tbody>
     </table>
   </div>

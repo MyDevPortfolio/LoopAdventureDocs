@@ -133,8 +133,8 @@
       This is the coroutine. Use <code>yield return new WaitForSeconds(t)</code> to wait for animations. To cancel execution and signal a failure, set <code>resolution = false</code> then <code>yield break</code>. Always show a notification first so the player understands why it failed.
     </li>
     <li>
-      <strong>Create the prefab</strong><br>
-      Duplicate any prefab from <code>Assets/Prefabs/Player Instructions/</code>. Swap the script component with your new class. See <a href="manual-instruction-layout.html">Create an Instruction Layout</a> for the full prefab setup workflow.
+      <strong>Set up the Action component</strong><br>
+      Duplicate any prefab from <code>Assets/Prefabs/Player Instructions/</code>. On the <strong>root</strong> GameObject, set the <strong>Action</strong> component's two fields: <strong>Instruction Type</strong> → your new C# class; <strong>Layout</strong> → the <code>InstructionLayout</code> prefab on the child GameObject. The <code>Action</code> bridges the palette item to the runtime instruction and its visual widget. See <a href="manual-instruction-layout.html">Create an Instruction Layout</a> for the full prefab setup workflow.
     </li>
     <li>
       <strong>Configure the InstructionLayout</strong><br>

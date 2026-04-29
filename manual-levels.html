@@ -149,7 +149,7 @@
       <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td><code>displayName</code></td><td><code>string</code></td><td>Name shown in the level-select UI.</td></tr>
-        <tr><td><code>scene</code></td><td><code>SceneReference</code></td><td>Drag the level's <code>.unity</code> scene file here.</td></tr>
+        <tr><td><code>scene</code></td><td><code>SceneReference</code></td><td>Drag the level's <code>.unity</code> scene asset here. The system uses this reference to load the level at runtime — the scene must also be registered in Build Settings (covered in Step 2).</td></tr>
         <tr><td><code>goals</code></td><td><code>Goal[]</code></td><td>Array of victory conditions. Configured in <a href="#step-6-define-goals">Step 6</a>.</td></tr>
       </tbody>
     </table>
@@ -290,6 +290,28 @@
     <li><a href="manual-interactable.html">Create an Interactable</a> — doors, crates, levers and other world objects.</li>
     <li><a href="manual-traps.html">Tile Traps</a> — pressure plates and appearing spikes that activate automatically.</li>
   </ul>
+
+  <hr>
+
+  <!-- ── Step 8 ── -->
+  <h2>Step 8 — Register on the World Map</h2>
+
+  <p>Each level needs a <code>LevelMarker</code> in the World Map scene so the player can select and launch it from the overworld. The marker reads the <code>LevelInfo</code> asset to display the level's name, star rating, and unlock state.</p>
+
+  <ol>
+    <li>Open the World Map scene (in <strong>Assets / Scenes /</strong>).</li>
+    <li>Find an existing <code>LevelMarker</code> GameObject in the Hierarchy and duplicate it, or create a new one by adding the <strong>LevelMarker</strong> component to a suitable GameObject.</li>
+    <li>In the Inspector, assign the <code>LevelInfo</code> asset created in Step 1 to the <strong>Level</strong> field.</li>
+    <li>Wire any child <code>LevelMarker</code> references in the <strong>Childs</strong> array to unlock the next levels in sequence once this one is completed.</li>
+    <li>Position the marker on the world map to match the level's place in the progression path.</li>
+  </ol>
+
+  <div class="callout info">
+    <div class="callout-icon">ℹ️</div>
+    <div class="callout-body">
+      <strong>Star ratings</strong> — <code>LevelMarker</code> compares save data against the <code>goals</code> array in the <code>LevelInfo</code> asset to decide how many stars to display. Make sure the goals are configured in Step 6 before testing.
+    </div>
+  </div>
 
 </main>
 <script src="search-index.js"></script>

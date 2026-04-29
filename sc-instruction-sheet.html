@@ -107,7 +107,7 @@
   <div class="page-header">
     <div class="page-tag">Scripting / Instructions</div>
     <h1>InstructionSheet</h1>
-    <p class="page-desc">Central UI manager for the instruction sheet. Owns the ordered list of <a href="sc-instruction-layouts.html">InstructionLayout</a> widgets, handles drag-and-drop onto the sheet, drives the execution cursor, and maintains an undo/redo history of up to 20 snapshots.</p>
+    <p class="page-desc">Central UI manager for the instruction sheet. Owns the ordered list of <a href="sc-instruction-layout.html">InstructionLayout</a> widgets, handles drag-and-drop onto the sheet, drives the execution cursor, and maintains an undo/redo history of up to 20 snapshots.</p>
   </div>
 
   <h2>Static Access</h2>
@@ -150,7 +150,7 @@
     <table>
       <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>Layouts</code></td><td><code>IReadOnlyList&lt;InstructionLayout&gt;</code></td><td>All <a href="sc-instruction-layouts.html">InstructionLayout</a> widgets currently on the sheet, in order.</td></tr>
+        <tr><td><code>Layouts</code></td><td><code>IReadOnlyList&lt;InstructionLayout&gt;</code></td><td>All <a href="sc-instruction-layout.html">InstructionLayout</a> widgets currently on the sheet, in order.</td></tr>
         <tr><td><code>lastSibling</code></td><td><code>InstructionLayout</code></td><td>The last layout in the list, or <code>null</code> if the sheet is empty.</td></tr>
         <tr><td><code>instructionDatas</code></td><td><code>SerializedInstruction[]</code></td><td>A snapshot of the current sheet state as serializable structs. Used internally by the undo system and by <code>LevelManager</code> for save/load.</td></tr>
       </tbody>
