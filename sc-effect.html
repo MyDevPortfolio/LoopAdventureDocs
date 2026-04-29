@@ -117,7 +117,7 @@
         <tr><td><code>displayName</code></td><td><code>string</code></td><td>Short label shown in the HUD when this effect is active.</td></tr>
         <tr><td><code>description</code></td><td><code>string</code></td><td>Detailed description shown in tooltips.</td></tr>
         <tr><td><code>icon</code></td><td><code>Sprite</code></td><td>Icon shown in the active effects HUD.</td></tr>
-        <tr><td><code>targetStat</code></td><td><code>Stat</code></td><td>The <a href="sc-stat.html">Stat</a> this effect modifies.</td></tr>
+        <tr><td><code>targetStat</code></td><td><a href="sc-stat.html"><code>Stat</code></a></td><td>The <a href="sc-stat.html">Stat</a> this effect modifies.</td></tr>
         <tr><td><code>value</code></td><td><code>int</code></td><td>Amount added to the stat. Negative values reduce it.</td></tr>
         <tr><td><code>duration</code></td><td><code>int</code></td><td>Number of turns the effect lasts. <code>0</code> means the modification is instant and permanent for the current run.</td></tr>
         <tr><td><code>applyPerTurn</code></td><td><code>bool</code></td><td>When <code>true</code>, applies <code>value</code> once per turn for the duration instead of once upfront. Use for regeneration or damage-over-time. Ignored when <code>duration</code> is <code>0</code>.</td></tr>

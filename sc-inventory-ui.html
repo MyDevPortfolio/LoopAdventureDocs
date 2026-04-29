@@ -141,7 +141,7 @@
     <table>
       <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>stat</code></td><td><code>Stat</code></td><td>The stat asset whose current total is read from <code>PlayerInventory.GetStatValue(stat)</code>.</td></tr>
+        <tr><td><code>stat</code></td><td><a href="sc-stat.html"><code>Stat</code></a></td><td>The stat asset whose current total is read from <code>PlayerInventory.GetStatValue(stat)</code>.</td></tr>
         <tr><td><code>valueText</code></td><td><code>TMP_Text</code></td><td>Label updated by <code>Configure()</code> during <code>Refresh()</code>.</td></tr>
       </tbody>
     </table>
@@ -155,7 +155,7 @@
     <table>
       <thead><tr><th>Member</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
-        <tr><td><code>item</code></td><td><code>Item</code> (readonly)</td><td>The item currently displayed in this slot. <code>null</code> when the slot is empty.</td></tr>
+        <tr><td><code>item</code></td><td><a href="sc-items.html"><code>Item</code></a> (readonly)</td><td>The item currently displayed in this slot. <code>null</code> when the slot is empty.</td></tr>
         <tr><td><code>OnSelect</code></td><td><code>System.Action&lt;Item&gt;</code></td><td>Raised when <code>OnSelectItem()</code> is called and the slot is not empty.</td></tr>
       </tbody>
     </table>
@@ -181,7 +181,7 @@
       <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
       <tbody>
         <tr><td><code>type</code></td><td><code>Equipment.Type</code> (readonly)</td><td>The equipment category this slot represents. Set in the Inspector via the <code>_type</code> SerializeField.</td></tr>
-        <tr><td><code>equipment</code></td><td><code>Equipment</code> (get / set)</td><td>Gets or sets the currently displayed equipment. Setting it updates the slot icon automatically and toggles the empty-slot placeholder.</td></tr>
+        <tr><td><code>equipment</code></td><td><a href="sc-equipment.html"><code>Equipment</code></a> (get / set)</td><td>Gets or sets the currently displayed equipment. Setting it updates the slot icon automatically and toggles the empty-slot placeholder.</td></tr>
       </tbody>
     </table>
   </div>

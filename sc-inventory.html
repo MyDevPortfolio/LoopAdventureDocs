@@ -163,7 +163,7 @@
       <tbody>
         <tr><td><code>Equip(Equipment equipment)</code></td><td><code>void</code></td><td>Places <code>equipment</code> in its designated slot, replacing any existing item of the same type.</td></tr>
         <tr><td><code>Unequip(Equipment.Type type, out Equipment equipped)</code></td><td><code>void</code></td><td>Removes and returns the item in <code>type</code> slot. <code>equipped</code> is <code>null</code> if the slot was empty.</td></tr>
-        <tr><td><code>GetEquipment(Equipment.Type type)</code></td><td><code>Equipment</code></td><td>Returns the equipment in <code>type</code> slot, or <code>null</code> if empty.</td></tr>
+        <tr><td><code>GetEquipment(Equipment.Type type)</code></td><td><a href="sc-equipment.html"><code>Equipment</code></a></td><td>Returns the equipment in <code>type</code> slot, or <code>null</code> if empty.</td></tr>
         <tr><td><code>Equipped(Equipment equipment)</code></td><td><code>bool</code></td><td>Returns <code>true</code> if <code>equipment</code> currently occupies its slot.</td></tr>
         <tr><td><code>GetStatValue(Stat stat)</code></td><td><code>int</code></td><td>Sums the bonus contributed to <code>stat</code> by all currently equipped items and returns the total.</td></tr>
       </tbody>

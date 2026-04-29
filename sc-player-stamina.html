@@ -110,7 +110,7 @@
   <div class="table-wrap"><table>
     <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>_stat</code></td><td><code>Stat</code></td><td>The <a href="sc-stat.html">Stat</a> asset this stamina system tracks. Used to look up the receiver when applying stat effects from equipment or items.</td></tr>
+      <tr><td><code>_stat</code></td><td><a href="sc-stat.html"><code>Stat</code></a></td><td>The <a href="sc-stat.html">Stat</a> asset this stamina system tracks. Used to look up the receiver when applying stat effects from equipment or items.</td></tr>
     </tbody>
   </table></div>
 
@@ -118,7 +118,7 @@
   <div class="table-wrap"><table>
     <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
-      <tr><td><code>stat</code></td><td><code>Stat</code></td><td>Read-only accessor for the assigned stat asset.</td></tr>
+      <tr><td><code>stat</code></td><td><a href="sc-stat.html"><code>Stat</code></a></td><td>Read-only accessor for the assigned stat asset.</td></tr>
       <tr><td><code>maxValue</code></td><td><code>int</code></td><td>Maximum stamina the player can have. Derived from the active equipment bonuses at initialization.</td></tr>
       <tr><td><code>currentValue</code></td><td><code>int</code></td><td>Current stamina points remaining.</td></tr>
       <tr><td><code>value</code></td><td><code>int</code> (get/set)</td><td>Gets or sets <code>currentValue</code>, clamped to [0, maxValue].</td></tr>

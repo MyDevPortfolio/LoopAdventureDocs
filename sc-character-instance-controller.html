@@ -123,7 +123,7 @@
     <tbody>
       <tr><td><code>position</code></td><td><code>Vector2</code> (get/set)</td><td>World-space position of the character. Reading returns <code>transform.position</code>; writing moves the character instantly.</td></tr>
       <tr><td><code>direction</code></td><td><code>Direction</code> (get)</td><td>Current facing direction. Set via <code>SetDirection()</code>.</td></tr>
-      <tr><td><code>health</code></td><td><code>Health</code> (get)</td><td>The <a href="sc-health.html">Health</a> component on this character. Retrieved automatically on <code>Awake</code>.</td></tr>
+      <tr><td><code>health</code></td><td><a href="sc-health.html"><code>Health</code></a> (get)</td><td>The <a href="sc-health.html">Health</a> component on this character. Retrieved automatically on <code>Awake</code>.</td></tr>
       <tr><td><code>blocking</code></td><td><code>bool</code></td><td>Whether the character is currently in a blocking pose. Read by <a href="sc-health.html">PlayerHealth</a> and <a href="sc-health.html">EnemyHealth</a> before applying damage.</td></tr>
       <tr><td><code>damage</code></td><td><code>int</code> (virtual get/set)</td><td>Damage this character deals per hit. Default: 1. Overridden by <a href="sc-player-controller.html">PlayerController</a> (inventory-driven) and <a href="sc-enemy-controller.html">EnemyController</a> (Inspector field).</td></tr>
       <tr><td><code>defense</code></td><td><code>int</code> (virtual get/set)</td><td>Defense value subtracted from incoming damage. Default: 0. Overridden by subclasses.</td></tr>
