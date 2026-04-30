@@ -19,12 +19,28 @@
       <div class="hero-rule"></div>
       <p class="hero-subtitle">Documentation</p>
 
+      <p class="hero-tagline">Build puzzle-adventure games where gameplay is programming.</p>
+
+      <div class="hero-flow">
+        <span>Drag</span>
+        <span class="hf-arrow">→</span>
+        <span>Execute</span>
+        <span class="hf-arrow">→</span>
+        <span>Reset</span>
+        <span class="hf-arrow">→</span>
+        <span>Solve</span>
+      </div>
+
       <p class="hero-desc">
-        A complete 2D puzzle-adventure game kit built on an
-        instruction-based programming system. Drop it into your
-        project and start shipping levels — or extend every system
-        with clean, well-documented APIs.
+        <strong>Instruction-based programming gameplay</strong> — create levels where players
+        compose actions and watch them execute in real time, then extend
+        every system with clean, well-documented APIs.
       </p>
+
+      <div class="hero-actions">
+        <a href="https://assetstore.unity.com/packages/slug/377268" class="btn-primary" target="_blank" rel="noopener">Get on Asset Store</a>
+        <a href="https://davidlambert.itch.io/loopadventuredemo" class="btn-outline" target="_blank" rel="noopener">▶&nbsp; Play Demo</a>
+      </div>
 
     </div>
 
@@ -60,6 +76,49 @@
 
   </section>
 
+  <!-- ── Quick Start ──────────────────────────────────── -->
+  <div class="welcome-sections welcome-sections--qs">
+
+    <div class="welcome-section-label">
+      Quick Start <span class="qs-badge">2–3 min</span>
+    </div>
+
+    <div class="qs-steps">
+
+      <div class="qs-step">
+        <div class="qs-num">1</div>
+        <div class="qs-title">Import the package</div>
+        <p class="qs-hint">Window → Package Manager → Import</p>
+      </div>
+
+      <div class="qs-arrow">→</div>
+
+      <div class="qs-step">
+        <div class="qs-num">2</div>
+        <div class="qs-title">Open SampleScene</div>
+        <p class="qs-hint">Assets / Scenes / SampleScene.unity</p>
+      </div>
+
+      <div class="qs-arrow">→</div>
+
+      <div class="qs-step">
+        <div class="qs-num">3</div>
+        <div class="qs-title">Press Play</div>
+        <p class="qs-hint">Five tutorial levels are ready to run</p>
+      </div>
+
+      <div class="qs-arrow">→</div>
+
+      <div class="qs-step">
+        <div class="qs-num">4</div>
+        <div class="qs-title">Edit the Instruction Sheet</div>
+        <p class="qs-hint">Drag instructions from the panel onto the sheet</p>
+      </div>
+
+    </div>
+
+  </div>
+
   <!-- ── Overview ─────────────────────────────────────── -->
   <div class="welcome-sections">
 
@@ -73,13 +132,13 @@
       interfaced and designed to be extended without touching engine code.
     </p>
 
-    <!-- 3-step flow -->
+    <!-- 4-step core loop -->
     <div class="overview-flow">
 
       <div class="ovf-step">
         <div class="ovf-num">1</div>
         <div class="ovf-title">Compose</div>
-        <p class="ovf-desc">The player drags instructions from the palette onto the sheet — Move, Attack, Block, Combo sequences, and more. Order and direction matter; the sheet is the program.</p>
+        <p class="ovf-desc">Drag instructions from the palette onto the sheet — Move, Attack, Block, Combo, and more. Order and direction matter; the sheet is your program.</p>
       </div>
 
       <div class="ovf-divider"></div>
@@ -87,15 +146,23 @@
       <div class="ovf-step">
         <div class="ovf-num">2</div>
         <div class="ovf-title">Execute</div>
-        <p class="ovf-desc">Hitting Play runs each instruction as a coroutine turn. An animated pointer follows execution in real time, looping back to the top automatically each cycle.</p>
+        <p class="ovf-desc">Hit Play. Each instruction runs as an animated turn; an on-screen pointer follows the sequence in real time, looping back automatically each cycle.</p>
       </div>
 
       <div class="ovf-divider"></div>
 
       <div class="ovf-step">
         <div class="ovf-num">3</div>
-        <div class="ovf-title">Resolve</div>
-        <p class="ovf-desc">Enemies and traps act in parallel each turn using the same task scheduler. On failure the scene resets completely — nothing is permanent until the player reaches the exit.</p>
+        <div class="ovf-title">Observe</div>
+        <p class="ovf-desc">Watch what happened. Did the enemy block? Did the trap fire first? The scene shows you exactly where the logic broke — no guessing required.</p>
+      </div>
+
+      <div class="ovf-divider"></div>
+
+      <div class="ovf-step">
+        <div class="ovf-num">4</div>
+        <div class="ovf-title">Adjust</div>
+        <p class="ovf-desc">Move an instruction, flip a direction, try a different order. Reset rewinds everything instantly — no penalty, just iteration until the solution clicks.</p>
       </div>
 
     </div>

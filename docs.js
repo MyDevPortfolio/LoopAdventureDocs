@@ -4,11 +4,14 @@
    this constant replaces it on every page load.
    ══════════════════════════════════════════════════════════ */
 const SIDEBAR_HTML = `
-  <div class="sidebar-logo">
+  <a href="welcome.html" class="sidebar-logo">
     <div class="game-title">LOOP<br>ADVENTURE</div>
     <span class="doc-label">Documentation</span>
+  </a>
+  <div class="sidebar-cta">
+    <a href="https://assetstore.unity.com/packages/slug/377268" class="sidebar-cta-btn sidebar-cta-btn--store" target="_blank" rel="noopener">Get on Asset Store</a>
+    <a href="https://davidlambert.itch.io/loopadventuredemo" class="sidebar-cta-btn sidebar-cta-btn--demo" target="_blank" rel="noopener">▶&nbsp; Play Demo</a>
   </div>
-  <a href="welcome.html" class="nav-home"><svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>Welcome</a>
   <div class="nav-section">Manual</div>
   <div class="nav-sub-section">How-To Guides</div>
   <a href="manual-overview.html" class="nav-link sub">Overview</a>
@@ -431,7 +434,7 @@ function initSearch() {
     '<svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
     '<span>Search docs…</span>' +
     '<kbd class="search-trigger-kbd">Ctrl K</kbd>';
-  sidebar.querySelector('.sidebar-logo').insertAdjacentElement('afterend', trigger);
+  (sidebar.querySelector('.sidebar-cta') || sidebar.querySelector('.sidebar-logo')).insertAdjacentElement('afterend', trigger);
 
   const backdrop = document.createElement('div');
   backdrop.className = 'search-backdrop';
