@@ -145,7 +145,7 @@
 
   <!-- ── Built-in Goals ── -->
   <h2>Built-in Goals</h2>
-  <p>Two concrete implementations ship with the project. Select them from the <code>goals</code> dropdown in any <code>LevelInfo</code> asset.</p>
+  <p>Three concrete implementations ship with the project. Select them from the <code>goals</code> dropdown in any <code>LevelInfo</code> asset.</p>
 
   <div class="table-wrap">
     <table>
@@ -164,6 +164,12 @@
           <td><code>loops ≤ amountRequired</code></td>
           <td>Loop Count</td>
         </tr>
+        <tr>
+          <td><code>LevelGoal_PlayerHealth</code></td>
+          <td><em>"Finish with more health"</em></td>
+          <td><code>playerHealth ≥ amountRequired</code></td>
+          <td>Player Health</td>
+        </tr>
       </tbody>
     </table>
   </div>
@@ -181,6 +187,8 @@
       <tbody>
         <tr><td><code>instructionsCount</code></td><td><code>int</code></td><td>Total number of instructions placed on the sheet when the level was completed.</td></tr>
         <tr><td><code>loops</code></td><td><code>int</code></td><td>Sum of all loop iteration counts across every sequence instruction in the sheet.</td></tr>
+        <tr><td><code>playerHealth</code></td><td><code>int</code></td><td>Player's remaining health when the level was last completed.</td></tr>
+        <tr><td><code>playerStamina</code></td><td><code>int</code></td><td>Player's remaining stamina when the level was last completed.</td></tr>
         <tr><td><code>completed</code></td><td><code>bool</code></td><td><code>true</code> if the player has reached the End tile at least once.</td></tr>
         <tr><td><code>instructions</code></td><td><code>SerializedInstruction[]</code></td><td>Raw serialized instruction data from the winning solution. Use this for advanced goals that inspect the structure of the sheet.</td></tr>
         <tr><td><code>levelID</code></td><td><code>string</code></td><td>ID matching the <code>LevelInfo</code> this data belongs to.</td></tr>

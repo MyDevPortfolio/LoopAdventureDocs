@@ -140,7 +140,8 @@
       <tr><td><code>Initialize(ExecutionContext context)</code></td><td>Resets health to <code>maxHealth</code> and fires <code>OnInitialize</code>. Called automatically at level start.</td></tr>
       <tr><td><code>ApplyDamage(int damage, bool applyDefense = true, bool ignoreBlocking = false)</code></td><td>Reduces health by <code>damage</code> after subtracting defense (when <code>applyDefense</code> is true) and checking block state. Fires <code>OnDamageApplied</code> on a hit or <code>OnDamageBlocked</code> when blocked. Triggers <code>Die()</code> if health reaches zero.</td></tr>
       <tr><td><code>Heal(int amount)</code></td><td>Increases health by <code>amount</code>, clamped to <code>maxHealth</code>. Fires <code>OnHealthUpdated</code>.</td></tr>
-      <tr><td><code>Kill()</code></td><td>Instantly kills the character by calling <code>ApplyDamage(currentHealth, false, true)</code>.</td></tr>
+      <tr><td><code>SetHealth(int health)</code></td><td>Sets current health to an exact value, clamped to [0, maxHealth]. Fires <code>OnHealthUpdated</code> and triggers <code>Die()</code> if the result is zero.</td></tr>
+      <tr><td><code>Kill()</code></td><td>Instantly kills the character by calling <code>SetHealth(0)</code>.</td></tr>
     </tbody>
   </table></div>
 
