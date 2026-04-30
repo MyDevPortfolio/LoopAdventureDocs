@@ -765,7 +765,9 @@ strong { color: #e2e8f0; font-weight: 600; }
 
 .qs-steps {
   display: flex;
-  align-items: center;
+  flex-direction: row;
+  flex-wrap: nowrap;
+  align-items: stretch;
   max-width: 880px;
   width: 100%;
 }
