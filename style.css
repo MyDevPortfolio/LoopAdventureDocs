@@ -809,22 +809,27 @@ strong { color: #e2e8f0; font-weight: 600; }
 }
 
 .qs-arrow {
-  color: var(--teal);
-  font-size: 18px;
-  opacity: 0.35;
+  font-size: 0;
   flex-shrink: 0;
-  padding: 0 4px;
-  padding-bottom: 24px;
+  align-self: center;
+  padding: 0 8px;
+}
+
+.qs-arrow::after {
+  content: '→';
+  color: var(--teal);
+  font-size: 20px;
+  opacity: .65;
 }
 
 @media (max-width: 640px) {
-  .qs-steps { flex-direction: column; align-items: flex-start; }
-  .qs-step { align-items: flex-start; text-align: left; padding: 16px 0; }
-  .qs-arrow { transform: rotate(90deg); align-self: center; padding-bottom: 0; }
+  .qs-steps { flex-direction: column; align-items: stretch; }
+  .qs-step { align-items: center; text-align: center; padding: 16px 0; }
+  .qs-arrow { padding: 6px 0; }
 
   .overview-flow { flex-direction: column; }
-  .ovf-divider { width: 100%; height: 1px; flex-shrink: 0; }
-  .ovf-divider::after { content: '↓'; }
+  .ovf-divider { width: 100%; height: 36px; }
+  .ovf-divider::after { content: '↓'; font-size: 18px; }
   .overview-traits { grid-template-columns: 1fr; }
 
   .hero { padding: 20px 16px 32px; gap: 16px; }
@@ -833,6 +838,9 @@ strong { color: #e2e8f0; font-weight: 600; }
   .hero-actions { flex-direction: column; align-items: stretch; }
   .btn-primary, .btn-outline { justify-content: center; }
   .welcome-sections { padding: 32px 16px 40px; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .features-intro { font-size: 13px; }
+  .welcome-section-label { color: var(--text); }
 }
 
 .hero-desc {
@@ -1192,29 +1200,27 @@ strong { color: #e2e8f0; font-weight: 600; }
   flex: 1;
   display: flex;
   flex-direction: column;
+  align-items: center;
+  text-align: center;
   gap: 12px;
   padding: 28px 24px;
   background: var(--surface);
 }
 
 .ovf-divider {
-  width: 1px;
-  background: var(--border);
   flex-shrink: 0;
-  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 36px;
+  background: var(--surface);
 }
 
 .ovf-divider::after {
   content: '→';
-  position: absolute;
   color: var(--accent);
-  font-size: 14px;
-  opacity: .45;
-  background: var(--surface);
-  padding: 6px 0;
+  font-size: 20px;
+  opacity: .65;
 }
 
 .ovf-num {
@@ -1561,4 +1567,20 @@ strong { color: #e2e8f0; font-weight: 600; }
 
 @media (max-width: 600px) {
   .welcome-categories { grid-template-columns: 1fr; }
+}
+
+/* ── Welcome-page mobile overrides ───────────────────────
+   Must come AFTER the base declarations they override.
+   The @media block near line 820 precedes those bases
+   in source order and loses the cascade; this block wins. */
+@media (max-width: 640px) {
+  .overview-flow { flex-direction: column; }
+  .ovf-divider { width: 100%; height: 40px; }
+  .qs-arrow::after { content: '↓'; color: var(--teal); font-size: 20px; opacity: .75; }
+  .ovf-divider::after { content: '↓'; color: var(--accent); font-size: 20px; opacity: .75; }
+  .overview-traits { grid-template-columns: 1fr; }
+  .feature-grid { grid-template-columns: 1fr; }
+  .welcome-sections { padding: 32px 16px 40px; }
+  .welcome-section-label { color: var(--text); }
+  .features-intro { font-size: 13px; }
 }
