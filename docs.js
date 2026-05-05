@@ -365,7 +365,8 @@ function initCopyButtons(root) {
 
 /* ─── On-page TOC ─────────────────────────────────────── */
 function buildTOC(root) {
-  const headings = Array.from(root.querySelectorAll('h2'));
+  const typeHeadings = Array.from(root.querySelectorAll('h2.h2-type'));
+  const headings = typeHeadings.length >= 2 ? typeHeadings : Array.from(root.querySelectorAll('h2'));
   if (headings.length < 2) return;
 
   headings.forEach(h => {

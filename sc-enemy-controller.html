@@ -126,8 +126,11 @@
   <div class="table-wrap"><table>
     <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
     <tbody>
+      <tr><td><code>_damageStat</code></td><td><a href="sc-stat.html"><code>Stat</code></a></td><td>Stat asset used to label the enemy's damage value in the HUD stat panel.</td></tr>
       <tr><td><code>_damage</code></td><td><code>int</code></td><td>Base damage dealt per attack hit.</td></tr>
+      <tr><td><code>_defenseStat</code></td><td><a href="sc-stat.html"><code>Stat</code></a></td><td>Stat asset used to label the enemy's defence value in the HUD stat panel.</td></tr>
       <tr><td><code>_defense</code></td><td><code>int</code></td><td>Base defense value subtracted from incoming damage.</td></tr>
+      <tr><td><code>_additionalStats</code></td><td><code>StatValue[]</code></td><td>Extra stat/value pairs shown in the enemy HUD beyond base damage and defence.</td></tr>
       <tr><td><code>defaultDirection</code></td><td><code>Direction</code></td><td>Facing direction applied when the level starts.</td></tr>
       <tr><td><code>loop</code></td><td><code>bool</code></td><td>When enabled the patrol sequence repeats from the beginning after reaching the last waypoint.</td></tr>
       <tr><td><code>moveSequence</code></td><td><code>Direction[]</code></td><td>Ordered patrol directions the enemy follows when no player is detected within range.</td></tr>
@@ -143,6 +146,10 @@
     <tbody>
       <tr><td><code>damage</code></td><td><code>int</code> (get/set)</td><td>Base damage dealt per attack. Overrides the base class virtual property.</td></tr>
       <tr><td><code>defense</code></td><td><code>int</code> (get/set)</td><td>Defense value subtracted from incoming damage. Overrides the base class virtual property.</td></tr>
+      <tr><td><code>allStats</code></td><td><code>IReadOnlyList&lt;StatValue&gt;</code></td><td>All stats for this enemy — damage, defence, and additional entries — as a flat list. Used by <a href="sc-enemy-hud.html">EnemyStatsContainer</a> to populate the stat panel.</td></tr>
+      <tr><td><code>damageValue</code></td><td><code>StatValue</code></td><td>Convenience wrapper pairing the damage stat asset with the current damage amount.</td></tr>
+      <tr><td><code>defenseValue</code></td><td><code>StatValue</code></td><td>Convenience wrapper pairing the defence stat asset with the current defence amount.</td></tr>
+      <tr><td><code>additionalStats</code></td><td><code>IReadOnlyCollection&lt;StatValue&gt;</code></td><td>Read-only view of the additional stats configured in the Inspector.</td></tr>
       <tr><td><code>currentInstruction</code></td><td><code>Instruction</code></td><td>The instruction currently being executed by this enemy.</td></tr>
     </tbody>
   </table></div>

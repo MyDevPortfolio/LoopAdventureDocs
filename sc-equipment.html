@@ -121,7 +121,7 @@
       <tbody>
         <tr><td><code>type</code></td><td><code>Equipment.Type</code></td><td>The inventory slot this equipment occupies.</td></tr>
         <tr><td><code>twoHanded</code></td><td><code>bool</code></td><td>When <code>true</code>, equipping this item also occupies the Shield slot.</td></tr>
-        <tr><td><code>stats</code></td><td><code>IReadOnlyList&lt;Equipment.StatValue&gt;</code></td><td>Passive stat bonuses granted while this item is equipped.</td></tr>
+        <tr><td><code>stats</code></td><td><code>IReadOnlyList&lt;StatValue&gt;</code></td><td>Passive stat bonuses granted while this item is equipped.</td></tr>
       </tbody>
     </table>
   </div>
@@ -152,8 +152,8 @@
     </table>
   </div>
 
-  <h2>Equipment.StatValue</h2>
-  <p>Serializable inner class. Pairs a <code>Stat</code> asset with a numeric bonus. Configured in the Equipment Inspector under the <strong>Stats</strong> list.</p>
+  <h2>StatValue</h2>
+  <p>Serializable class that pairs a <code>Stat</code> asset with a numeric bonus. Used in the Equipment <strong>Stats</strong> list and also by <code>PlayerController</code> and <code>EnemyController</code> to expose their stat totals to the HUD.</p>
   <div class="table-wrap">
     <table>
       <thead><tr><th>Property</th><th>Type</th><th>Description</th></tr></thead>
@@ -170,7 +170,7 @@
     <li>Fill in the shared <code>Item</code> fields: <code>displayName</code>, <code>description</code>, and <code>image</code>.</li>
     <li>Set <code>type</code> to the appropriate slot (<code>Weapon</code>, <code>Shield</code>, <code>Helmet</code>, <code>Armor</code>, or <code>Boots</code>).</li>
     <li>Enable <code>twoHanded</code> if equipping this weapon should also block the Shield slot.</li>
-    <li>In the <strong>Stats</strong> list click <strong>+</strong> and add one <code>StatValue</code> entry per bonus: assign a <a href="sc-stat.html">Stat</a> asset and set the numeric bonus (positive to increase, negative to reduce).</li>
+    <li>In the <strong>Stats</strong> list click <strong>+</strong> and add one <code>StatValue</code> entry per bonus: assign a <a href="sc-stat.html">Stat</a> asset and set the numeric bonus. Positive values increase the stat; negative values reduce it.</li>
     <li>Register the asset in the <a href="sc-items-references.html">ItemsReferences</a> collection.</li>
   </ol>
 

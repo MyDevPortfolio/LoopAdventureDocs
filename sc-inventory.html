@@ -120,7 +120,7 @@
   </div>
 
   <!-- ── PlayerInventory ── -->
-  <h2>PlayerInventory</h2>
+  <h2 class="h2-type">PlayerInventory</h2>
   <p>Holds a fixed-size array of item slots and a dictionary of equipment slots. The engine maintains two instances simultaneously: <code>PlayerInventory.current</code> (persistent, survives scene loads) and the execution copy accessed via <code>context.inventory</code> (cloned per level run, committed on success). Always use <code>context.inventory</code> inside <code>Tick()</code>.</p>
 
   <h3>Static Members</h3>
@@ -187,7 +187,7 @@
   <hr>
 
   <!-- ── InventoryPreset ── -->
-  <h2>InventoryPreset</h2>
+  <h2 class="h2-type">InventoryPreset</h2>
   <p>Defines the player's starting loadout for a new game session. Assigned in the game configuration. Create instances with <strong>Create → Loop Adventure → Inventory → Inventory Preset</strong>.</p>
 
   <h3>Properties</h3>
@@ -205,7 +205,7 @@
   <hr>
 
   <!-- ── InventoryData ── -->
-  <h2>InventoryData</h2>
+  <h2 class="h2-type">InventoryData</h2>
   <p>JSON-serializable snapshot of a <code>PlayerInventory</code>. Items and equipment are stored by their asset ID strings. Used internally by the save system — you typically do not interact with this class directly.</p>
 
   <h3>Fields</h3>

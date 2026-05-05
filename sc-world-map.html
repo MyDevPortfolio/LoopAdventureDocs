@@ -112,7 +112,7 @@
     <p class="page-desc">Two components that power the world map scene: <code>WorldMapManager</code> orchestrates map initialization and level info display, and <code>LevelMarker</code> represents an individual selectable level node with star rating and unlock chaining.</p>
   </div>
 
-  <h2>WorldMapManager</h2>
+  <h2 class="h2-type">WorldMapManager</h2>
   <p>Placed once in the world map scene. On start it finds all <code>LevelMarker</code> instances in the scene, initializes them, and locks markers for levels that are not yet available.</p>
   <h3>Methods</h3>
   <div class="table-wrap"><table>
@@ -122,7 +122,7 @@
     </tbody>
   </table></div>
 
-  <h2>LevelMarker</h2>
+  <h2 class="h2-type">LevelMarker</h2>
   <p>Attach to each level node in the world map scene. A marker can reference child markers that unlock when this level is completed, forming the unlock chain for the world map progression.</p>
   <h3>Inspector Fields</h3>
   <div class="table-wrap"><table>

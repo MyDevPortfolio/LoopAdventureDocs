@@ -122,7 +122,7 @@
   </div>
 
   <!-- ── LevelGoal ── -->
-  <h2>LevelGoal</h2>
+  <h2 class="h2-type">LevelGoal</h2>
   <p>Plain C# abstract class — not a ScriptableObject. Concrete subclasses are referenced by type name inside the <code>LevelInfo.Goal</code> struct and instantiated on demand via reflection. No manual registration is needed: the Inspector dropdown discovers all subclasses automatically.</p>
 
   <h3>Abstract Members</h3>
@@ -181,7 +181,7 @@
   <hr>
 
   <!-- ── LevelData ── -->
-  <h2>LevelData</h2>
+  <h2 class="h2-type">LevelData</h2>
   <p>The object passed to <code>Check()</code>. It is saved when the player completes a level and read back whenever goals are evaluated. Use its properties to drive custom goal logic.</p>
 
   <div class="table-wrap">

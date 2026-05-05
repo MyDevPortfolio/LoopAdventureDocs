@@ -118,6 +118,7 @@
     <tbody>
       <tr><td><code>damageStat</code></td><td><a href="sc-stat.html"><code>Stat</code></a></td><td><a href="sc-stat.html">Stat</a> asset used to look up the player's damage value from the inventory.</td></tr>
       <tr><td><code>defenseStat</code></td><td><a href="sc-stat.html"><code>Stat</code></a></td><td><a href="sc-stat.html">Stat</a> asset used to look up the player's defense value from the inventory.</td></tr>
+      <tr><td><code>_additionalStats</code></td><td><code>StatValue[]</code></td><td>Extra stat/value pairs shown in the player stats panel beyond base damage and defence.</td></tr>
       <tr><td><code>useItemFX</code></td><td><code>ItemUsedFX</code></td><td>Prefab spawned to display a floating item icon when an item is used. See <a href="sc-item-dropper.html">ItemUsedFX</a>.</td></tr>
       <tr><td><code>useItemParticles</code></td><td><code>ParticleSystem</code></td><td>Particle system played at the player's position during item use.</td></tr>
     </tbody>
@@ -130,6 +131,10 @@
       <tr><td><code>stamina</code></td><td><a href="sc-player-stamina.html"><code>PlayerStamina</code></a></td><td>The <a href="sc-player-stamina.html">PlayerStamina</a> component on this character. Retrieved on <code>Awake</code>.</td></tr>
       <tr><td><code>damage</code></td><td><code>int</code></td><td>Damage value read from <a href="sc-inventory.html">PlayerInventory</a> using <code>damageStat</code>. Overrides the base class virtual property.</td></tr>
       <tr><td><code>defense</code></td><td><code>int</code></td><td>Defense value read from <a href="sc-inventory.html">PlayerInventory</a> using <code>defenseStat</code>. Overrides the base class virtual property.</td></tr>
+      <tr><td><code>allStats</code></td><td><code>IReadOnlyList&lt;StatValue&gt;</code></td><td>All stats for this player — damage, defence, and additional entries — as a flat list. Used by <a href="sc-hud.html">PlayerStats</a> to populate the HUD stat panel.</td></tr>
+      <tr><td><code>damageValue</code></td><td><code>StatValue</code></td><td>Convenience wrapper pairing the damage stat asset with the player's current damage amount.</td></tr>
+      <tr><td><code>defenseValue</code></td><td><code>StatValue</code></td><td>Convenience wrapper pairing the defence stat asset with the player's current defence amount.</td></tr>
+      <tr><td><code>additionalStats</code></td><td><code>IReadOnlyCollection&lt;StatValue&gt;</code></td><td>Read-only view of the additional stats configured in the Inspector.</td></tr>
     </tbody>
   </table></div>
 

@@ -112,7 +112,7 @@
     <p class="page-desc">Four small helper components: two that dim or disable UI controls while instructions run, one that snaps transforms to pixel or grid positions, and one that drives depth sorting order based on Y position.</p>
   </div>
 
-  <h2>DisableOnRunning</h2>
+  <h2 class="h2-type">DisableOnRunning</h2>
   <p>Dims a <code>CanvasGroup</code> to half opacity and blocks interaction while the instruction runner is active. On stop, full opacity and interaction are restored. Requires a <code>CanvasGroup</code> on the same GameObject. Subscribes to <code>LevelManager</code> events automatically on <code>Start</code>.</p>
   <h3>Methods</h3>
   <div class="table-wrap"><table>
@@ -123,7 +123,7 @@
     </tbody>
   </table></div>
 
-  <h2>DisableButtonOnRunning</h2>
+  <h2 class="h2-type">DisableButtonOnRunning</h2>
   <p>Toggles a <code>Button</code>'s interactability while the instruction runner is active. Lighter-weight alternative to <code>DisableOnRunning</code> when dimming is not needed — only the click behaviour is blocked. Requires a <code>Button</code> on the same GameObject. Subscribes automatically on <code>Start</code>.</p>
   <h3>Methods</h3>
   <div class="table-wrap"><table>
@@ -134,7 +134,7 @@
     </tbody>
   </table></div>
 
-  <h2>PixelSnaper</h2>
+  <h2 class="h2-type">PixelSnaper</h2>
   <p>Snaps the transform's position to the nearest pixel boundary every frame, eliminating sub-pixel drift in pixel-art games. Runs in both Edit and Play mode (<code>[ExecuteInEditMode]</code>) so you can preview snapping while placing objects in the Scene view.</p>
   <h3>Inspector Fields</h3>
   <div class="table-wrap"><table>
@@ -146,7 +146,7 @@
     </tbody>
   </table></div>
 
-  <h2>DepthSortingOrder</h2>
+  <h2 class="h2-type">DepthSortingOrder</h2>
   <p>Adjusts a <code>SpriteRenderer</code>'s <code>sortingOrder</code> each frame based on the object's Y position relative to a reference transform, producing correct painter's-algorithm depth for top-down or isometric perspectives.</p>
   <p>The formula is: <code>sortingOrder = Floor((topLimit.y × 100) − (transform.y × 100))</code>. Objects closer to the top reference render behind objects lower on screen.</p>
   <h3>Inspector Fields</h3>
