@@ -115,6 +115,7 @@
   </div>
 
   <h2 class="h2-type" id="player-health-bar">PlayerHealthBar</h2>
+  <p class="component-path">Loop Adventure › Player › HUD › PlayerHealthBar</p>
   <p>Renders the player's current HP as a row of heart <code>Toggle</code> widgets. Subscribes to <a href="sc-level-manager.html">LevelManager</a> events automatically at <code>[DefaultExecutionOrder(10)]</code>.</p>
 
   <h3>Inspector Fields</h3>
@@ -143,6 +144,7 @@
   </div>
 
   <h2 class="h2-type" id="player-stamina-bar">PlayerStaminaBar</h2>
+  <p class="component-path">Loop Adventure › Player › HUD › PlayerStaminaBar</p>
   <p>Renders the player's current stamina as a row of pip <code>Toggle</code> widgets. Follows the same pattern and event subscription as <code>PlayerHealthBar</code>.</p>
 
   <h3>Inspector Fields</h3>
@@ -171,6 +173,7 @@
   </div>
 
   <h2 class="h2-type" id="player-stats">PlayerStats</h2>
+  <p class="component-path">Loop Adventure › Player › HUD › PlayerStats</p>
   <p>Displays the player's damage, defence, and any additional stats as icon-value rows in the HUD. The panel is populated once on <code>Start()</code> by reading stat values directly from the <code>PlayerController</code>. Two pre-placed <code>StatElement_Layout</code> instances handle damage and defence; additional stats are instantiated from a prefab into the container. Runs at <code>[DefaultExecutionOrder(10)]</code>.</p>
 
   <h3>Inspector Fields</h3>
@@ -187,6 +190,7 @@
   </div>
 
   <h2 class="h2-type" id="hud-show-stat-effect-number">HUD_ShowStatEffectNumber</h2>
+  <p class="component-path">Loop Adventure › UI › HUD_ShowStatEffectNumber</p>
   <p>Displays a floating number above a character whenever damage, healing, or a block event fires. Add this component as a child of any GameObject that owns a <code>Health</code> or <code>PlayerStamina</code> component. It locates those components via <code>GetComponentInParent</code> in <code>Start()</code> — no Inspector wiring required.</p>
 
   <h3>Inspector Fields</h3>

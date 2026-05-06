@@ -142,6 +142,7 @@
 
   <!-- ── InteractableObject_Pickup ── -->
   <h2 class="h2-type" id="pickup">InteractableObject_Pickup</h2>
+  <p class="component-path">Loop Adventure › Interactables › InteractableObject_Pickup</p>
   <p>Implements <code>IInteractable</code> with <code>automatic = true</code>. At the end of any turn the player occupies its tile, the item is added to <code>context.inventory</code>, a collect animation plays, and the GameObject is destroyed. No explicit Interact instruction is needed.</p>
 
   <h3>Inspector Fields</h3>
@@ -184,6 +185,7 @@
 
   <!-- ── InteractableObject_Chest ── -->
   <h2 class="h2-type" id="chest">InteractableObject_Chest</h2>
+  <p class="component-path">Loop Adventure › Interactables › InteractableObject_Chest</p>
   <p>Implements <code>IInteractable</code> with <code>automatic = false</code>. The player must use an Interact instruction while on the chest's tile. On success the item is added to inventory, an open animation plays, and the item icon floats above the chest.</p>
 
   <h3>Inspector Fields</h3>
@@ -218,6 +220,7 @@
 
   <!-- ── InteractableObject_Carry ── -->
   <h2 class="h2-type" id="carry">InteractableObject_Carry</h2>
+  <p class="component-path">Loop Adventure › Interactables › InteractableObject_Carry</p>
   <p>Implements <code>ICarryObject</code>, <code>IPushable</code>, and <code>IObstacle</code>. The player can pick it up with Carry, put it down with Drop, or slide it one tile with Push. Its collider is disabled while carried so it does not interfere with movement.</p>
 
   <h3>Inspector Fields</h3>
@@ -259,6 +262,7 @@
 
   <!-- ── InteractableObject_PushableObject ── -->
   <h2 class="h2-type" id="pushable-object">InteractableObject_PushableObject</h2>
+  <p class="component-path">Loop Adventure › Interactables › InteractableObject_PushableObject</p>
   <p>Implements <code>IPushable</code> and <code>IObstacle</code>. A static object (stone block, boulder) that can be pushed one tile per instruction but cannot be carried. Always blocks movement.</p>
 
   <h3>Inspector Fields</h3>
@@ -288,6 +292,7 @@
 
   <!-- ── InteractableObject_Door ── -->
   <h2 class="h2-type" id="door">InteractableObject_Door</h2>
+  <p class="component-path">Loop Adventure › Interactables › InteractableObject_Door</p>
   <p>Implements <code>IObstacle</code>. Blocks passage while closed; passage is allowed once open. Can optionally require the player to carry a specific key item before the door will open. Controls an Animator and disables its <code>Collider2D</code> while open.</p>
 
   <h3>Inspector Fields</h3>

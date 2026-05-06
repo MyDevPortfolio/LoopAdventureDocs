@@ -163,9 +163,11 @@
   </table></div>
 
   <h2>PlayerHealth</h2>
+  <p class="component-path">Loop Adventure › Player › PlayerHealth</p>
   <p>Extends <code>Health</code> with player-specific behaviour. <code>ApplyDamage</code> returns early without reducing health if the player is currently in a blocking pose — playing <code>blockSound</code> instead of <code>impactSound</code>. <code>Die()</code> plays <code>dieSound</code> before delegating to the base implementation.</p>
 
   <h2>EnemyHealth</h2>
+  <p class="component-path">Loop Adventure › Enemy › EnemyHealth</p>
   <p>Extends <code>Health</code> with enemy-specific behaviour. <code>ApplyDamage</code> checks the <code>EnemyController</code>'s blocking state and factors in the enemy's defense stat. <code>Die()</code> plays the enemy death animation and sound before delegating to the base, which fires <code>OnDie</code> — used by <a href="sc-item-dropper.html">ItemDropper</a> to spawn loot.</p>
 
   <div class="callout info">
