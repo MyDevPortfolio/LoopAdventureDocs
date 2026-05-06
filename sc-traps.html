@@ -142,7 +142,7 @@
   <hr>
 
   <!-- ── PressurePlate ── -->
-  <h2 class="h2-type">Tile_Interactable_PressurePlate</h2>
+  <h2 class="h2-type" id="pressure-plate">Tile_Interactable_PressurePlate</h2>
   <p>Checks its tile once per turn — at the halfway point of the turn interval — and transitions between pressed and released states based on whether the player or an <code>IObstacle</code> is present.</p>
 
   <h3>Inspector Fields</h3>
@@ -202,7 +202,7 @@
   <hr>
 
   <!-- ── AppearingSpikes ── -->
-  <h2 class="h2-type">Tile_Interactable_AppearingSpikes</h2>
+  <h2 class="h2-type" id="appearing-spikes">Tile_Interactable_AppearingSpikes</h2>
   <p>Cycles through a configurable <code>stages</code> array each turn. A <code>true</code> entry means spikes are extended and deal lethal damage; <code>false</code> means they are retracted and safe to walk on. The stage advances automatically at the end of each turn.</p>
 
   <h3>Inspector Fields</h3>

@@ -112,7 +112,7 @@
     <p class="page-desc">Four components that make up the discovered-equipment panel in the inventory window: the paginated list container, the individual equipment entry layout, and two helper layouts for displaying stat and effect details.</p>
   </div>
 
-  <h2 class="h2-type">DiscoveredEquipmentList</h2>
+  <h2 class="h2-type" id="discovered-equipment-list">DiscoveredEquipmentList</h2>
   <p>A paginated display of all equipment the player has discovered. Call <code>ShowType</code> to filter by equipment slot, then use <code>Next</code> and <code>Previous</code> to page through the results.</p>
   <h3>Inspector Fields</h3>
   <div class="table-wrap"><table>
@@ -134,7 +134,7 @@
     </tbody>
   </table></div>
 
-  <h2 class="h2-type">DiscoveredEquipment_Layout</h2>
+  <h2 class="h2-type" id="discovered-equipment-layout">DiscoveredEquipment_Layout</h2>
   <p>Prefab-based toggle element representing a single piece of discovered equipment in <code>DiscoveredEquipmentList</code>. Use <code>CreateInstance</code> to spawn and configure it.</p>
   <h3>Inspector Fields</h3>
   <div class="table-wrap"><table>
@@ -152,7 +152,7 @@
     </tbody>
   </table></div>
 
-  <h2 class="h2-type">StatElement_Layout</h2>
+  <h2 class="h2-type" id="stat-element-layout">StatElement_Layout</h2>
   <p>Prefab-based widget showing a single stat bonus from an equipment piece — icon and numeric value. Spawned by <code>EquipementSlot_TooltipLayout</code> when displaying equipment details.</p>
   <h3>Inspector Fields</h3>
   <div class="table-wrap"><table>
@@ -170,7 +170,7 @@
     </tbody>
   </table></div>
 
-  <h2 class="h2-type">EffectElement_Layout</h2>
+  <h2 class="h2-type" id="effect-element-layout">EffectElement_Layout</h2>
   <p>Prefab-based widget showing a single <a href="sc-effect.html">Effect</a> granted by an equipment piece — icon, value, and optional duration. Spawned by <code>EquipementSlot_TooltipLayout</code>.</p>
   <h3>Inspector Fields</h3>
   <div class="table-wrap"><table>

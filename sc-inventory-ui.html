@@ -114,7 +114,7 @@
     <p class="page-desc">MonoBehaviour components that render the inventory window — the singleton <code>InventoryWindow</code>, individual item and equipment slot widgets, and the floating equipment tooltip.</p>
   </div>
 
-  <h2 class="h2-type">InventoryWindow</h2>
+  <h2 class="h2-type" id="inventory-window">InventoryWindow</h2>
   <p>Full-screen window that shows equipment slots, item slots, and live stat totals. Extends <a href="sc-window.html">Window</a> and overrides <code>Open()</code> to call <code>Refresh()</code> before the panel appears.</p>
 
   <h3>Static access</h3>
@@ -151,7 +151,7 @@
     </table>
   </div>
 
-  <h2 class="h2-type">ItemSlotLayout</h2>
+  <h2 class="h2-type" id="item-slot-layout">ItemSlotLayout</h2>
   <p>Single item slot widget. Displays the item's icon and a quantity badge. Implements <code>IPointerEnterHandler</code> and <code>IPointerExitHandler</code> to show and hide a tooltip on hover.</p>
 
   <h3>Properties &amp; Events</h3>
@@ -176,7 +176,7 @@
     </table>
   </div>
 
-  <h2 class="h2-type">EquipmentSlotLayout</h2>
+  <h2 class="h2-type" id="equipment-slot-layout">EquipmentSlotLayout</h2>
   <p>Equipment slot widget that shows either the equipped item's icon or an empty-slot placeholder. Implements pointer events to show the <code>EquipementSlot_TooltipLayout</code> on hover.</p>
 
   <h3>Properties</h3>
@@ -190,7 +190,7 @@
     </table>
   </div>
 
-  <h2 class="h2-type">EquipementSlot_TooltipLayout</h2>
+  <h2 class="h2-type" id="equipment-slot-tooltip-layout">EquipementSlot_TooltipLayout</h2>
   <p>Floating tooltip panel that shows an item's name, description, stat bonuses, and active effects. Called statically — there is one shared instance per scene accessed via <code>current</code>.</p>
 
   <h3>Static Members</h3>

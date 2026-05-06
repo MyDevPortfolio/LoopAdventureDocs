@@ -1561,8 +1561,23 @@ strong { color: #e2e8f0; font-weight: 600; }
     box-shadow: 8px 0 32px rgba(0,0,0,.55);
   }
   body.nav-open .nav-overlay { opacity: 1; pointer-events: auto; }
+  body.nav-open .nav-toggle { display: none; }
   .nav-toggle { display: flex; }
   .main { padding: 64px 22px 60px; }
+}
+
+/* ── Component menu path ──────────────────────────────── */
+.component-path {
+  font-size: 0.78rem;
+  color: var(--muted);
+  margin: -0.15rem 0 0.6rem;
+  letter-spacing: 0.01em;
+}
+.component-path code {
+  font-size: inherit;
+  background: transparent;
+  padding: 0;
+  color: var(--fg2);
 }
 
 @media (max-width: 600px) {

@@ -463,15 +463,27 @@ function initSearch() {
   function open()  { backdrop.classList.add('open'); input.focus(); input.select(); }
   function close() { backdrop.classList.remove('open'); input.value = ''; results.innerHTML = ''; focusedIndex = -1; }
 
+  function score(e, q) {
+    const t = e.title.toLowerCase();
+    if (t === q)            return 4;
+    if (t.startsWith(q))    return 3;
+    if (t.includes(q))      return 2;
+    if (e.keywords.toLowerCase().includes(q)) return 1;
+    return 0;
+  }
+
   function search() {
     focusedIndex = -1;
     const q = input.value.trim().toLowerCase();
     if (!q) { results.innerHTML = ''; return; }
-    const matches = index.filter(e =>
-      e.title.toLowerCase().includes(q) ||
-      e.desc.toLowerCase().includes(q)  ||
-      e.keywords.toLowerCase().includes(q)
-    ).slice(0, 10);
+    const matches = index
+      .filter(e =>
+        e.title.toLowerCase().includes(q) ||
+        e.keywords.toLowerCase().includes(q) ||
+        e.desc.toLowerCase().includes(q)
+      )
+      .sort((a, b) => score(b, q) - score(a, q))
+      .slice(0, 10);
 
     if (!matches.length) {
       results.innerHTML = '<div class="sr-empty">No results for &ldquo;' + input.value + '&rdquo;</div>';

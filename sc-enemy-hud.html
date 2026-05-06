@@ -112,7 +112,7 @@
     <p class="page-desc">Five components that make up the visual display above each enemy: a stat panel shown on hover, a health counter, an action indicator showing the current instruction, a full action-sequence panel, and the individual action layout element.</p>
   </div>
 
-  <h2 class="h2-type">EnemyStatsContainer</h2>
+  <h2 class="h2-type" id="enemy-stats-container">EnemyStatsContainer</h2>
   <p>Spawns a row of stat elements for each of the enemy's stats (damage, defence, and any additional stats) and wires panel visibility to the parent <code>EnemyController</code>'s mouse-hover event. The panel is hidden by default and shown only while the cursor is over the enemy. Populated automatically by <code>EnemyController.Awake()</code> — no manual wiring needed beyond assigning the two references below.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
@@ -128,7 +128,7 @@
     </tbody>
   </table></div>
 
-  <h2 class="h2-type">EnemyHealthBar</h2>
+  <h2 class="h2-type" id="enemy-health-bar">EnemyHealthBar</h2>
   <p>Displays the enemy's current health as a text counter. Subscribes automatically to the sibling <code>EnemyHealth</code> component's events — no manual wiring needed beyond assigning the label.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
@@ -137,7 +137,7 @@
     </tbody>
   </table></div>
 
-  <h2 class="h2-type">EnemyInstructionIndicator</h2>
+  <h2 class="h2-type" id="enemy-instruction-indicator">EnemyInstructionIndicator</h2>
   <p>Shows animated transitions between the enemy's current and previous actions. Displays two icon slots — entry (incoming action) and exit (outgoing action) — and drives an Animator for the slide-in/slide-out transitions. Wired by <code>EnemyController.Initialize()</code> automatically.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
@@ -153,7 +153,7 @@
     </tbody>
   </table></div>
 
-  <h2 class="h2-type">EnemyActionSequencePanel</h2>
+  <h2 class="h2-type" id="enemy-action-sequence-panel">EnemyActionSequencePanel</h2>
   <p>Renders the enemy's full attack sequence as a grid of icons. Each entry shows one <code>EnemyAction</code> with its loop count. The panel toggles visibility on mouse hover and is populated once during <code>EnemyController.Initialize()</code>.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
@@ -169,7 +169,7 @@
     </tbody>
   </table></div>
 
-  <h2 class="h2-type">EnemyAction_Layout</h2>
+  <h2 class="h2-type" id="enemy-action-layout">EnemyAction_Layout</h2>
   <p>Prefab-based widget for a single entry in the <code>EnemyActionSequencePanel</code>. Use <code>CreateInstance</code> to spawn and configure it.</p>
   <div class="table-wrap"><table>
     <thead><tr><th>Field</th><th>Type</th><th>Description</th></tr></thead>
